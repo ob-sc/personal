@@ -1,22 +1,23 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest, NextApiResponse } from "next";
+import { JSONResponse } from "../../../types/api";
 
-export default function userHandler(req: NextApiRequest, res: NextApiResponse) {
+function userHandler(req: NextApiRequest, res: NextApiResponse<JSONResponse>) {
   const {
     query: { id, name },
     method,
   } = req;
 
-  switch (method) {
+  switch (method?.toUpperCase()) {
     case "GET":
-      // Get data from your database
       res.status(200).json({ id, name: `User ${id}` });
       break;
-    case "PUT":
-      // Update or create data in your database
+    case "POST":
       res.status(200).json({ id, name: name || `User ${id}` });
       break;
     default:
       res.setHeader("Allow", ["GET", "POST"]);
-      res.status(405).end(`Method ${method} Not Allowed`);
+      res.status(405).json({ error: `Methode ${method} nicht erlaubt` });
   }
 }
+
+export default userHandler;

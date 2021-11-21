@@ -15,8 +15,15 @@
 ## frontend
 
 - axios swr typescript:
+
   - https://swr.vercel.app/
   - https://github.com/vercel/swr/blob/master/examples/axios-typescript/libs/useRequest.ts
+
+- auth: https://nextjs.org/docs/authentication
+
+- session: https://github.com/vvo/iron-session
+
+- ssr: https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering
 
 ## api routes
 
@@ -25,3 +32,8 @@
 - https://github.com/vercel/next.js/blob/canary/examples/api-routes-rest/pages/api/user/%5Bid%5D.js
 
 - https://github.com/vercel/next.js/blob/canary/examples/api-routes-rest/pages/index.js
+
+## mui
+
+mui next ts: https://github.com/mui-org/material-ui/tree/HEAD/examples/nextjs-with-typescript
+mui ssr: https://mui.com/guides/server-rendering/
