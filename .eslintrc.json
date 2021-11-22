@@ -1,3 +1,7 @@
 {
-  "extends": ["next/core-web-vitals", "prettier", "eslint-config-scza"]
+  "extends": ["prettier", "eslint-config-scza", "next/core-web-vitals"],
+  "rules": {
+    "no-unused-vars": "off", // wegen ts declaration files
+    "no-use-before-define": "off" // wegen React import
+  }
 }

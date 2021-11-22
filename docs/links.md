@@ -19,7 +19,7 @@
   - https://swr.vercel.app/
   - https://github.com/vercel/swr/blob/master/examples/axios-typescript/libs/useRequest.ts
 
-- auth: https://nextjs.org/docs/authentication
+- auth: https://nextjs.org/docs/authentication#authenticating-server-rendered-pages
 
 - session: https://github.com/vvo/iron-session
 

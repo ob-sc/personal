@@ -9,8 +9,8 @@ const Home: NextPage = () => (
       <Typography variant="h4" component="h1" textAlign="center" gutterBottom>
         hi
       </Typography>
-      <Button component={Link} href="/about">
-        Link
+      <Button component={Link} href="/login">
+        Login
       </Button>
     </Box>
   </Container>

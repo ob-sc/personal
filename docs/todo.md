@@ -1,5 +1,7 @@
 # monorepo
 
+eslint ts einstellungen, dann aus eslintrc den unfug raus
+
 ## stack
 
 mein server erstellt das frontend beim request dynamisch
@@ -135,3 +137,29 @@ dann zum darstellen im frontend:
 es geht nicht, dass die infra komplett von bfi diktiert wurde. docker komplett front- & backend und dann die db (und /upload) komplett täglich (bei crent?) sichern.
 
 dort sind dann nur noch sichere daten, personenbezogen nur agentur und extern (wann löschen?)
+
+## ldap
+
+dazu auch (unter add): http://ldapjs.org/client.html
+
+```
+// user and pass are for existing user with rights to add a user
+function myLDAPBind(user, pass, callback) {
+const client = ldap.createClient({
+url: URL,
+});
+const newDN = 'cn=new guy,ou=Users,dc=example,dc=org';
+const newUser = {
+cn: 'new guy',
+sn: 'guy',
+uid: 'nguy',
+mail: 'nguy@example.org',
+objectClass: 'inetOrgPerson',
+userPassword: ssha.create('Password01'),
+};
+client.bind(user, pass, (err) => {
+if (err) throw err;
+client.add(newDN, newUser, callback);
+});
+}
+```

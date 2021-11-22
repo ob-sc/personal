@@ -1,7 +1,9 @@
-import Jacando from "../util/jacando";
+import ldap from '../lib/ldap';
+import log from '../lib/log';
 
-const createSession = async (username: string, password: string) => {
-  const jacando = new Jacando("/employees");
-
-  const employees = await jacando.get();
+export const createSession = async (username: string, password: string) => {
+  const dn = await ldap.search(username);
+  log.debug(dn);
+  const auth = await ldap.auth(username, password);
+  log.debug(auth);
 };
