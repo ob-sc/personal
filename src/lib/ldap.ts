@@ -1,49 +1,65 @@
 import ldapjs from 'ldapjs';
-import log from './log';
 import cfg from '../config';
+import { ADUser } from '../types';
+import { isDev } from './util';
 
 const baseDN = 'DC=starcar,DC=local';
 const ldpaUserDN = `CN=${cfg.ldap.user},CN=Users,${baseDN}`;
+
+const createError = (err: any) => {
+  if (!isDev()) return new Error('LDAP Fehler');
+  return err instanceof Error ? err : new Error(err);
+};
 
 const ldapClient = (): ldapjs.Client => {
   const client = ldapjs.createClient({
     url: cfg.ldap.url,
   });
 
-  client.on('error', (err) => {
-    log.error(err);
-  });
+  // macht der immer Error read ECONNRESET? brauche ich den?
+  // client.on('error', (err) => {
+  //   log.error(err);
+  // });
 
   return client;
 };
 
 const auth = (dn: string, password: string) =>
   new Promise((resolve, reject) => {
-    ldapClient.bind(dn, password, (err: any) => {
-      if (err) reject(err);
-      else resolve(true);
+    const client = ldapClient();
+    client.bind(dn, password, (err: any) => {
+      client.unbind();
+      if (err) reject(createError(err));
+      resolve(true);
     });
   });
 
 // ohne user = alle
-// todo error handling besser
 const search = (user?: string) =>
-  new Promise((resolve, reject) => {
+  new Promise<ADUser>((resolve, reject) => {
     const client = ldapClient();
-
     client.bind(ldpaUserDN, cfg.ldap.password, (err: any) => {
-      if (err) log.error(err);
+      if (err) {
+        client.unbind();
+        reject(createError(err));
+      }
     });
     const filter = user ? `(sAMAccountName=${user})` : '(sAMAccountType=805306368)';
     const options: ldapjs.SearchOptions = { filter, scope: 'sub' };
     client.search(baseDN, options, (err: any, res: any) => {
       if (err) {
-        log.error(err);
-        reject(err);
-        return;
+        client.unbind();
+        reject(createError(err));
       }
+
       res.on('searchEntry', (entry: any) => {
+        client.unbind();
         resolve(entry.object);
+      });
+
+      res.on('end', () => {
+        client.unbind();
+        reject(createError('Keinen Benutzer gefunden'));
       });
     });
   });

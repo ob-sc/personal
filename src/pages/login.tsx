@@ -1,29 +1,32 @@
+import { useState } from 'react';
+import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import { Box, Grid } from '@mui/material';
 import Input from '../components/common/Input';
 import theme from '../theme';
 import SubmitButton from '../components/common/SubmitButton';
 import { LoginInputs } from '../types/forms';
-import useRequest from '../hooks/useRequest';
-
-const isSubmitting = false;
-const isSuccess = false;
+import axios from 'axios';
+import log from '../lib/log';
 
 const Login = () => {
+  const [submitting, setSubmitting] = useState(false);
   const {
     handleSubmit,
     control,
     formState: { errors },
   } = useForm<LoginInputs>();
+  const router = useRouter();
 
-  const { mutate } = useRequest({ url: '/api/session/login', method: 'POST' });
-
-  const onSubmit = (values: LoginInputs) => {
+  const onSubmit = async (values: LoginInputs) => {
+    setSubmitting(true);
     try {
-      mutate(values);
+      await axios.post('/api/session/login', values);
     } catch (e) {
-      console.log(e);
+      setSubmitting(false);
+      log.error(e);
     }
+    router.push('/');
   };
 
   return (
@@ -65,7 +68,7 @@ const Login = () => {
               />
             </Grid>
             <Grid item>
-              <SubmitButton text="Anmelden" loading={isSubmitting} success={isSuccess} />
+              <SubmitButton text="Anmelden" loading={submitting} />
             </Grid>
           </Grid>
         </Box>

@@ -1,46 +1,59 @@
 import { NextApiHandler } from 'next';
 import { withSessionApiRoute } from '../../../lib/withSession';
 import ldap from '../../../lib/ldap';
-import { noArray } from '../../../lib/util';
+import { errorResponse } from '../../../lib/util';
+import Jacando from '../../../lib/jacando';
 import log from '../../../lib/log';
+import { Employee, Session } from '../../../types/jacando';
 
 declare module 'iron-session' {
   interface IronSessionData {
-    user?: {
-      id: number;
-      admin?: boolean;
-    };
+    user?: Session;
   }
 }
 
 const loginRoute: NextApiHandler = async (req, res) => {
   const {
-    query: { username, password },
+    body: { username, password },
     session,
     method,
   } = req;
 
   if (method?.toUpperCase() === 'POST') {
-    const isUndefined = username === undefined || password === undefined;
+    let errorStatus = 400;
+    try {
+      const isUndefined = username === undefined || password === undefined;
 
-    if (isUndefined) {
-      return res.status(400).json({ error: 'Benutzername und Passwort müssen angegeben werden' });
+      if (isUndefined) {
+        throw new Error('Benutzername und Passwort müssen angegeben werden');
+      }
+
+      const adUser = await ldap.search(username);
+      await ldap.auth(adUser.dn, password);
+
+      // ab hier nicht mehr User-Eingabefehler
+      errorStatus = 500;
+
+      // todo aus DB holen?
+      // "5ea5e0b251080508555bcb59"
+      const id = '5ea5e0b251080508555bcb59';
+
+      const jacando = new Jacando(`/employees/${id}`);
+      const employee: Employee = await jacando.get();
+
+      const user = jacando.safeUser(employee);
+
+      session.user = {
+        ...user,
+        username: adUser.sAMAccountName,
+        isLoggedIn: true,
+      };
+      await session.save();
+      res.status(200).json(session.user);
+    } catch (error) {
+      log.error(error);
+      res.status(errorStatus).json(errorResponse(error));
     }
-
-    // todo ohne any
-    const adUser: any = await ldap.search(noArray(username));
-    const auth = await ldap.auth(adUser.dn, noArray(password));
-
-    log.debug(adUser);
-    log.debug(auth);
-
-    // get user from database then:
-    session.user = {
-      id: 230,
-      admin: true,
-    };
-    await session.save();
-    res.status(200).end();
   } else {
     res.setHeader('Allow', ['POST']);
     res.status(405).json({ error: `Methode ${method} nicht erlaubt` });

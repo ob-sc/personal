@@ -1,6 +1,13 @@
 import https from 'https';
 import cfg from '../config';
-import { JacandoAPI } from '../types/jacando';
+import {
+  APICustomFieldSection,
+  APIUserRegion,
+  APIUserStatus,
+  Employee,
+  JacandoAPI,
+  User,
+} from '../types/jacando';
 
 // returned ein promise mit daten / error
 const jacandoAPI: JacandoAPI = (method, resource, data) =>
@@ -43,10 +50,10 @@ const jacandoAPI: JacandoAPI = (method, resource, data) =>
       httpRes.on('end', () => {
         try {
           body = JSON.parse(Buffer.concat(body).toString());
+          resolve(body);
         } catch (e) {
           reject(e);
         }
-        resolve(body);
       });
     });
 
@@ -73,6 +80,68 @@ class Jacando {
   }
   delete() {
     return jacandoAPI('delete', this.resource);
+  }
+  // keine persönlichen Daten
+  safeUser(employee: Employee): User {
+    const user: User = {
+      id: employee.id,
+      email: employee.email,
+      firstName: employee.firstName,
+      lastName: employee.lastName,
+      gender: employee.gender,
+      personellNumber: Number(employee.personellNumber),
+      clients: [...employee.clients],
+      roles: [...employee.roles],
+      updatedAt: new Date(employee.updatedAt),
+      createdAt: new Date(employee.createdAt),
+      status: employee.status,
+      publicEmail: employee.publicEmail,
+      imageUrl: employee.imageUrl,
+      archived: employee.archived,
+      kst: 0,
+      access: null,
+      region: null,
+      extrastation: null,
+    };
+
+    const sections = employee.customFieldSections ?? [];
+    for (let i = 0; i < sections.length; i++) {
+      const currentSection = sections[i];
+      if (currentSection.names.de === 'API') {
+        const acfs = currentSection as APICustomFieldSection;
+        for (let j = 0; j < acfs.customFields.length; j++) {
+          const currentField = acfs.customFields[j];
+          const title = currentField.title.de;
+          const { value } = currentField;
+          // eslint-disable-next-line default-case
+          switch (title) {
+            case 'Kostenstelle':
+              user.kst = Number(value);
+              break;
+            case 'Status':
+              user.access = value.toLowerCase() as APIUserStatus;
+              break;
+            case 'Region':
+              user.region = value.toLowerCase() as APIUserRegion;
+              break;
+            case 'Extrastation':
+              if (value === '*') {
+                user.extrastation = value;
+              } else {
+                // leerstellen entfernen
+                const extraStationsString = value.replace(/\s+/g, '');
+                const extraStations = extraStationsString.split(',');
+                // array aus strings zu array aus numbers
+                user.extrastation = extraStations.map((s) => Number(s));
+              }
+              break;
+          }
+        }
+        // wenn ich "API" gefunden habe dann abbrechen
+        break;
+      }
+    }
+    return user;
   }
 }
 
