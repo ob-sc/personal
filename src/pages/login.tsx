@@ -1,17 +1,33 @@
-import { FormEvent } from 'react';
+import { useForm } from 'react-hook-form';
 import { Box, Grid } from '@mui/material';
 import Input from '../components/common/Input';
 import theme from '../theme';
 import SubmitButton from '../components/common/SubmitButton';
-import useForm from '../hooks/useForm';
+import { LoginInputs } from '../types/forms';
+import useRequest from '../hooks/useRequest';
+
+const isSubmitting = false;
+const isSuccess = false;
 
 const Login = () => {
-  const init = { username: '', password: '' };
-  const required = ['username', 'password'];
-  const { submitHandler, controller, isSuccess, isSubmitting } = useForm(init, required);
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<LoginInputs>();
+
+  const { mutate } = useRequest({ url: '/api/session/login', method: 'POST' });
+
+  const onSubmit = (values: LoginInputs) => {
+    try {
+      mutate(values);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
-    <form onSubmit={submitHandler}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <Box
         sx={{
           height: '100vh',
@@ -25,7 +41,7 @@ const Login = () => {
           sx={{
             width: 300,
             mx: 'auto',
-            p: 3,
+            p: 1.5,
             border: 1,
             borderColor: theme.palette.primary.light,
             borderRadius: 2,
@@ -36,13 +52,20 @@ const Login = () => {
         >
           <Grid container>
             <Grid item xs={12}>
-              <Input name="username" label="Benutzer" controller={controller} />
+              <Input name="username" label="Benutzer" control={control} errors={errors} required />
             </Grid>
             <Grid item xs={12} sx={{ my: 1 }}>
-              <Input name="password" type="password" label="Passwort" controller={controller} />
+              <Input
+                name="password"
+                type="password"
+                label="Passwort"
+                control={control}
+                errors={errors}
+                required
+              />
             </Grid>
             <Grid item>
-              <SubmitButton loading={isSubmitting} success={isSuccess} />
+              <SubmitButton text="Anmelden" loading={isSubmitting} success={isSuccess} />
             </Grid>
           </Grid>
         </Box>

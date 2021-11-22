@@ -1,11 +1,11 @@
 import { TextField } from '@mui/material';
-import { isEmpty } from '../../lib/util';
-import { ChangeEventHandler, Controller } from '../../types';
+import { Control, Controller, FieldError } from 'react-hook-form';
 
 interface Props {
   name: string;
   label: string;
-  controller: Controller;
+  control: Control<any>;
+  errors: Record<string, FieldError | undefined>;
   type?: 'text' | 'number' | 'password';
   disabled?: boolean;
   errorHelper?: boolean;
@@ -16,45 +16,38 @@ const Input = (props: Props) => {
   const {
     name,
     label,
-    controller,
+    control,
+    errors,
     type = 'text',
     disabled = false,
     errorHelper = false,
     required = false,
   } = props;
 
-  const { errors, values, setError, setValue } = controller;
-
   const err = errors[name];
-  const val = values[name];
-  const errorText = errorHelper === true ? err?.message : undefined;
-
-  const changeHandler: ChangeEventHandler = (e) => {
-    const value = e.target.value.trim(); // todo pw auch trim?
-    if (isEmpty(value) && required === true) {
-      setValue(name);
-      setError(name, new Error('Pflichtfeld'));
-    } else {
-      setValue(name, value);
-      setError(name);
-    }
-  };
+  const errorText = errorHelper === true ? err : undefined;
 
   return (
-    <TextField
+    <Controller
       name={name}
-      variant="outlined"
-      color="primary"
-      size="small"
-      value={val}
-      onChange={changeHandler}
-      type={type}
-      label={label}
-      fullWidth={true}
-      error={!!err}
-      disabled={disabled}
-      helperText={errorText}
-      // autoComplete={autoComplete}
+      control={control}
+      defaultValue=""
+      rules={{ required: !!required }}
+      render={({ field }) => (
+        <TextField
+          variant="outlined"
+          color="primary"
+          size="small"
+          type={type}
+          label={label}
+          fullWidth={true}
+          error={!!err}
+          disabled={disabled}
+          helperText={errorText}
+          {...field}
+          // autoComplete={autoComplete}
+        />
+      )}
     />
   );
 };
