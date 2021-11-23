@@ -1,13 +1,20 @@
 import { withIronSessionApiRoute, withIronSessionSsr } from 'iron-session/next';
 import { GetServerSidePropsContext, GetServerSidePropsResult, NextApiHandler } from 'next';
 import cfg from '../config';
+import { Session } from '../types/jacando';
+
+declare module 'iron-session' {
+  interface IronSessionData {
+    user?: Session;
+  }
+}
 
 const sessionOptions = {
   password: cfg.session.password,
   cookieName: cfg.session.cookieName,
 };
 
-export function withSessionApiRoute(handler: NextApiHandler) {
+export function withSessionApi(handler: NextApiHandler) {
   return withIronSessionApiRoute(handler, sessionOptions);
 }
 

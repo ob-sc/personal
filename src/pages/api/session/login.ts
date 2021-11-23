@@ -1,18 +1,12 @@
 import { NextApiHandler } from 'next';
-import { withSessionApiRoute } from '../../../lib/withSession';
+import { withSessionApi } from '../../../lib/withSession';
 import ldap from '../../../lib/ldap';
 import { errorResponse } from '../../../lib/util';
 import Jacando from '../../../lib/jacando';
 import log from '../../../lib/log';
-import { Employee, Session } from '../../../types/jacando';
+import { Employee } from '../../../types/jacando';
 
-declare module 'iron-session' {
-  interface IronSessionData {
-    user?: Session;
-  }
-}
-
-const loginRoute: NextApiHandler = async (req, res) => {
+const loginHandler: NextApiHandler = async (req, res) => {
   const {
     body: { username, password },
     session,
@@ -60,4 +54,4 @@ const loginRoute: NextApiHandler = async (req, res) => {
   }
 };
 
-export default withSessionApiRoute(loginRoute);
+export default withSessionApi(loginHandler);
