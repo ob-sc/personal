@@ -1,5 +1,4 @@
 import { NextApiHandler } from 'next';
-import log from '../../../lib/log';
 import { withSessionApi } from '../../../lib/withSession';
 
 const logoutRoute: NextApiHandler = (req, res) => {

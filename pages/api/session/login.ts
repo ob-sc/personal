@@ -23,10 +23,11 @@ const loginHandler: NextApiHandler = async (req, res) => {
       }
 
       const adUser = await ldap.search(username);
-      await ldap.auth(adUser.dn, password);
 
       // ab hier nicht mehr User-Eingabefehler
       errorStatus = 500;
+
+      await ldap.auth(adUser.dn, password);
 
       // todo aus DB holen?
       // "5ea5e0b251080508555bcb59"

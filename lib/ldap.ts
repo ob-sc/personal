@@ -24,6 +24,21 @@ const ldapClient = (): ldapjs.Client => {
   return client;
 };
 
+const add = () =>
+  new Promise((resolve, reject) => {
+    const client = ldapClient();
+    const entry = {
+      cn: 'foo',
+      sn: 'bar',
+      email: ['foo@bar.com', 'foo1@bar.com'],
+      objectclass: 'fooPerson',
+    };
+    client.add('cn=foo, o=example', entry, (err) => {
+      if (err) reject(createError(err));
+      resolve(true);
+    });
+  });
+
 const auth = (dn: string, password: string) =>
   new Promise((resolve, reject) => {
     const client = ldapClient();
@@ -64,6 +79,6 @@ const search = (user?: string) =>
     });
   });
 
-const ldap = { auth, search };
+const ldap = { add, auth, search };
 
 export default ldap;
