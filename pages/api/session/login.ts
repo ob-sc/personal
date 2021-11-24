@@ -22,21 +22,23 @@ const loginHandler: NextApiHandler = async (req, res) => {
         throw new Error('Benutzername und Passwort müssen angegeben werden');
       }
 
-      const adUser = await ldap.search(username);
+      const client = ldap.client();
+
+      const adUser = await ldap.operation.search(client, username);
 
       // ab hier nicht mehr User-Eingabefehler
       errorStatus = 500;
 
-      await ldap.auth(adUser.dn, password);
+      await ldap.operation.auth(client, adUser?.distinguishedName ?? '', password);
 
-      // todo aus DB holen?
-      // "5ea5e0b251080508555bcb59"
+      client.unbind();
+
       const id = '5ea5e0b251080508555bcb59';
 
       const jacando = new Jacando(`/employees/${id}`);
       const employee: Employee = await jacando.get();
 
-      const user = jacando.safeUser(employee);
+      const user = jacando.parseUser(employee);
 
       session.user = {
         ...user,

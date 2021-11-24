@@ -1,7 +1,5 @@
 # Datenbank
 
-DB braucht dringend Update. Statt migrieren einfach neue DB hochziehen und mit Daten aus alter füllen. Macht Sinn im Kontext mit Jacando / LDAP.
-
 ## Installation
 
 MySQL installieren und einrichten
@@ -28,8 +26,6 @@ Schauen ob der Service läuft mit `systemctl status mysql.service`, sonst starte
 
 todo bla
 
----
-
 # Tabellen
 
 ## Users
@@ -45,8 +41,6 @@ todo bla
 - zu times
 
 - id: übernehmen wie bisher, primary und fortlaufend
-
----
 
 # todo
 

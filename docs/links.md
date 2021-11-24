@@ -35,3 +35,7 @@
 ## sequelize
 
 - ts: https://sequelize.org/master/manual/typescript.html
+
+## ldap
+
+- pw etc: https://lsc-project.org/documentation/tutorial/openldaptoactivedirectory

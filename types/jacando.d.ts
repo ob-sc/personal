@@ -70,7 +70,6 @@ export interface Employee {
   roles: [{ name: string }];
   updatedAt: string; // '2021-11-19T09:52:52.490Z'
   createdAt: string; // '2020-11-27T14:24:27.701Z'
-  status: string; // 'active';
   publicEmail: string;
   imageUrl: string | null; // nicht sicher ob das stimmt, kein Bild zum testen
   archived: boolean;
@@ -78,23 +77,10 @@ export interface Employee {
 }
 
 export interface User extends Employee {
-  id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  gender: string;
   personellNumber: number;
-  clients: [{ id: string; name: string }];
-  roles: [{ name: string }];
-  updatedAt: Date; // '2021-11-19T09:52:52.490Z'
-  createdAt: Date; // '2020-11-27T14:24:27.701Z'
-  status: string; // 'active';
-  publicEmail: string;
-  imageUrl: string | null;
-  archived: boolean;
   kst: number; // Kostenstelle
-  access: APIUserStatus | null;
-  region: APIUserRegion | null;
+  access: APIUserStatus | null; // Berechtigung e.g. 'SL'
+  region: APIUserRegion | null; // Region e.g. 'nord'
   extrastation: number[] | '*' | null;
 }
 

@@ -82,7 +82,7 @@ class Jacando {
     return jacandoAPI('delete', this.resource);
   }
   // keine persönlichen Daten
-  safeUser(employee: Employee): User {
+  parseUser(employee: Employee): User {
     const user: User = {
       id: employee.id,
       email: employee.email,
@@ -92,9 +92,8 @@ class Jacando {
       personellNumber: Number(employee.personellNumber),
       clients: [...employee.clients],
       roles: [...employee.roles],
-      updatedAt: new Date(employee.updatedAt),
-      createdAt: new Date(employee.createdAt),
-      status: employee.status,
+      updatedAt: employee.updatedAt,
+      createdAt: employee.createdAt,
       publicEmail: employee.publicEmail,
       imageUrl: employee.imageUrl,
       archived: employee.archived,
@@ -103,6 +102,8 @@ class Jacando {
       region: null,
       extrastation: null,
     };
+
+    console.log(user.updatedAt, employee.updatedAt);
 
     const sections = employee.customFieldSections ?? [];
     for (let i = 0; i < sections.length; i++) {

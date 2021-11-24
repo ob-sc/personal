@@ -7,8 +7,7 @@
     "start": "next start",
     "lint": "next lint",
     "docker-build": "docker build . -t scp-next-app",
-    "docker-run": "docker run -p 3000:3000 scp-next-app",
-    "sinit": "sequelize init"
+    "docker-run": "docker run -p 3000:3000 scp-next-app"
   },
   "dependencies": {
     "@emotion/cache": "^11.6.0",
@@ -41,7 +40,6 @@
     "pino-pretty": "^7.2.0",
     "prettier": "^2.4.1",
     "prettier-config-scza": "^1.0.0",
-    "sequelize-cli": "^6.3.0",
     "typescript": "4.4.4"
   },
   "prettier": "prettier-config-scza"

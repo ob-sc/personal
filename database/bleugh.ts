@@ -1,8 +1,8 @@
 import { DataTypes, Sequelize } from 'sequelize';
 import cfg from '../config';
 
-const sequelize = new Sequelize(cfg.db.database, cfg.db.user, cfg.db.secret, {
-  host: 'localhost',
+const sequelize = new Sequelize(process.env.NODE_ENV ?? 'development', cfg.db.user, cfg.db.secret, {
+  host: '127.0.0.1',
   dialect: 'mysql',
 });
 

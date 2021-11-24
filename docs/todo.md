@@ -164,6 +164,10 @@ client.add(newDN, newUser, callback);
 }
 ```
 
+## n
+
+- DB braucht dringend Update. Statt migrieren einfach neue DB hochziehen und mit Daten aus alter füllen. Macht Sinn im Kontext mit Jacando / LDAP.
+
 ### console
 
 ```js

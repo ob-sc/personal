@@ -10,12 +10,11 @@ import { Session } from '../types/jacando';
 const Home = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
 
+  console.log(user);
+
   return (
     <Container maxWidth="md">
       <Box sx={{ my: 4 }}>
-        <Typography variant="h4" component="h1" textAlign="center" gutterBottom>
-          Hi {user.firstName}
-        </Typography>
         <Button
           onClick={() => {
             // wichtig: muss post sein, sonst löscht sich der cookie nicht
