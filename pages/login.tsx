@@ -4,10 +4,14 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { Box, Grid } from '@mui/material';
 import Input from '../components/common/Input';
-import theme from '../theme';
+import theme from '../config/theme';
 import SubmitButton from '../components/common/SubmitButton';
-import { LoginInputs } from '../types/forms';
-import log from '../lib/log';
+import log, { devmode } from '../lib/log';
+
+interface LoginInputs {
+  username: string;
+  password: string;
+}
 
 const fullScreenCenter = {
   height: '100vh',
@@ -16,6 +20,8 @@ const fullScreenCenter = {
   alignItems: 'center',
   justifyContent: 'center',
 };
+
+devmode(); // log devmode
 
 const Login = () => {
   const [submitting, setSubmitting] = useState(false);

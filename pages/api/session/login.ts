@@ -4,7 +4,8 @@ import ldap from '../../../lib/ldap';
 import { errorResponse } from '../../../lib/util';
 import Jacando from '../../../lib/jacando';
 import log from '../../../lib/log';
-import { Employee } from '../../../types/jacando';
+import { Employee } from '../../../types/api';
+import { UserModel } from '../../../db';
 
 const loginHandler: NextApiHandler = async (req, res) => {
   const {
@@ -26,14 +27,22 @@ const loginHandler: NextApiHandler = async (req, res) => {
 
       const adUser = await ldap.operation.search(client, username);
 
-      // ab hier nicht mehr User-Eingabefehler
-      errorStatus = 500;
-
       await ldap.operation.auth(client, adUser?.distinguishedName ?? '', password);
 
       client.unbind();
 
-      const id = '5ea5e0b251080508555bcb59';
+      const dbUser = await UserModel.findOne({ where: { username } });
+
+      if (dbUser === null) {
+        throw new Error('Benutzer nicht gefunden');
+      }
+
+      // ab hier nicht mehr User-Eingabefehler
+      errorStatus = 500;
+
+      // const id = '5ea5e0b251080508555bcb59';
+
+      const { id } = dbUser;
 
       const jacando = new Jacando(`/employees/${id}`);
       const employee: Employee = await jacando.get();

@@ -1,6 +1,6 @@
 import ldapjs, { Client } from 'ldapjs';
 import cfg from '../config';
-import { DomainAllAttributes, DomainAttributes } from '../types/ldap';
+import { DomainAllAttributes, DomainAttributes } from '../types/api';
 import { isDev } from './util';
 
 const baseDN = 'DC=starcar,DC=local';
@@ -13,7 +13,7 @@ const createError = (err: any, notDevMsg = 'LDAP Fehler') => {
 
 const createClient = (): ldapjs.Client => {
   const client = ldapjs.createClient({
-    url: cfg.ldap.url,
+    url: cfg.ldap.options.url,
   });
 
   // macht der immer Error read ECONNRESET? brauche ich den?
@@ -39,7 +39,7 @@ const add = (client: Client, entry: DomainAttributes, dn: string) =>
       const cn = 'SC - Bar\\, Foo';
       const dn = `CN=${cn},OU=IT,OU=Verwaltung,OU=User,OU=STARCAR,DC=starcar,DC=local`;
       const entry: ADUser = {
-        cn: 'SC - Bar\\, Foo', // SC - (STARCAR), SCA - (Agentur), SCM - (Mobility), P24 -
+      cn: 'SC - Bar\\, Foo', // SC - (STARCAR), SCA - (Agentur), SCM - (Mobility), P24 -
         sn: 'Bar',
         l: 'Hamburg',
         postalCode: '20537',

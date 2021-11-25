@@ -1,4 +1,4 @@
-# monorepo
+# personal
 
 eslint ts einstellungen, dann aus eslintrc den unfug raus
 
@@ -132,41 +132,35 @@ dann zum darstellen im frontend:
   - starcar_prod lasse ich einfach noch auf sc-39
   - andere datenbanken (\_test, \_za_dev etc) können weg
 
----
-
-es geht nicht, dass die infra komplett von bfi diktiert wurde. docker komplett front- & backend und dann die db (und /upload) komplett täglich (bei crent?) sichern.
-
-dort sind dann nur noch sichere daten, personenbezogen nur agentur und extern (wann löschen?)
-
-## ldap
-
-dazu auch (unter add): http://ldapjs.org/client.html
-
-```
-// user and pass are for existing user with rights to add a user
-function myLDAPBind(user, pass, callback) {
-const client = ldap.createClient({
-url: URL,
-});
-const newDN = 'cn=new guy,ou=Users,dc=example,dc=org';
-const newUser = {
-cn: 'new guy',
-sn: 'guy',
-uid: 'nguy',
-mail: 'nguy@example.org',
-objectClass: 'inetOrgPerson',
-userPassword: ssha.create('Password01'),
-};
-client.bind(user, pass, (err) => {
-if (err) throw err;
-client.add(newDN, newUser, callback);
-});
-}
-```
-
 ## n
 
+- es geht nicht, dass die infra komplett von bfi diktiert wurde. docker komplett front- & backend und dann die db (und /upload) komplett täglich (bei crent?) sichern.
+
+  - dort sind dann nur noch sichere daten, personenbezogen nur agentur und extern (wann löschen?)
+
+- ablösen von bfi. nix nils bohrs ist jetzt aber weg
+
+  - der server hier zb tägliche updates. können wir dann in der produktionsumgebung so benutzen
+
 - DB braucht dringend Update. Statt migrieren einfach neue DB hochziehen und mit Daten aus alter füllen. Macht Sinn im Kontext mit Jacando / LDAP.
+
+- daten werden nurnoch von perso in jacando gepflegt
+
+- crent: selber programmieren (geht das überhaupt ohne java o.ä.?) oder route ansprechen
+
+  - man könnte Reiter Mitarbeiterdaten über login-route Daten aus jacando übernehmen (zb Vorname, Nachname, Station, email etc)
+
+    - erlaubte stationen etc noch selber pflegen und in crent db speichern
+
+- man könnte auch user direkt anlegen lassen
+
+  - pw brauchen wir nicht (aus ad)
+
+  - personalnummer = zufällig 4 stellig -> wenn vorhanden neu zufällig bis passt
+
+  - rest wie station, erlaubte stationen, benutzergruppe, mitarbeiterdaten mit namen, mail etc übergeben lassen und automatisch eintragen
+
+- beides vermutlich kein großer aufwand, mirco sagt einfach nimm daten aus dieser route und nicht den inputs aus benutzerverwaltung
 
 ### console
 

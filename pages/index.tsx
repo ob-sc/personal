@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import { Box, Button, Container, Typography } from '@mui/material';
 import { withSessionSsr } from '../lib/withSession';
-import { Session } from '../types/jacando';
+import { Session } from '../types/api';
 // import styles from "../styles/Home.module.css";
 
 // Home: NextPage

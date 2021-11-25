@@ -2,12 +2,12 @@ import https from 'https';
 import cfg from '../config';
 import {
   APICustomFieldSection,
-  APIUserRegion,
-  APIUserStatus,
   Employee,
   JacandoAPI,
+  JacandoUserRegion,
+  JacandoUserStatus,
   User,
-} from '../types/jacando';
+} from '../types/api';
 
 // returned ein promise mit daten / error
 const jacandoAPI: JacandoAPI = (method, resource, data) =>
@@ -103,8 +103,6 @@ class Jacando {
       extrastation: null,
     };
 
-    console.log(user.updatedAt, employee.updatedAt);
-
     const sections = employee.customFieldSections ?? [];
     for (let i = 0; i < sections.length; i++) {
       const currentSection = sections[i];
@@ -120,10 +118,10 @@ class Jacando {
               user.kst = Number(value);
               break;
             case 'Status':
-              user.access = value.toLowerCase() as APIUserStatus;
+              user.access = value.toLowerCase() as JacandoUserStatus;
               break;
             case 'Region':
-              user.region = value.toLowerCase() as APIUserRegion;
+              user.region = value.toLowerCase() as JacandoUserRegion;
               break;
             case 'Extrastation':
               if (value === '*') {

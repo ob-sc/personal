@@ -4,10 +4,9 @@ import type { AppProps } from 'next/app';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider } from '@emotion/react';
-import theme from '../theme';
+import theme from '../config/theme';
 import createEmotionCache from '../lib/createEmotionCache';
 import { EmotionCache } from '@emotion/cache';
-import { isDev } from '../lib/util';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
