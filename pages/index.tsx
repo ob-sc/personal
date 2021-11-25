@@ -10,8 +10,6 @@ import { Session } from '../types/api';
 const Home = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
 
-  console.log(user);
-
   return (
     <Container maxWidth="md">
       <Box sx={{ my: 4 }}>
@@ -29,14 +27,6 @@ const Home = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) 
     </Container>
   );
 };
-
-/*
-onClick={() => {
-          axios.get('/api/session/logout').then(() => {
-            window.location.reload();
-          });
-        }}
-*/
 
 export const getServerSideProps = withSessionSsr<{ user: Session }>(async ({ req }) => {
   const { user } = req.session;

@@ -5,7 +5,7 @@ import { IronSessionOptions } from 'iron-session';
 const {
   PORT,
   DB_USER,
-  DB_SECRET,
+  DB_PASSSWORD,
   JACANDO,
   LDAP_USER,
   LDAP_PASSWORD,
@@ -39,7 +39,7 @@ const createDefault = {
 const port = createDefault.number(PORT, 3000);
 
 const db_user = createDefault.string(DB_USER);
-const db_secret = createDefault.string(DB_SECRET);
+const db_password = createDefault.string(DB_PASSSWORD);
 
 const jacando = createDefault.string(JACANDO);
 
@@ -53,7 +53,7 @@ const session_password = createDefault.string(SESSION_PASSWORD);
 // DB
 
 const database = {
-  development: 'prod',
+  development: 'development',
   test: 'test',
   production: 'production',
 };
@@ -63,7 +63,7 @@ const dialect = 'mysql' as Dialect;
 const db = {
   development: {
     username: db_user,
-    password: db_secret,
+    password: db_password,
     database: database.development,
     host,
     dialect,
@@ -71,7 +71,7 @@ const db = {
 
   test: {
     username: db_user,
-    password: db_secret,
+    password: db_password,
     database: database.test,
     host,
     dialect,
@@ -80,7 +80,7 @@ const db = {
 
   production: {
     username: db_user,
-    password: db_secret,
+    password: db_password,
     database: database.production,
     host,
     dialect,

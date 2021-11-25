@@ -1,5 +1,6 @@
 import { Model, Sequelize } from 'sequelize';
 import cfg from '../config';
+import log from '../lib/log';
 import users, { UserAttributes } from './users';
 
 const env = process.env.NODE_ENV ?? 'development';
@@ -16,6 +17,14 @@ class User extends Model<UserAttributes> implements UserAttributes {
 }
 
 User.init(users, { tableName: 'users', sequelize });
+
+User.sync();
+
+// User.create({
+//   id: '5ea5e0b251080508555bcb59',
+//   username: 'bergen',
+//   domain: 'starcar',
+// });
 
 export const UserModel = User;
 

@@ -40,9 +40,8 @@ const loginHandler: NextApiHandler = async (req, res) => {
       // ab hier nicht mehr User-Eingabefehler
       errorStatus = 500;
 
-      // const id = '5ea5e0b251080508555bcb59';
-
       const { id } = dbUser;
+      // const id = '5ea5e0b251080508555bcb59';
 
       const jacando = new Jacando(`/employees/${id}`);
       const employee: Employee = await jacando.get();
