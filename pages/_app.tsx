@@ -7,6 +7,9 @@ import { CacheProvider } from '@emotion/react';
 import theme from '../config/theme';
 import createEmotionCache from '../lib/createEmotionCache';
 import { EmotionCache } from '@emotion/cache';
+import { devmode } from '../lib/log';
+
+devmode(); // log devmode
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -21,7 +24,7 @@ export default function MyApp(props: MyAppProps) {
   return (
     <CacheProvider value={emotionCache}>
       <Head>
-        <title>STARCAR Rollengespräch</title>
+        <title>STARCAR Personal</title>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       <ThemeProvider theme={theme}>

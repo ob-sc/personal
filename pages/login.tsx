@@ -6,7 +6,7 @@ import { Box, Grid } from '@mui/material';
 import Input from '../components/common/Input';
 import theme from '../config/theme';
 import SubmitButton from '../components/common/SubmitButton';
-import log, { devmode } from '../lib/log';
+import log from '../lib/log';
 
 interface LoginInputs {
   username: string;
@@ -20,8 +20,6 @@ const fullScreenCenter = {
   alignItems: 'center',
   justifyContent: 'center',
 };
-
-devmode(); // log devmode
 
 const Login = () => {
   const [submitting, setSubmitting] = useState(false);
