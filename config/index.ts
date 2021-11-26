@@ -1,58 +1,51 @@
 import { Dialect, Options as SequelizeOptions } from 'sequelize';
-import { ClientOptions } from 'ldapjs';
+import { ClientOptions as LdapjsOptions } from 'ldapjs';
 import { IronSessionOptions } from 'iron-session';
+import log from '../lib/log';
 
-const {
-  PORT,
-  DB_USER,
-  DB_PASSSWORD,
-  JACANDO,
-  LDAP_USER,
-  LDAP_PASSWORD,
-  LDAP_URL,
-  SESSION_NAME,
-  SESSION_PASSWORD,
-} = process.env;
+const validateEnv = (envName: string, fallback?: string | number, number?: boolean) => {
+  const env = process.env[envName];
+  const message = `env ${envName}: nicht vorhanden`;
 
-interface Config {
-  port: number;
-  db: {
-    development: SequelizeOptions;
-    test: SequelizeOptions;
-    production: SequelizeOptions;
-  };
-  ldap: {
-    user: string;
-    password: string;
-    options: ClientOptions;
-  };
-  session: IronSessionOptions;
-  jacando: string;
-}
+  if (env === undefined) {
+    // wenn kein fallback: env ist required -> kill process
+    if (fallback === undefined) {
+      log.error(new Error(message));
+      process.exit(1);
+      // sonst nicht required -> warnung & return default
+    } else {
+      log.warn(message);
+      return number ? Number(fallback) : String(fallback);
+    }
+  }
 
-// ohne undefined
-const createDefault = {
-  string: (env: string | undefined, def?: string) => (env === undefined ? def ?? '' : env),
-  number: (env: string | undefined, def?: number) => (env === undefined ? def ?? 0 : Number(env)),
+  return env;
 };
 
-const port = createDefault.number(PORT, 3000);
+const parseEnv = {
+  toString: (envName: string, fallback?: string) => validateEnv(envName, fallback) as string,
+  toNumber: (envName: string, fallback?: number) => validateEnv(envName, fallback, true) as number,
+};
 
-const db_user = createDefault.string(DB_USER);
-const db_password = createDefault.string(DB_PASSSWORD);
+const env = {
+  db_user: parseEnv.toString('DB_USER'),
+  db_password: parseEnv.toString('DB_PASSSWORD'),
+  jacando: parseEnv.toString('JACANDO'),
+  ldap_user: parseEnv.toString('LDAP_USER'),
+  ldap_password: parseEnv.toString('LDAP_PASSWORD'),
+  ldap_url: parseEnv.toString('LDAP_URL'),
+  session_name: parseEnv.toString('SESSION_NAME', 'scp'),
+  session_password: parseEnv.toString('SESSION_PASSWORD'),
+  session_ttl: parseEnv.toNumber('SESSION_TTL', 20 * 60),
+};
 
-const jacando = createDefault.string(JACANDO);
+// Jacando X
 
-const ldap_user = createDefault.string(LDAP_USER);
-const ldap_password = createDefault.string(LDAP_PASSWORD);
-const ldap_url = createDefault.string(LDAP_URL);
-
-const session_name = createDefault.string(SESSION_NAME);
-const session_password = createDefault.string(SESSION_PASSWORD);
+export const jacandoConfig = env.jacando;
 
 // DB
 
-const database = {
+const db = {
   development: 'development',
   test: 'test',
   production: 'production',
@@ -60,48 +53,55 @@ const database = {
 const host = '127.0.0.1';
 const dialect = 'mysql' as Dialect;
 
-const db = {
+export const dbConfig: {
+  development: SequelizeOptions;
+  test: SequelizeOptions;
+  production: SequelizeOptions;
+} = {
   development: {
-    username: db_user,
-    password: db_password,
-    database: database.development,
+    username: env.db_user,
+    password: env.db_password,
+    database: db.development,
     host,
     dialect,
+    logging: (msg: unknown) => log.debug(msg),
   },
 
   test: {
-    username: db_user,
-    password: db_password,
-    database: database.test,
+    username: env.db_user,
+    password: env.db_password,
+    database: db.test,
     host,
     dialect,
     logging: false,
   },
 
   production: {
-    username: db_user,
-    password: db_password,
-    database: database.production,
+    username: env.db_user,
+    password: env.db_password,
+    database: db.production,
     host,
     dialect,
+    logging: false,
   },
 };
 
 // LDAP
 
-const ldap = {
-  user: ldap_user,
-  password: ldap_password,
-  options: { url: ldap_url },
+export const ldapConfig: {
+  user: string;
+  password: string;
+  options: LdapjsOptions;
+} = {
+  user: env.ldap_user,
+  password: env.ldap_password,
+  options: { url: env.ldap_url },
 };
 
 // SESSION
 
-const session = {
-  cookieName: session_name,
-  password: session_password,
+export const sessionConfig: IronSessionOptions = {
+  cookieName: env.session_name,
+  password: env.session_password,
+  ttl: env.session_ttl, // in sekunden
 };
-
-const cfg: Config = { port, db, ldap, session, jacando };
-
-export default cfg;

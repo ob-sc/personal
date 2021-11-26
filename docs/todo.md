@@ -128,9 +128,22 @@ dann zum darstellen im frontend:
 - alte daten in neue struktur importieren
 
 - api onboarding und benutzer etc ändern
+
   - starcar_dev kann dann schon live mit docker
   - starcar_prod lasse ich einfach noch auf sc-39
   - andere datenbanken (\_test, \_za_dev etc) können weg
+
+  ## icons
+
+ah:
+
+- eintragen etc uhr? zeiten uhr? iwo uhr
+
+## eh
+
+seite persönliche Daten / Einstellungen oder so:
+
+- man kann daten aus session sehen & direkt in jacando ändern?
 
 ## n
 

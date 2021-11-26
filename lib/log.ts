@@ -1,25 +1,20 @@
 import pino from 'pino';
 import { isDev } from './util';
 
-class logger {
-  private pinoDebug = pino({ level: 'debug' });
-  private pinoInfo = pino({ level: 'info' });
-  private pinoError = pino({ level: 'error' });
+const options = isDev()
+  ? {
+      transport: {
+        target: 'pino-pretty',
+        options: {
+          ignore: 'pid,hostname',
+          translateTime: 'HH:MM:ss.l',
+        },
+      },
+      level: 'debug',
+    }
+  : { level: 'info' };
 
-  debug(message: any) {
-    this.pinoDebug.debug(message);
-  }
-
-  info(message: any) {
-    this.pinoInfo.info(message);
-  }
-
-  error(message: any) {
-    this.pinoError.error(message);
-  }
-}
-
-const log = new logger();
+const log = pino(options);
 
 export const devmode = () =>
   isDev()

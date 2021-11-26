@@ -8,6 +8,8 @@
 
 ## frontend
 
+- favicon: https://stackoverflow.com/a/10819673
+
 - axios swr typescript:
 
   - https://swr.vercel.app/

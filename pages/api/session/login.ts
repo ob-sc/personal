@@ -1,10 +1,10 @@
 import { NextApiHandler } from 'next';
+import { Employee } from '../../../types/api';
 import { withSessionApi } from '../../../lib/withSession';
 import ldap from '../../../lib/ldap';
 import { errorResponse } from '../../../lib/util';
 import Jacando from '../../../lib/jacando';
 import log from '../../../lib/log';
-import { Employee } from '../../../types/api';
 import db from '../../../db';
 
 const loginHandler: NextApiHandler = async (req, res) => {

@@ -1,10 +1,10 @@
 import ldapjs, { Client } from 'ldapjs';
-import cfg from '../config';
+import { ldapConfig } from '../config';
 import { DomainAllAttributes, DomainAttributes } from '../types/api';
 import { isDev } from './util';
 
 const baseDN = 'DC=starcar,DC=local';
-const ldpaUserDN = `CN=${cfg.ldap.user},CN=Users,${baseDN}`;
+const ldpaUserDN = `CN=${ldapConfig.user},CN=Users,${baseDN}`;
 
 const createError = (err: any, notDevMsg = 'LDAP Fehler') => {
   if (!isDev()) return new Error(notDevMsg);
@@ -13,7 +13,7 @@ const createError = (err: any, notDevMsg = 'LDAP Fehler') => {
 
 const createClient = (): ldapjs.Client => {
   const client = ldapjs.createClient({
-    url: cfg.ldap.options.url,
+    url: ldapConfig.options.url,
   });
 
   // macht der immer Error read ECONNRESET? brauche ich den?
@@ -26,7 +26,7 @@ const createClient = (): ldapjs.Client => {
 
 const add = (client: Client, entry: DomainAttributes, dn: string) =>
   new Promise((resolve, reject) => {
-    client.bind(ldpaUserDN, cfg.ldap.password, (err: any) => {
+    client.bind(ldpaUserDN, ldapConfig.password, (err: any) => {
       if (err) reject(createError(err));
     });
 
@@ -69,7 +69,7 @@ const auth = (client: Client, dn: string, password: string) =>
 // ohne user = alle
 const search = (client: Client, user?: string) =>
   new Promise<DomainAllAttributes>((resolve, reject) => {
-    client.bind(ldpaUserDN, cfg.ldap.password, (err: any) => {
+    client.bind(ldpaUserDN, ldapConfig.password, (err: any) => {
       if (err) reject(createError(err));
     });
     const filter = user ? `(sAMAccountName=${user})` : '(sAMAccountType=805306368)';

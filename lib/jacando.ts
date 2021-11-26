@@ -1,5 +1,5 @@
 import https from 'https';
-import cfg from '../config';
+import { jacandoConfig } from '../config';
 import {
   APICustomFieldSection,
   Employee,
@@ -23,7 +23,7 @@ const jacandoAPI: JacandoAPI = (method, resource, data) =>
       path: `/x/api/${resource}`,
       method: upperCaseMethod,
       headers: {
-        Authorization: `Bearer ${cfg.jacando}`,
+        Authorization: `Bearer ${jacandoConfig}`,
       },
     };
 

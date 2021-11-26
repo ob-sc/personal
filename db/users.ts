@@ -7,15 +7,18 @@ export interface UserAttributes {
 }
 
 class User extends Model<UserAttributes> implements UserAttributes {
-  id!: string;
-  domain!: string;
-  username!: string;
+  public id!: string;
+  public domain!: string;
+  public username!: string;
+
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
 }
 
 export const users = {
   id: { type: DataTypes.STRING, allowNull: false, unique: true, primaryKey: true },
-  domain: { type: DataTypes.STRING },
-  username: { type: DataTypes.STRING },
+  domain: { type: DataTypes.STRING, allowNull: false },
+  username: { type: DataTypes.STRING, allowNull: false },
 };
 
 export default User;
