@@ -79,10 +79,30 @@ export interface Employee {
 }
 
 export interface User extends Employee {
+  /**
+   * Personalnummer
+   */
   personellNumber: number;
-  kst: number; // Kostenstelle
-  access: JacandoUserStatus | null; // Berechtigung e.g. 'SL'
-  region: JacandoUserRegion | null; // Region e.g. 'nord'
+  /**
+   * Kostenstelle (Stationsnummer)
+   */
+  kst: number;
+  /**
+   * 0: keine Berechtigung,
+   * 1: IDL,
+   * 2: SL,
+   * 3: RL,
+   * 4: Admin
+   */
+  access: number;
+  /**
+   * Region oder null
+   * @example "nord"
+   */
+  region: JacandoUserRegion | null;
+  /**
+   * Array aus stationen, "*" oder null
+   */
   extrastation: number[] | '*' | null;
 }
 

@@ -4,7 +4,7 @@ import { Control, Controller, FieldError } from 'react-hook-form';
 interface Props {
   name: string;
   label: string;
-  control: Control<any>;
+  control: Control;
   errors: Record<string, FieldError | undefined>;
   type?: 'text' | 'number' | 'password';
   disabled?: boolean;

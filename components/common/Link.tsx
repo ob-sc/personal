@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { AnchorHTMLAttributes, forwardRef } from 'react';
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
 import NextLink, { LinkProps as NextLinkProps } from 'next/link';
@@ -11,16 +11,17 @@ import { styled } from '@mui/material/styles';
 const Anchor = styled('a')({});
 
 interface NextLinkComposedProps
-  extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href'>,
+  extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href'>,
     Omit<NextLinkProps, 'href' | 'as'> {
   to: NextLinkProps['href'];
   linkAs?: NextLinkProps['as'];
   href?: NextLinkProps['href'];
 }
 
-export const NextLinkComposed = React.forwardRef<HTMLAnchorElement, NextLinkComposedProps>(
+export const NextLinkComposed = forwardRef<HTMLAnchorElement, NextLinkComposedProps>(
   // eslint-disable-next-line prefer-arrow-callback
   function NextLinkComposed(props, ref) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { to, linkAs, href, replace, scroll, shallow, prefetch, locale, ...other } = props;
 
     return (
@@ -51,13 +52,14 @@ export type LinkProps = {
 // A styled version of the Next.js Link component:
 // https://nextjs.org/docs/#with-link
 // eslint-disable-next-line prefer-arrow-callback
-const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link(props, ref) {
+const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(props, ref) {
   const {
     activeClassName = 'active',
     as: linkAs,
     className: classNameProps,
     href,
     noLinkStyle,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     role, // Link don't have roles.
     ...other
   } = props;

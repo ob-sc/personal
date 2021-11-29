@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { Children } from 'react';
 import Document, { DocumentContext, Head, Html, Main, NextScript } from 'next/document';
 import createEmotionServer from '@emotion/server/create-instance';
 import createEmotionCache from '../lib/createEmotionCache';
@@ -15,7 +15,7 @@ class MyDocument extends Document {
     // eslint-disable-next-line no-param-reassign
     ctx.renderPage = () =>
       originalRenderPage({
-        // eslint-disable-next-line react/display-name
+        // eslint-disable-next-line react/display-name, @typescript-eslint/no-explicit-any
         enhanceApp: (App: any) => (props) => <App emotionCache={cache} {...props} />,
       });
 
@@ -34,7 +34,7 @@ class MyDocument extends Document {
     return {
       ...initialProps,
       // Styles fragment is rendered after the app and page rendering finish.
-      styles: [...React.Children.toArray(initialProps.styles), ...emotionStyleTags],
+      styles: [...Children.toArray(initialProps.styles), ...emotionStyleTags],
     };
   }
 

@@ -10,7 +10,7 @@ interface Props extends CProps {
 const Layout = ({ session, children }: Props) => (
   <>
     <Navbar session={session} />
-    <Container component="main" maxWidth="lg">
+    <Container component="main" maxWidth="xl">
       {children}
     </Container>
   </>

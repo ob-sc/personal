@@ -6,9 +6,9 @@ import { isDev } from './util';
 const baseDN = 'DC=starcar,DC=local';
 const ldpaUserDN = `CN=${ldapConfig.user},CN=Users,${baseDN}`;
 
-const createError = (err: any, notDevMsg = 'LDAP Fehler') => {
+const createError = (err: unknown, notDevMsg = 'LDAP Fehler') => {
   if (!isDev()) return new Error(notDevMsg);
-  return err instanceof Error ? err : new Error(err);
+  return err instanceof Error ? err : new Error(String(err));
 };
 
 const createClient = (): ldapjs.Client => {
@@ -26,7 +26,7 @@ const createClient = (): ldapjs.Client => {
 
 const add = (client: Client, entry: DomainAttributes, dn: string) =>
   new Promise((resolve, reject) => {
-    client.bind(ldpaUserDN, ldapConfig.password, (err: any) => {
+    client.bind(ldpaUserDN, ldapConfig.password, (err) => {
       if (err) reject(createError(err));
     });
 
@@ -60,7 +60,7 @@ const add = (client: Client, entry: DomainAttributes, dn: string) =>
 
 const auth = (client: Client, dn: string, password: string) =>
   new Promise((resolve, reject) => {
-    client.bind(dn, password, (err: any) => {
+    client.bind(dn, password, (err) => {
       if (err) reject(createError(err));
       resolve(true);
     });
@@ -69,16 +69,17 @@ const auth = (client: Client, dn: string, password: string) =>
 // ohne user = alle
 const search = (client: Client, user?: string) =>
   new Promise<DomainAllAttributes>((resolve, reject) => {
-    client.bind(ldpaUserDN, ldapConfig.password, (err: any) => {
+    client.bind(ldpaUserDN, ldapConfig.password, (err) => {
       if (err) reject(createError(err));
     });
     const filter = user ? `(sAMAccountName=${user})` : '(sAMAccountType=805306368)';
     const options: ldapjs.SearchOptions = { filter, scope: 'sub' };
-    client.search(baseDN, options, (err: any, res: any) => {
+    client.search(baseDN, options, (err, res) => {
       if (err) reject(createError(err));
 
-      res.on('searchEntry', (entry: any) => {
-        resolve(entry.object);
+      res.on('searchEntry', (entry) => {
+        const attributes: unknown = entry.object;
+        resolve(attributes as DomainAllAttributes);
       });
 
       res.on('end', () => {

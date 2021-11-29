@@ -3,6 +3,8 @@ import { withSessionSsr } from '../lib/withSession';
 import Layout from '../components/layout/Layout';
 // import styles from "../styles/Home.module.css";
 
+export const getServerSideProps = withSessionSsr();
+
 // Home: NextPage
 const Home = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
@@ -45,7 +47,5 @@ const Home = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) 
     </Layout>
   );
 };
-
-export const getServerSideProps = withSessionSsr();
 
 export default Home;

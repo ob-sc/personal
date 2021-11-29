@@ -1,7 +1,14 @@
 {
-  "extends": ["prettier", "eslint-config-scza", "next/core-web-vitals"],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "eslint-config-scza",
+    "next/core-web-vitals"
+  ],
   "rules": {
-    "no-unused-vars": "off", // wegen ts declaration files
-    "no-use-before-define": "off" // wegen React import
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "error"
   }
 }

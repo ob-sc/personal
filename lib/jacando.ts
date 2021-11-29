@@ -72,76 +72,84 @@ class Jacando {
   get() {
     return jacandoAPI('get', this.resource);
   }
-  post(data: any) {
+  post(data: unknown) {
     return jacandoAPI('post', this.resource, data);
   }
-  put(data: any) {
+  put(data: unknown) {
     return jacandoAPI('put', this.resource, data);
   }
   delete() {
     return jacandoAPI('delete', this.resource);
   }
   // keine persönlichen Daten
-  parseUser(employee: Employee): User {
-    const user: User = {
-      id: employee.id,
-      email: employee.email,
-      firstName: employee.firstName,
-      lastName: employee.lastName,
-      gender: employee.gender,
-      personellNumber: Number(employee.personellNumber),
-      clients: [...employee.clients],
-      roles: [...employee.roles],
-      updatedAt: employee.updatedAt,
-      createdAt: employee.createdAt,
-      publicEmail: employee.publicEmail,
-      imageUrl: employee.imageUrl,
-      archived: employee.archived,
-      kst: 0,
-      access: null,
-      region: null,
-      extrastation: null,
-    };
-
-    const sections = employee.customFieldSections ?? [];
-    for (let i = 0; i < sections.length; i++) {
-      const currentSection = sections[i];
-      if (currentSection.names.de === 'API') {
-        const acfs = currentSection as APICustomFieldSection;
-        for (let j = 0; j < acfs.customFields.length; j++) {
-          const currentField = acfs.customFields[j];
-          const title = currentField.title.de;
-          const { value } = currentField;
-          // eslint-disable-next-line default-case
-          switch (title) {
-            case 'Kostenstelle':
-              user.kst = Number(value);
-              break;
-            case 'Status':
-              user.access = value.toLowerCase() as JacandoUserStatus;
-              break;
-            case 'Region':
-              user.region = value.toLowerCase() as JacandoUserRegion;
-              break;
-            case 'Extrastation':
-              if (value === '*') {
-                user.extrastation = value;
-              } else {
-                // leerstellen entfernen
-                const extraStationsString = value.replace(/\s+/g, '');
-                const extraStations = extraStationsString.split(',');
-                // array aus strings zu array aus numbers
-                user.extrastation = extraStations.map((s) => Number(s));
-              }
-              break;
-          }
-        }
-        // wenn ich "API" gefunden habe dann abbrechen
-        break;
-      }
-    }
-    return user;
-  }
 }
+
+export const parseUser: (employee: Employee) => User = (employee) => {
+  const user: User = {
+    id: employee.id,
+    email: employee.email,
+    firstName: employee.firstName,
+    lastName: employee.lastName,
+    gender: employee.gender,
+    personellNumber: Number(employee.personellNumber),
+    clients: [...employee.clients],
+    roles: [...employee.roles],
+    updatedAt: employee.updatedAt,
+    createdAt: employee.createdAt,
+    publicEmail: employee.publicEmail,
+    imageUrl: employee.imageUrl,
+    archived: employee.archived,
+    kst: 0,
+    access: 0,
+    region: null,
+    extrastation: null,
+  };
+
+  const numericAccess = {
+    idl: 1,
+    sl: 2,
+    rl: 3,
+    admin: 4,
+  };
+
+  const sections = employee.customFieldSections ?? [];
+  for (let i = 0; i < sections.length; i++) {
+    const currentSection = sections[i];
+    if (currentSection.names.de === 'API') {
+      const acfs = currentSection as APICustomFieldSection;
+      for (let j = 0; j < acfs.customFields.length; j++) {
+        const currentField = acfs.customFields[j];
+        const title = currentField.title.de;
+        const { value } = currentField;
+        // eslint-disable-next-line default-case
+        switch (title) {
+          case 'Kostenstelle':
+            user.kst = Number(value);
+            break;
+          case 'Status':
+            user.access = numericAccess[value.toLowerCase() as JacandoUserStatus] ?? 0;
+            break;
+          case 'Region':
+            user.region = value.toLowerCase() as JacandoUserRegion;
+            break;
+          case 'Extrastation':
+            if (value === '*') {
+              user.extrastation = value;
+            } else {
+              // leerstellen entfernen
+              const extraStationsString = value.replace(/\s+/g, '');
+              const extraStations = extraStationsString.split(',');
+              // array aus strings zu array aus numbers
+              user.extrastation = extraStations.map((s) => Number(s));
+            }
+            break;
+        }
+      }
+      // wenn ich "API" gefunden habe dann abbrechen
+      break;
+    }
+  }
+  return user;
+};
 
 export default Jacando;

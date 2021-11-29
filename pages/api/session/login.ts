@@ -3,7 +3,7 @@ import { Employee } from '../../../types/api';
 import { withSessionApi } from '../../../lib/withSession';
 import ldap from '../../../lib/ldap';
 import { errorResponse } from '../../../lib/util';
-import Jacando from '../../../lib/jacando';
+import Jacando, { parseUser } from '../../../lib/jacando';
 import log from '../../../lib/log';
 import db from '../../../db';
 
@@ -45,7 +45,7 @@ const loginHandler: NextApiHandler = async (req, res) => {
       const jacando = new Jacando(`/employees/${id}`);
       const employee: Employee = await jacando.get();
 
-      const user = jacando.parseUser(employee);
+      const user = parseUser(employee);
 
       session.user = {
         ...user,
@@ -53,7 +53,7 @@ const loginHandler: NextApiHandler = async (req, res) => {
         isLoggedIn: true,
       };
       await session.save();
-      res.status(200).json(session.user);
+      res.status(200).json({ message: 'Login erfolgreich' });
     } catch (error) {
       log.error(error);
       res.status(errorStatus).json(errorResponse(error));

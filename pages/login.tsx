@@ -50,7 +50,7 @@ const Login = () => {
             mx: 'auto',
             p: 1.5,
             border: 1,
-            borderColor: theme.palette.primary.light,
+            borderColor: theme.palette.secondary.light,
             borderRadius: 2,
             display: 'flex',
             alignItems: 'center',

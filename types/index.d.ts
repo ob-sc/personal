@@ -1,8 +1,17 @@
-import * as React from 'react';
+import {
+  ChangeEventHandler as CEH,
+  FormEventHandler as FEH,
+  MouseEventHandler as MEH,
+  ReactNode,
+} from 'react';
 
-export type ChangeEventHandler = React.ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>;
-export type FormEventHandler = React.FormEventHandler<HTMLFormElement>;
+export type ChangeEventHandler = CEH<HTMLTextAreaElement | HTMLInputElement>;
+export type FormEventHandler = FEH<HTMLFormElement>;
+export type MouseEventHandler = MEH<
+  HTMLButtonElement | HTMLAnchorElement | HTMLInputElement,
+  HTMLImageElement
+>;
 
 export interface CProps {
-  children?: React.ReactNode;
+  children?: ReactNode;
 }

@@ -2,7 +2,6 @@ import { Sequelize } from 'sequelize';
 import { dbConfig } from '../config';
 import User, { users } from './users';
 import Station, { stations } from './stations';
-import log from '../lib/log';
 
 const NODE_ENV = process.env.NODE_ENV ?? 'development';
 const config = dbConfig[NODE_ENV];
