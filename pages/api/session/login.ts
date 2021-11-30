@@ -4,7 +4,7 @@ import { withSessionApi } from '../../../lib/withSession';
 import ldap from '../../../lib/ldap';
 import { errorResponse } from '../../../lib/util';
 import Jacando, { parseUser } from '../../../lib/jacando';
-import log from '../../../lib/log';
+import logger from '../../../lib/log';
 import db from '../../../db';
 
 const loginHandler: NextApiHandler = async (req, res) => {
@@ -25,17 +25,15 @@ const loginHandler: NextApiHandler = async (req, res) => {
 
       const client = ldap.client();
 
-      const adUser = await ldap.operation.search(client, username);
+      const [adUser] = await ldap.operation.search(client, username);
 
       await ldap.operation.auth(client, adUser?.distinguishedName ?? '', password);
 
-      client.unbind();
+      client.destroy();
 
       const dbUser = await db.users.findOne({ where: { username } });
 
-      if (dbUser === null) {
-        throw new Error('Benutzer nicht gefunden');
-      }
+      if (dbUser === null) throw new Error('Benutzer nicht gefunden');
 
       // ab hier nicht mehr User-Eingabefehler
       errorStatus = 500;
@@ -55,7 +53,7 @@ const loginHandler: NextApiHandler = async (req, res) => {
       await session.save();
       res.status(200).json({ message: 'Login erfolgreich' });
     } catch (error) {
-      log.error(error);
+      logger.error(error);
       res.status(errorStatus).json(errorResponse(error));
     }
   } else {

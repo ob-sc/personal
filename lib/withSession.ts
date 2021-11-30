@@ -29,7 +29,7 @@ const sessionHandler: (
   };
 };
 
-// unter pages/api
+// unter pages/api/
 export const withSessionApi = (handler: NextApiHandler) =>
   withIronSessionApiRoute(handler, sessionConfig);
 

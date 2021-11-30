@@ -1,7 +1,7 @@
 import pino from 'pino';
 import { isDev } from './util';
 
-const options = isDev()
+const options = isDev
   ? {
       transport: {
         target: 'pino-pretty',
@@ -14,10 +14,10 @@ const options = isDev()
     }
   : { level: 'info' };
 
-const log = pino(options);
+const logger = pino(options);
 
 export const devmode = () =>
-  isDev()
+  isDev
     ? // eslint-disable-next-line no-console
       console.log(
         `%cDEVMODE  `,
@@ -25,4 +25,4 @@ export const devmode = () =>
       )
     : null;
 
-export default log;
+export default logger;

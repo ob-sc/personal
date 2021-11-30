@@ -1,7 +1,7 @@
 import { Dialect, Options as SequelizeOptions } from 'sequelize';
 import { ClientOptions as LdapjsOptions } from 'ldapjs';
 import { IronSessionOptions } from 'iron-session';
-import log from '../lib/log';
+import logger from '../lib/log';
 
 const validateEnv = (envName: string, fallback?: string | number, number?: boolean) => {
   const env = process.env[envName];
@@ -10,11 +10,11 @@ const validateEnv = (envName: string, fallback?: string | number, number?: boole
   if (env === undefined) {
     // wenn kein fallback: env ist required -> kill process
     if (fallback === undefined) {
-      log.error(new Error(message));
+      logger.error(new Error(message));
       process.exit(1);
       // sonst nicht required -> warnung & return default
     } else {
-      log.warn(message);
+      logger.warn(message);
       return number ? Number(fallback) : String(fallback);
     }
   }
@@ -64,7 +64,7 @@ export const dbConfig: {
     database: db.development,
     host,
     dialect,
-    logging: (msg: unknown) => log.debug(msg),
+    logging: (msg: unknown) => logger.debug(msg),
   },
 
   test: {

@@ -113,7 +113,7 @@ export interface Session extends User {
 
 // LDAP Active Directory / Domain STARCAR
 
-export interface DomainAttributes {
+export interface DomainUser {
   cn: string; // "SC - Bergen, Ole"
   sn: string; // "Bergen"
   l: string; // "Hamburg"
@@ -125,11 +125,13 @@ export interface DomainAttributes {
   displayName: string; // "STARCAR GmbH - Ole Bergen"
   streetAddress: string; // "Süderstr. 282"
   sAMAccountName: string; // "bergen"
+  sAMAccountType: string; // "805306368"
   userPrincipalName: string; // "bergen@starcar.de"
   objectClass: string[]; // ['top', 'person', 'organizationalPerson', 'user']
+  userAccountControl: string; // "512" | 512 = enabled, 514 = disabled
 }
 
-export interface DomainAllAttributes extends DomainAttributes {
+export interface DomainAllAttributes extends DomainUser {
   dn: string; // "CN=SC - Bergen\\, Ole,OU=_IT,OU=_Flotte,OU=Verwaltung,OU=User,OU=STARCAR,DC=starcar,DC=local"
   controls: [];
   description: string; // "Hat NB von SC"
@@ -144,7 +146,6 @@ export interface DomainAllAttributes extends DomainAttributes {
   mDBUseDefaults: string; // "TRUE"
   mailNickname: string; // "bergen"
   objectGUID: string;
-  userAccountControl: string; // "512"
   badPwdCount: string;
   codePage: string;
   countryCode: string;
@@ -156,7 +157,6 @@ export interface DomainAllAttributes extends DomainAttributes {
   objectSid: string;
   accountExpires: string;
   logonCount: string;
-  sAMAccountType: string; // "805306368"
   showInAddressBook: string[];
   legacyExchangeDN: string; // "/o=Erste Organisation/ou=Exchange Administrative Group (FYDIBOHF23SPDLT)/cn=Recipients/cn=083fce1c1d7743e09df805e266603edd-SC -"
   lockoutTime: string;

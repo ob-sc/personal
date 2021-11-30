@@ -58,7 +58,7 @@ ansonsten ist root:
 
 - ein nextjs repo mit express backend
   - statt eine api anzusprechen ist mein frontend mein backend (grob gesagt)
-- spart mir die ganze arkwarde namensgeberei
+- spart mir die ganze awkwarde namensgeberei
   - nicht mehr zeiterfassung und onboarding etc
   - auf der Seite dann einfach aufteilen:
     - einen part mit aushilfen: eintragen etc
@@ -178,7 +178,7 @@ seite persönliche Daten / Einstellungen oder so:
 ### console
 
 ```js
-if (isDev()) {
+if (isDev) {
   // eslint-disable-next-line no-console
   console.log(
     `%cDEV  `,
