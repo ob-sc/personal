@@ -1,11 +1,11 @@
 import { NextApiHandler } from 'next';
 import { Employee } from '../../../types/api';
-import { withSessionApi } from '../../../lib/withSession';
-import ldap from '../../../lib/ldap';
-import { errorResponse } from '../../../lib/util';
-import Jacando, { parseUser } from '../../../lib/jacando';
-import logger from '../../../lib/log';
-import db from '../../../db';
+import { withSessionApi } from '../../../src/lib/withSession';
+import ldap from '../../../src/server/ldap';
+import { errorResponse } from '../../../src/lib/util';
+import Jacando, { parseUser } from '../../../src/server/jacando';
+import logger from '../../../src/lib/log';
+import db from '../../../src/db';
 
 const loginHandler: NextApiHandler = async (req, res) => {
   const {
@@ -23,12 +23,13 @@ const loginHandler: NextApiHandler = async (req, res) => {
         throw new Error('Benutzername und Passwort müssen angegeben werden');
       }
 
-      const client = ldap.client();
+      const client = await ldap.client();
 
       const [adUser] = await ldap.operation.search(client, username);
 
       await ldap.operation.auth(client, adUser?.distinguishedName ?? '', password);
 
+      // client.unbind()
       client.destroy();
 
       const dbUser = await db.users.findOne({ where: { username } });

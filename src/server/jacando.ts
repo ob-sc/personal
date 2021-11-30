@@ -1,5 +1,5 @@
 import https from 'https';
-import { jacandoConfig } from '../config';
+import { jacandoConfig } from '../../config';
 import {
   APICustomFieldSection,
   Employee,
@@ -7,7 +7,7 @@ import {
   JacandoUserRegion,
   JacandoUserStatus,
   User,
-} from '../types/api';
+} from '../../types/api';
 
 // returned ein promise mit daten / error
 const jacandoAPI: JacandoAPI = (method, resource, data) =>

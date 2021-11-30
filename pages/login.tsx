@@ -3,10 +3,10 @@ import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { Box, Grid } from '@mui/material';
-import Input from '../components/common/Input';
+import Input from '../src/client/components/common/Input';
 import theme from '../config/theme';
-import SubmitButton from '../components/common/SubmitButton';
-import log from '../lib/log';
+import SubmitButton from '../src/client/components/common/SubmitButton';
+import logger from '../src/lib/log';
 
 interface LoginInputs {
   username: string;
@@ -36,7 +36,7 @@ const Login = () => {
       await axios.post('/api/session/login', values);
     } catch (e) {
       setSubmitting(false);
-      log.error(e);
+      logger.error(e);
     }
     router.push('/');
   };

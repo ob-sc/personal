@@ -1,7 +1,7 @@
 import { Children } from 'react';
 import Document, { DocumentContext, Head, Html, Main, NextScript } from 'next/document';
 import createEmotionServer from '@emotion/server/create-instance';
-import createEmotionCache from '../lib/createEmotionCache';
+import createEmotionCache from '../src/client/util/createEmotionCache';
 
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {

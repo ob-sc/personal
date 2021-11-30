@@ -1,6 +1,6 @@
 import { Container } from '@mui/material';
-import { CProps } from '../../types';
-import { Session } from '../../types/api';
+import { CProps } from '../../../../types';
+import { Session } from '../../../../types/api';
 import Navbar from './Navbar';
 
 interface Props extends CProps {

@@ -129,6 +129,7 @@ export interface DomainUser {
   userPrincipalName: string; // "bergen@starcar.de"
   objectClass: string[]; // ['top', 'person', 'organizationalPerson', 'user']
   userAccountControl: string; // "512" | 512 = enabled, 514 = disabled
+  mail: string; // "ole.bergen@starcar.de"
 }
 
 export interface DomainAllAttributes extends DomainUser {
@@ -171,7 +172,6 @@ export interface DomainAllAttributes extends DomainUser {
   msTSLicenseVersion2: string;
   msTSLicenseVersion3: string;
   'msDS-KeyCredentialLink': string[];
-  mail: string; // "ole.bergen@starcar.de"
   mobile: string; // "+49 151 5822 6479"
   thumbnailPhoto: string;
   msExchHomeServerName: string; // "/o=Erste Organisation/ou=Exchange Administrative Group (FYDIBOHF23SPDLT)/cn=Configuration/cn=Servers/cn=SC-05"

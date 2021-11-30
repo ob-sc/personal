@@ -1,6 +1,6 @@
 import { InferGetServerSidePropsType } from 'next';
-import { withSessionSsr } from '../lib/withSession';
-import Layout from '../components/layout/Layout';
+import { withSessionSsr } from '../src/lib/withSession';
+import Layout from '../src/client/components/layout/Layout';
 // import styles from "../styles/Home.module.css";
 
 export const getServerSideProps = withSessionSsr();

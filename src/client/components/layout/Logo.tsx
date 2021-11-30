@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { MouseEventHandler } from '../../types';
+import { MouseEventHandler } from '../../../../types';
 import styles from '../../styles/Logo.module.css';
 
 interface Props {

@@ -1,5 +1,5 @@
 import { NextApiHandler } from 'next';
-import { withSessionApi } from '../../../lib/withSession';
+import { withSessionApi } from '../../../src/lib/withSession';
 
 const logoutRoute: NextApiHandler = (req, res) => {
   req.session.destroy();

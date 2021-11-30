@@ -2,7 +2,7 @@ import { AppBar, Box, IconButton, Toolbar } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { Session } from '../../types/api';
+import { Session } from '../../../../types/api';
 import LinkButton from '../common/LinkButton';
 import Logo from './Logo';
 

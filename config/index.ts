@@ -1,7 +1,7 @@
 import { Dialect, Options as SequelizeOptions } from 'sequelize';
 import { ClientOptions as LdapjsOptions } from 'ldapjs';
 import { IronSessionOptions } from 'iron-session';
-import logger from '../lib/log';
+import logger from '../src/lib/log';
 
 const validateEnv = (envName: string, fallback?: string | number, number?: boolean) => {
   const env = process.env[envName];

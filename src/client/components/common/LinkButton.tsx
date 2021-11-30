@@ -1,6 +1,6 @@
 import { Button } from '@mui/material';
 import { useRouter } from 'next/router';
-import { CProps } from '../../types';
+import { CProps } from '../../../../types';
 import Link from './Link';
 
 interface Props extends CProps {

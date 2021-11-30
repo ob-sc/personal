@@ -1,5 +1,5 @@
 import { Sequelize } from 'sequelize';
-import { dbConfig } from '../config';
+import { dbConfig } from '../../config';
 import User, { users } from './users';
 import Station, { stations } from './stations';
 
