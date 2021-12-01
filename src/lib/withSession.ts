@@ -1,7 +1,7 @@
 import { withIronSessionApiRoute, withIronSessionSsr } from 'iron-session/next';
 import { GetServerSidePropsContext, GetServerSidePropsResult, NextApiHandler } from 'next';
 import { sessionConfig } from '../../config';
-import { Session } from '../../types/api';
+import { Session } from '../../types/user';
 
 declare module 'iron-session' {
   interface IronSessionData {

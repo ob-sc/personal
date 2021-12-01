@@ -1,6 +1,6 @@
 import ldapjs, { Client } from 'ldapjs';
 import { ldapConfig } from '../../config';
-import { DomainUser } from '../../types/api';
+import { DomainUser } from '../../types/user';
 import logger from '../lib/log';
 import { isDev } from '../lib/util';
 

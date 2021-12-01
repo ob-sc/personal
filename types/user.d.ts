@@ -1,88 +1,16 @@
-// Jacando
+export type UserStatus = 'idl' | 'sl' | 'rl' | 'admin';
+export type UserRegion = 'hamburg' | 'berlin' | 'nord' | 'süd' | 'ost' | 'west' | 'mitte';
+export type UserExtrastation = number[] | '*' | null;
 
-type JacandoAPI = (
-  method: 'get' | 'post' | 'put' | 'delete',
-  resource: string,
-  data?: any
-) => Promise<any>;
-
-interface CustomField {
-  title: {
-    de: string;
-  };
-  type: string;
-  value: string;
-}
-
-interface CustomFieldSection {
-  names: {
-    en?: string;
-    de: string;
-  };
-  customFields: CustomField[];
-}
-
-export type JacandoUserStatus = 'idl' | 'sl' | 'rl' | 'admin';
-export type JacandoUserRegion = 'hamburg' | 'berlin' | 'nord' | 'süd' | 'ost' | 'west' | 'mitte';
-
-interface APICustomFieldSection {
-  names: {
-    de: 'API';
-  };
-  customFields: [
-    {
-      title: {
-        de: 'Kostenstelle';
-      };
-      type: 'number';
-      value: string; // Stationsnummer
-    },
-    {
-      title: {
-        de: 'Status';
-      };
-      type: 'singleSelectDropdown';
-      value: JacandoUserStatus;
-    },
-    {
-      title: {
-        de: 'Extrastation';
-      };
-      type: 'input';
-      value: string; // * = alle, sonst KST getrennt durch Komma
-    },
-    {
-      title: {
-        de: 'Region';
-      };
-      type: 'singleSelectDropdown';
-      value: JacandoUserRegion;
-    }
-  ];
-}
-
-export interface Employee {
-  id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  gender: string;
-  personellNumber: string;
-  clients: [{ id: string; name: string }];
-  roles: [{ name: string }];
-  updatedAt: string; // '2021-11-19T09:52:52.490Z'
-  createdAt: string; // '2020-11-27T14:24:27.701Z'
-  publicEmail: string;
-  imageUrl: string | null; // nicht sicher ob das stimmt, kein Bild zum testen
-  archived: boolean;
-  customFieldSections?: CustomFieldSection[];
-}
-
-export interface User extends Employee {
+export interface ParsedUser {
   /**
-   * Personalnummer
+   * Jacando ID
    */
-  personellNumber: number;
+  id: string;
+  /**
+   * username aus AD (sAMAccountName)
+   */
+  username: string;
   /**
    * Kostenstelle (Stationsnummer)
    */
@@ -99,16 +27,63 @@ export interface User extends Employee {
    * Region oder null
    * @example "nord"
    */
-  region: JacandoUserRegion | null;
+  region: UserRegion | null;
   /**
    * Array aus stationen, "*" oder null
    */
-  extrastation: number[] | '*' | null;
+  extrastation: UserExtrastation;
+  /**
+   * Mail aus AD und Jacando wurde abgeglichen
+   */
+  email: string;
+  /**
+   * Vorname aus Jacando
+   */
+  firstName: string;
+  /**
+   * Nachname aus Jacando
+   */
+  lastName: string;
+  /**
+   * Geschlecht aus Jacando
+   */
+  gender: string;
+  /**
+   * Personalnummer aus Jacando
+   */
+  personellNumber: number;
 }
 
-export interface Session extends User {
-  username: string;
-  isLoggedIn: boolean;
+// Jacando
+
+// aus jacando /employees, ACHTUNG noch andere Attribute die vor response auf jeden Fall raus müssen, immer user parsen
+export interface Employee {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  gender: string;
+  personellNumber: string;
+  clients: [{ id: string; name: string }];
+  roles: [{ name: string }];
+  updatedAt: string; // '2021-11-19T09:52:52.490Z'
+  createdAt: string; // '2020-11-27T14:24:27.701Z'
+  publicEmail: string;
+  imageUrl: string | null; // nicht sicher ob das stimmt, kein Bild zum testen
+  archived: boolean;
+  customFieldSections: {
+    names: {
+      en?: string;
+      de: string;
+    };
+    customFields: {
+      title: {
+        de: string;
+      };
+      type: string;
+      value: string;
+    }[];
+  }[];
 }
 
 // LDAP Active Directory / Domain STARCAR
@@ -128,7 +103,7 @@ export interface DomainUser {
   sAMAccountType: string; // "805306368"
   userPrincipalName: string; // "bergen@starcar.de"
   objectClass: string[]; // ['top', 'person', 'organizationalPerson', 'user']
-  userAccountControl: string; // "512" | 512 = enabled, 514 = disabled
+  userAccountControl: string; // Account aktiv | 512 = ja, 514 = nein
   mail: string; // "ole.bergen@starcar.de"
 }
 

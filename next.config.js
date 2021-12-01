@@ -4,7 +4,4 @@ module.exports = {
     defaultLocale: 'de-DE',
   },
   reactStrictMode: true,
-  // eslint: {
-  //   dirs: ['src'],
-  // },
 };

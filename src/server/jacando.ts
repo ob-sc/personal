@@ -1,17 +1,13 @@
 import https from 'https';
 import { jacandoConfig } from '../../config';
-import {
-  APICustomFieldSection,
-  Employee,
-  JacandoAPI,
-  JacandoUserRegion,
-  JacandoUserStatus,
-  User,
-} from '../../types/api';
 
 // returned ein promise mit daten / error
-const jacandoAPI: JacandoAPI = (method, resource, data) =>
-  new Promise((resolve, reject) => {
+function jacandoAPI<Req = unknown, Res = unknown>(
+  method: 'get' | 'post' | 'put' | 'delete',
+  resource: string,
+  data?: Req
+): Promise<Res> {
+  return new Promise((resolve, reject) => {
     const upperCaseMethod = method?.toUpperCase();
     // leeres Uint8Array als fallback
     const encodedData =
@@ -41,7 +37,7 @@ const jacandoAPI: JacandoAPI = (method, resource, data) =>
         return reject(new Error(`Jacando status code ${statusCode}`));
       }
 
-      let body: Buffer[] = [];
+      const body: Buffer[] = [];
 
       httpRes.on('data', (chunk) => {
         body.push(chunk);
@@ -49,8 +45,8 @@ const jacandoAPI: JacandoAPI = (method, resource, data) =>
 
       httpRes.on('end', () => {
         try {
-          body = JSON.parse(Buffer.concat(body).toString());
-          resolve(body);
+          const response = JSON.parse(Buffer.concat(body).toString()) as Res;
+          resolve(response);
         } catch (e) {
           reject(e);
         }
@@ -63,93 +59,28 @@ const jacandoAPI: JacandoAPI = (method, resource, data) =>
 
     httpReq.end();
   });
+}
 
 class Jacando {
-  resource: string;
+  public resource: string;
   constructor(resource: string) {
     this.resource = resource;
   }
-  get() {
-    return jacandoAPI('get', this.resource);
+  get<Res = unknown>() {
+    return jacandoAPI<never, Res>('get', this.resource);
   }
-  post(data: unknown) {
-    return jacandoAPI('post', this.resource, data);
+  post<Req = unknown, Res = unknown>(data: Req) {
+    return jacandoAPI<Req, Res>('post', this.resource, data);
   }
-  put(data: unknown) {
-    return jacandoAPI('put', this.resource, data);
+  put<Req = unknown, Res = unknown>(data: Req) {
+    return jacandoAPI<Req, Res>('put', this.resource, data);
   }
-  delete() {
-    return jacandoAPI('delete', this.resource);
+  delete<Res = unknown>() {
+    return jacandoAPI<never, Res>('delete', this.resource);
   }
   // keine persönlichen Daten
 }
 
-export const parseUser: (employee: Employee) => User = (employee) => {
-  const user: User = {
-    id: employee.id,
-    email: employee.email,
-    firstName: employee.firstName,
-    lastName: employee.lastName,
-    gender: employee.gender,
-    personellNumber: Number(employee.personellNumber),
-    clients: [...employee.clients],
-    roles: [...employee.roles],
-    updatedAt: employee.updatedAt,
-    createdAt: employee.createdAt,
-    publicEmail: employee.publicEmail,
-    imageUrl: employee.imageUrl,
-    archived: employee.archived,
-    kst: 0,
-    access: 0,
-    region: null,
-    extrastation: null,
-  };
-
-  const numericAccess = {
-    idl: 1,
-    sl: 2,
-    rl: 3,
-    admin: 4,
-  };
-
-  const sections = employee.customFieldSections ?? [];
-  for (let i = 0; i < sections.length; i++) {
-    const currentSection = sections[i];
-    if (currentSection.names.de === 'API') {
-      const acfs = currentSection as APICustomFieldSection;
-      for (let j = 0; j < acfs.customFields.length; j++) {
-        const currentField = acfs.customFields[j];
-        const title = currentField.title.de;
-        const { value } = currentField;
-        // eslint-disable-next-line default-case
-        switch (title) {
-          case 'Kostenstelle':
-            user.kst = Number(value);
-            break;
-          case 'Status':
-            user.access = numericAccess[value.toLowerCase() as JacandoUserStatus] ?? 0;
-            break;
-          case 'Region':
-            user.region = value.toLowerCase() as JacandoUserRegion;
-            break;
-          case 'Extrastation':
-            if (value === '*') {
-              user.extrastation = value;
-            } else {
-              // leerstellen entfernen
-              const extraStationsString = value.replace(/\s+/g, '');
-              const extraStations = extraStationsString.split(',');
-              // array aus strings zu array aus numbers
-              user.extrastation = extraStations.map((s) => Number(s));
-            }
-            break;
-        }
-      }
-      // wenn ich "API" gefunden habe dann abbrechen
-      break;
-    }
-  }
-  return user;
-};
+jacandoAPI<string>('get', '/bla');
 
 export default Jacando;

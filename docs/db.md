@@ -34,7 +34,7 @@ todo bla
 | -------- | ----------------------- | -------------------------- |
 | id       | Jacando ID              | `5eg5e2b211070502555bcb59` |
 | domain   | Domäne                  | `starcar`                  |
-| username | `sAMAccountName` aus AD | `ole.bergen`               |
+| username | `sAMAccountName` aus AD | `max.mustermann`           |
 
 ## zeiten
 
