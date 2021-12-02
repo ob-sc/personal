@@ -6,7 +6,7 @@ export const errorResponse = (error: unknown) => ({
 
 export const prepend0 = (num: number) => (num < 10 ? `0${num}` : num);
 
-export const toLocalDate = (date: string | undefined) => {
+export const toLocalDate = (date: string | undefined | null) => {
   if (typeof date !== 'string') return '';
 
   const dateInstance = new Date(date);

@@ -1,5 +1,6 @@
 import type { NextApiHandler } from 'next';
 import db from '../../../src/db';
+import { withSessionApi } from '../../../src/lib/withSession';
 
 const userHandler: NextApiHandler = async (req, res) => {
   const { method } = req;
@@ -14,4 +15,4 @@ const userHandler: NextApiHandler = async (req, res) => {
   }
 };
 
-export default userHandler;
+export default withSessionApi(userHandler);

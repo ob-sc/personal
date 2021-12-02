@@ -61,21 +61,21 @@ function jacandoAPI<Req = unknown, Res = unknown>(
   });
 }
 
-class Jacando {
+class Jacando<Response = unknown> {
   public resource: string;
   constructor(resource: string) {
     this.resource = resource;
   }
-  get<Res = unknown>() {
+  get<Res = Response>() {
     return jacandoAPI<never, Res>('get', this.resource);
   }
-  post<Req = unknown, Res = unknown>(data: Req) {
+  post<Req = unknown, Res = Response>(data: Req) {
     return jacandoAPI<Req, Res>('post', this.resource, data);
   }
-  put<Req = unknown, Res = unknown>(data: Req) {
+  put<Req = unknown, Res = Response>(data: Req) {
     return jacandoAPI<Req, Res>('put', this.resource, data);
   }
-  delete<Res = unknown>() {
+  delete<Res = Response>() {
     return jacandoAPI<never, Res>('delete', this.resource);
   }
   // keine persönlichen Daten

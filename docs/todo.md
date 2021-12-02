@@ -4,8 +4,7 @@
 
 - eslint geht nicht in src
 
-- statt extrastation mit "\*" mache ich region alle und bennene extrastation zu stations
-  - aus jacando stations auslesen und dann fehler bei parse wenn falsch?
+- mobil layout
 
 ## stack
 

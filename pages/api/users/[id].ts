@@ -1,4 +1,5 @@
 import type { NextApiHandler } from 'next';
+import { withSessionApi } from '../../../src/lib/withSession';
 
 const userHandler: NextApiHandler = (req, res) => {
   const {
@@ -19,4 +20,4 @@ const userHandler: NextApiHandler = (req, res) => {
   }
 };
 
-export default userHandler;
+export default withSessionApi(userHandler);

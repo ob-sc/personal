@@ -6,7 +6,7 @@ import { errorResponse } from '../../../src/lib/util';
 import Jacando from '../../../src/server/jacando';
 import logger from '../../../src/lib/log';
 import db from '../../../src/db';
-import parseUser from '../../../src/server/parseUser';
+import parseUser from '../../../src/lib/parseUser';
 
 const loginHandler: NextApiHandler = async (req, res) => {
   const {

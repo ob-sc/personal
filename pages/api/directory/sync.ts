@@ -1,5 +1,6 @@
 import type { NextApiHandler } from 'next';
 import db from '../../../src/db';
+import { withSessionApi } from '../../../src/lib/withSession';
 import Jacando from '../../../src/server/jacando';
 import ldap from '../../../src/server/ldap';
 import { Employee } from '../../../types/user';
@@ -40,8 +41,6 @@ const syncAdHandler: NextApiHandler = async (req, res) => {
           );
           // wenn Jacando User gefunden dann Eintrag in DB
 
-          // todo kst aus jacando
-
           if (jacandoUser) {
             db.users.create({
               id: jacandoUser.id,
@@ -64,4 +63,4 @@ const syncAdHandler: NextApiHandler = async (req, res) => {
   }
 };
 
-export default syncAdHandler;
+export default withSessionApi(syncAdHandler);

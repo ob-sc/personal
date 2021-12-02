@@ -16,7 +16,7 @@ User.init(users, { tableName: 'users', sequelize });
 
 // sequelize.sync();
 
-// INSERT INTO development.users (`id`,`domain`,`username`,`access`,`createdAt`,`updatedAt`) VALUES ("5ea5e0b251080508555bcb59","starcar","bergen","admin","2021-12-01 13:20:42","2021-12-01 13:20:42");
+// INSERT INTO development.users (`id`,`domain`,`username`,`access`,`stations`,`createdAt`,`updatedAt`) VALUES ("5ea5e0b251080508555bcb59","starcar","bergen","admin","12,18","2021-12-01 13:20:42","2021-12-01 13:20:42");
 
 const db = { users: User };
 

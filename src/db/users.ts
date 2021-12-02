@@ -1,13 +1,13 @@
 import { DataTypes, Model, Optional } from 'sequelize';
-import { UserRegion, UserStatus } from '../../types/user';
+import { UserAccess, UserRegion } from '../../types/user';
 
 interface UserAttributes {
   id: string;
   domain: string;
   username: string;
-  access: UserStatus | null;
+  access: UserAccess | null;
   region: UserRegion | null;
-  extrastation: string | null;
+  stations: string | null;
 }
 
 export interface DBUser extends UserAttributes {
@@ -16,15 +16,15 @@ export interface DBUser extends UserAttributes {
 }
 
 class User
-  extends Model<UserAttributes, Optional<UserAttributes, 'access' | 'region' | 'extrastation'>>
+  extends Model<UserAttributes, Optional<UserAttributes, 'access' | 'region' | 'stations'>>
   implements UserAttributes
 {
   public id!: string;
   public domain!: string;
   public username!: string;
-  public access!: UserStatus;
+  public access!: UserAccess;
   public region!: UserRegion;
-  public extrastation!: string | null;
+  public stations!: string | null;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -53,7 +53,7 @@ export const users = {
     type: DataTypes.STRING,
     isIn: [['hamburg', 'berlin', 'nord', 'süd', 'ost', 'west', 'mitte']],
   },
-  extrastation: {
+  stations: {
     type: DataTypes.STRING,
   },
 };

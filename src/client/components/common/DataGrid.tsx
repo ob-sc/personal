@@ -1,4 +1,5 @@
 import { GridColDef, GridRowsProp, DataGrid as MuiDatagrid } from '@mui/x-data-grid';
+import { CellClickHandler, RowClickHandler } from '../../../../types';
 import dataGridLocale from '../../util/dataGridLocale';
 
 interface Props {
@@ -6,26 +7,28 @@ interface Props {
   rows: GridRowsProp;
   error: boolean;
   loading: boolean;
+  rowClickHandler?: RowClickHandler;
+  cellClickHandler?: CellClickHandler;
 }
 
-const DataGrid = ({ columns, rows, error, loading }: Props) => {
+const DataGrid = ({ columns, rows, error, loading, rowClickHandler, cellClickHandler }: Props) => {
   const err = error ? true : undefined;
-  console.log(err);
 
   return (
-    <div>
+    <div style={{ height: 650, width: '100%' }}>
       <MuiDatagrid
         rows={rows}
         columns={columns}
+        pageSize={10}
+        rowsPerPageOptions={[10]}
         localeText={dataGridLocale}
+        loading={loading}
+        error={err}
+        onCellClick={cellClickHandler}
+        onRowClick={rowClickHandler}
         hideFooterSelectedRowCount
         disableSelectionOnClick
         disableColumnSelector
-        loading={loading}
-        error={err}
-        onCellClick={(e) => {
-          console.log(e);
-        }}
       />
     </div>
   );

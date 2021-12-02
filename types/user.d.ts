@@ -1,6 +1,6 @@
-export type UserStatus = 'idl' | 'sl' | 'rl' | 'admin';
-export type UserRegion = 'hamburg' | 'berlin' | 'nord' | 'süd' | 'ost' | 'west' | 'mitte';
-export type UserExtrastation = number[] | '*' | null;
+export type UserAccess = 'idl' | 'sl' | 'rl' | 'admin';
+export type UserRegion = 'alle' | 'hamburg' | 'berlin' | 'nord' | 'süd' | 'ost' | 'west' | 'mitte';
+export type UserStations = number[] | null;
 
 export interface ParsedUser {
   /**
@@ -11,10 +11,6 @@ export interface ParsedUser {
    * username aus AD (sAMAccountName)
    */
   username: string;
-  /**
-   * Kostenstelle (Stationsnummer)
-   */
-  kst: number;
   /**
    * 0: keine Berechtigung,
    * 1: IDL,
@@ -29,9 +25,13 @@ export interface ParsedUser {
    */
   region: UserRegion | null;
   /**
+   * Stationsnummer aus OU im AD
+   */
+  ouStation: number;
+  /**
    * Array aus stationen, "*" oder null
    */
-  extrastation: UserExtrastation;
+  stations: UserStations;
   /**
    * Mail aus AD und Jacando wurde abgeglichen
    */

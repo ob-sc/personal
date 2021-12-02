@@ -16,7 +16,7 @@ const createError = (err: unknown, notDevMsg = 'LDAP Fehler') => {
   return err instanceof Error ? err : new Error(String(err));
 };
 
-const createClient = (): Promise<ldapjs.Client> =>
+const createClient = (): Promise<Client> =>
   new Promise((resolve, reject) => {
     const options: ldapjs.ClientOptions = {
       url: ldapConfig.options.url,
@@ -130,9 +130,7 @@ const ldap = {
   operation: {
     add,
     auth,
-    /**
-     * Ohne param user: alle AD Accounts
-     */
+    /** Ohne param user: alle AD Accounts */
     search,
   },
 };
