@@ -2,12 +2,12 @@ import { AppBar, Box, IconButton, Toolbar } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { Session } from '../../../../types/user';
+import { ParsedUser } from '../../../../types/user';
 import LinkButton from '../common/LinkButton';
 import Logo from './Logo';
 
 interface Props {
-  session: Session;
+  session: ParsedUser;
 }
 
 // todo overflow in menu bei mobile, dann auch bild raus

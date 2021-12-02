@@ -1,6 +1,11 @@
 # personal
 
-eslint ts einstellungen, dann aus eslintrc den unfug raus
+## todo
+
+- eslint geht nicht in src
+
+- statt extrastation mit "\*" mache ich region alle und bennene extrastation zu stations
+  - aus jacando stations auslesen und dann fehler bei parse wenn falsch?
 
 ## stack
 
@@ -54,30 +59,6 @@ ansonsten ist root:
   - für api und next oder beides zusammen
   - kommt aus next (siehe unten env)
 
-## plan
-
-- ein nextjs repo mit express backend
-  - statt eine api anzusprechen ist mein frontend mein backend (grob gesagt)
-- spart mir die ganze awkwarde namensgeberei
-  - nicht mehr zeiterfassung und onboarding etc
-  - auf der Seite dann einfach aufteilen:
-    - einen part mit aushilfen: eintragen etc
-    - anderer part für sl / gbl:
-      - mitarbeiter neu (onboarding)
-      - wochenende
-      - accounts in station
-      - passwörter
-      - etc
-- es ist ein personal-tool
-  - direkt anbindung zu jacando, da kommen alle persönlichen Daten her
-    - persönliche Daten können bei uns nicht verloren gehen, außer agentur und extern
-    - evtl kann man sogar benutzer an jacando anbinden, damit sie sich selber dokumente runterladen, urlaub eintragen etc können
-- damit gibt es nurnoch ein docker compose mit:
-  - app
-  - mysql
-  - nginx
-    - kriegt dann nur noch den build
-
 ## env
 
 https://nextjs.org/docs/basic-features/environment-variables#loading-environment-variables
@@ -97,43 +78,7 @@ https://nextjs.org/docs/basic-features/environment-variables#loading-environment
 
 ## wichtig
 
-- schaff ich active directory zugriff?
-
-- eigene mysql db in docker container aufbauen, daten aus prod und dev importieren und dann erst rumbasteln
-- test und za_dev können dann weg. es wird ab dann nurnoch die db aus docker container genutzt?
-
-- auch direkt sequelize? neue db mit docker aufbauen, sequelize direkt von anfang, dann in mysql die anderen db importieren und mit insert gemischt mit selects den kram da reinhauen
-
-  - bei ah einfach die personalnummer aus jacando aus query mit allen ma und die id daraus einfügen
-
-- alles wird umbenannt, jede spalte in db, jede tabelle, jede route. alles englisch
-
-dann zum darstellen im frontend:
-
-- aus backend mysql db mit sequelize die daten holen (zb aus zeiten)
-- mit der jacando id aus mysql in jacando den ma abfragen
-- daten mit daten aus db ergänzen
-- als json an frontend
-
----
-
-## und jetzt?
-
-- docker compose: mysql und node app
-
-- sequelize auf neuer mysql db
-
-- datenmodell und struktur in neuer db
-
-- alte daten in neue struktur importieren
-
-- api onboarding und benutzer etc ändern
-
-  - starcar_dev kann dann schon live mit docker
-  - starcar_prod lasse ich einfach noch auf sc-39
-  - andere datenbanken (\_test, \_za_dev etc) können weg
-
-  ## icons
+## icons
 
 ah:
 
@@ -144,36 +89,6 @@ ah:
 seite persönliche Daten / Einstellungen oder so:
 
 - man kann daten aus session sehen & direkt in jacando ändern?
-
-## n
-
-- es geht nicht, dass die infra komplett von bfi diktiert wurde. docker komplett front- & backend und dann die db (und /upload) komplett täglich (bei crent?) sichern.
-
-  - dort sind dann nur noch sichere daten, personenbezogen nur agentur und extern (wann löschen?)
-
-- ablösen von bfi. nix nils bohrs ist jetzt aber weg
-
-  - der server hier zb tägliche updates. können wir dann in der produktionsumgebung so benutzen
-
-- DB braucht dringend Update. Statt migrieren einfach neue DB hochziehen und mit Daten aus alter füllen. Macht Sinn im Kontext mit Jacando / LDAP.
-
-- daten werden nurnoch von perso in jacando gepflegt
-
-- crent: selber programmieren (geht das überhaupt ohne java o.ä.?) oder route ansprechen
-
-  - man könnte Reiter Mitarbeiterdaten über login-route Daten aus jacando übernehmen (zb Vorname, Nachname, Station, email etc)
-
-    - erlaubte stationen etc noch selber pflegen und in crent db speichern
-
-- man könnte auch user direkt anlegen lassen
-
-  - pw brauchen wir nicht (aus ad)
-
-  - personalnummer = zufällig 4 stellig -> wenn vorhanden neu zufällig bis passt
-
-  - rest wie station, erlaubte stationen, benutzergruppe, mitarbeiterdaten mit namen, mail etc übergeben lassen und automatisch eintragen
-
-- beides vermutlich kein großer aufwand, mirco sagt einfach nimm daten aus dieser route und nicht den inputs aus benutzerverwaltung
 
 ### console
 

@@ -61,7 +61,7 @@ const Login = () => {
             <Grid item xs={12}>
               <Input name="username" label="Benutzer" control={control} errors={errors} required />
             </Grid>
-            {/* Grid container spacing macht padding links */}
+            {/* Grid container spacing macht padding links, deshalb so: */}
             <Grid item xs={12} sx={{ my: 1 }}>
               <Input
                 name="password"

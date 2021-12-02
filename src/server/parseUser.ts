@@ -6,11 +6,11 @@ import {
   UserRegion,
   UserStatus,
 } from '../../types/user';
-import { UserTable } from '../db/users';
+import { DBUser } from '../db/users';
 
 // todo alle throws testen
 
-type ParseUser = (dbUser: UserTable, domainUser: DomainUser, employee: Employee) => ParsedUser;
+type ParseUser = (dbUser: DBUser, domainUser: DomainUser, employee: Employee) => ParsedUser;
 
 const findStation = (employee: Employee) => {
   let kst;

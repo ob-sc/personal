@@ -1,18 +1,18 @@
 import { withIronSessionApiRoute, withIronSessionSsr } from 'iron-session/next';
 import { GetServerSidePropsContext, GetServerSidePropsResult, NextApiHandler } from 'next';
 import { sessionConfig } from '../../config';
-import { Session } from '../../types/user';
+import { ParsedUser } from '../../types/user';
 
 declare module 'iron-session' {
   interface IronSessionData {
-    user?: Session;
+    user?: ParsedUser;
   }
 }
 
 // default handler mit redirect
 const sessionHandler: (
   context: GetServerSidePropsContext
-) => GetServerSidePropsResult<{ user: Session }> = ({ req }) => {
+) => GetServerSidePropsResult<{ user: ParsedUser }> = ({ req }) => {
   const { user } = req.session;
 
   if (user === undefined) {

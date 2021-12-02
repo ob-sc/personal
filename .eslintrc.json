@@ -2,9 +2,9 @@
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint"],
   "extends": [
-    "plugin:@typescript-eslint/recommended",
     "prettier",
     "eslint-config-scza",
+    "plugin:@typescript-eslint/recommended",
     "next/core-web-vitals"
   ],
   "rules": {

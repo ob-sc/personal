@@ -10,7 +10,7 @@ interface UserAttributes {
   extrastation: string | null;
 }
 
-export interface UserTable extends UserAttributes {
+export interface DBUser extends UserAttributes {
   createdAt: Date;
   updatedAt: Date;
 }
