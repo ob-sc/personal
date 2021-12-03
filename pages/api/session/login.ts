@@ -37,7 +37,7 @@ const loginHandler: NextApiHandler = async (req, res) => {
 
       const { id } = dbUser;
 
-      const jacando = new Jacando(`/employees/${id}`);
+      const jacando = new Jacando(`employees/${id}`);
       const employee = await jacando.get<Employee>();
 
       const user = parseUser(dbUser, adUser, employee);

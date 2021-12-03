@@ -1,5 +1,6 @@
 import type { NextApiHandler } from 'next';
 import db from '../../../src/db';
+import { parseOUStation } from '../../../src/lib/parseUser';
 import { withSessionApi } from '../../../src/lib/withSession';
 import Jacando from '../../../src/server/jacando';
 import ldap from '../../../src/server/ldap';
@@ -8,7 +9,7 @@ import { Employee } from '../../../types/user';
 const syncAdHandler: NextApiHandler = async (req, res) => {
   const { method } = req;
 
-  if (method?.toUpperCase() === 'GET') {
+  if (method?.toUpperCase() === 'POST') {
     try {
       // DB (MySQL)
       const dbUsers = await db.users.findAll();
@@ -20,7 +21,7 @@ const syncAdHandler: NextApiHandler = async (req, res) => {
       client.destroy();
 
       // Jacando X
-      const jacando = new Jacando('/employees');
+      const jacando = new Jacando('employees');
       const jacandoUsers = await jacando.get<Employee[]>();
 
       // neue DB Einträge für response
@@ -39,13 +40,15 @@ const syncAdHandler: NextApiHandler = async (req, res) => {
           const jacandoUser = jacandoUsers.find(
             (jacUser) => jacUser.email.toLowerCase() === adUser.mail.toLowerCase()
           );
-          // wenn Jacando User gefunden dann Eintrag in DB
+          // wenn Jacando User gefunden dann Eintrag in DB, mit Station aus AD
+          const adstation = parseOUStation(adUser.distinguishedName);
 
           if (jacandoUser) {
             db.users.create({
               id: jacandoUser.id,
               username,
               domain: 'starcar',
+              adstation,
             });
             newEntries.push(username);
           } // else throw new Error(`Kein Jacando User gefunden für ${username}`);
@@ -58,7 +61,7 @@ const syncAdHandler: NextApiHandler = async (req, res) => {
       res.status(500).json({ error: errMsg });
     }
   } else {
-    res.setHeader('Allow', ['GET']);
+    res.setHeader('Allow', ['POST']);
     res.status(405).json({ error: `Methode ${method} nicht erlaubt` });
   }
 };

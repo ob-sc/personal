@@ -23,6 +23,8 @@ function jacandoAPI<Req = unknown, Res = unknown>(
       },
     };
 
+    console.log(options.path);
+
     if (upperCaseMethod !== 'GET' && upperCaseMethod !== 'DELETE') {
       options.headers = {
         ...options.headers,
@@ -78,9 +80,6 @@ class Jacando<Response = unknown> {
   delete<Res = Response>() {
     return jacandoAPI<never, Res>('delete', this.resource);
   }
-  // keine persönlichen Daten
 }
-
-jacandoAPI<string>('get', '/bla');
 
 export default Jacando;

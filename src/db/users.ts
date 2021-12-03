@@ -7,6 +7,7 @@ interface UserAttributes {
   username: string;
   access: UserAccess | null;
   region: UserRegion | null;
+  adstation: number;
   stations: string | null;
 }
 
@@ -24,6 +25,7 @@ class User
   public username!: string;
   public access!: UserAccess;
   public region!: UserRegion;
+  public adstation!: number;
   public stations!: string | null;
 
   public readonly createdAt!: Date;
@@ -51,7 +53,11 @@ export const users = {
   },
   region: {
     type: DataTypes.STRING,
-    isIn: [['hamburg', 'berlin', 'nord', 'süd', 'ost', 'west', 'mitte']],
+    isIn: [['alle', 'hamburg', 'berlin', 'nord', 'süd', 'ost', 'west', 'mitte']],
+  },
+  adstation: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
   },
   stations: {
     type: DataTypes.STRING,

@@ -27,7 +27,7 @@ export interface ParsedUser {
   /**
    * Stationsnummer aus OU im AD
    */
-  ouStation: number;
+  adstation: number;
   /**
    * Array aus stationen, "*" oder null
    */

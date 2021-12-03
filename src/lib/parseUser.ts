@@ -42,16 +42,20 @@ export const parseStations = (stations: string | null | undefined): UserStations
 //   return Number.isNaN(kst) ? undefined : kst;
 // };
 
-const parseOUStation = (dn: string) => {
+export const parseOUStation = (dn: string) => {
   const dnParts = dn.split('=');
   const station = Number(dnParts[2].substring(0, 3));
   return Number.isNaN(station) ? 0 : station;
 };
 
 const parseUser: ParseUser = (dbUser, domainUser, employee) => {
-  const { username, access: accessString, region: regionString, stations: stationString } = dbUser;
-
-  const ouStation = parseOUStation(domainUser.distinguishedName);
+  const {
+    username,
+    access: accessString,
+    region: regionString,
+    adstation,
+    stations: stationString,
+  } = dbUser;
 
   const email = domainUser.mail.toLowerCase();
   if (email !== employee.email.toLowerCase()) {
@@ -82,7 +86,7 @@ const parseUser: ParseUser = (dbUser, domainUser, employee) => {
     username,
     access,
     region,
-    ouStation,
+    adstation,
     stations,
     email,
     firstName: employee.firstName.trim(),
