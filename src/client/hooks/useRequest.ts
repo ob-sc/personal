@@ -28,10 +28,7 @@ export default function useRequest<Data = unknown, Error = unknown>(
     mutate,
   } = useSWR<AxiosResponse<Data>, AxiosError<Error>>(
     request && JSON.stringify(request),
-    /**
-     * NOTE: Typescript thinks `request` can be `null` here, but the fetcher
-     * function is actually only called by `useSWR` when it isn't.
-     */
+    // useSWR fetch nur wenn request nicht null
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     () => axios.request<Data>(request!),
     {
@@ -46,6 +43,8 @@ export default function useRequest<Data = unknown, Error = unknown>(
       },
     }
   );
+
+  if (error?.response?.status) location.href = '/login?expired=true';
 
   return {
     data: response && response.data,

@@ -2,11 +2,10 @@ import { NextApiHandler } from 'next';
 import { Employee } from '../../../types/user';
 import { withSessionApi } from '../../../src/lib/withSession';
 import ldap from '../../../src/server/ldap';
-import { errorResponse } from '../../../src/lib/util';
 import Jacando from '../../../src/server/jacando';
-import logger from '../../../src/lib/log';
 import db from '../../../src/db';
 import parseUser from '../../../src/lib/parseUser';
+import response from '../../../src/server/response';
 
 const loginHandler: NextApiHandler = async (req, res) => {
   const {
@@ -14,10 +13,11 @@ const loginHandler: NextApiHandler = async (req, res) => {
     session,
     method,
   } = req;
+  const { error, success, methodError } = response(res);
 
-  if (method?.toUpperCase() === 'POST') {
-    let errorStatus = 400;
-    try {
+  let errorStatus = 400;
+  try {
+    if (method?.toUpperCase() === 'POST') {
       const isUndefined = username === undefined || password === undefined;
 
       if (isUndefined) {
@@ -44,15 +44,11 @@ const loginHandler: NextApiHandler = async (req, res) => {
 
       session.user = user;
       await session.save();
-      res.status(200).json({ message: 'Login erfolgreich' });
-    } catch (error) {
-      logger.error(error);
-      res.status(errorStatus).json(errorResponse(error));
-    }
-  } else {
-    res.setHeader('Allow', ['POST']);
-    res.status(405).json({ error: `Methode ${method} nicht erlaubt` });
+      success('Login erfolgreich');
+    } else methodError(method, { post: true });
+  } catch (err) {
+    error(err, errorStatus);
   }
 };
 
-export default withSessionApi(loginHandler);
+export default withSessionApi(loginHandler, true);

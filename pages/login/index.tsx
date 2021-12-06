@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
-import { Box, Grid } from '@mui/material';
-import Input from '../src/client/components/common/Input';
-import theme from '../config/theme';
-import SubmitButton from '../src/client/components/common/SubmitButton';
-import logger from '../src/lib/log';
+import { Box, Grid, Typography } from '@mui/material';
+import theme from '../../config/theme';
+import { trueString } from '../../src/lib/util';
+import Input from '../../src/client/components/common/Input';
+import SubmitButton from '../../src/client/components/common/SubmitButton';
 
 interface LoginInputs {
   username: string;
@@ -29,14 +29,14 @@ const Login = () => {
     formState: { errors },
   } = useForm<LoginInputs>();
   const router = useRouter();
+  const { expired } = router.query;
 
   const onSubmit = async (values: LoginInputs) => {
     setSubmitting(true);
     try {
       await axios.post('/api/session/login', values);
-    } catch (e) {
+    } catch (err) {
       setSubmitting(false);
-      logger.error(e);
     }
     router.push('/');
   };
@@ -58,10 +58,14 @@ const Login = () => {
           }}
         >
           <Grid container>
+            {trueString(expired) ? (
+              <Grid item xs={12} sx={{ mb: 1 }}>
+                <Typography color="error">Session ist abgelaufen</Typography>
+              </Grid>
+            ) : null}
             <Grid item xs={12}>
               <Input name="username" label="Benutzer" control={control} errors={errors} required />
             </Grid>
-            {/* Grid container spacing macht padding links, deshalb so: */}
             <Grid item xs={12} sx={{ my: 1 }}>
               <Input
                 name="password"

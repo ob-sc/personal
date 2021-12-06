@@ -1,9 +1,5 @@
 export const isDev = process.env.NODE_ENV !== 'production';
 
-export const errorResponse = (error: unknown) => ({
-  error: error instanceof Error ? error.message : error,
-});
-
 export const prepend0 = (num: number) => (num < 10 ? `0${num}` : num);
 
 export const toLocalDate = (date: string | undefined | null) => {
@@ -20,3 +16,5 @@ export const toLocalDate = (date: string | undefined | null) => {
   // monat ist zero-indexed
   return `${prepend0(d)}.${prepend0(m + 1)}.${y}`;
 };
+
+export const trueString = (str: unknown) => str === 'true' || str === true;

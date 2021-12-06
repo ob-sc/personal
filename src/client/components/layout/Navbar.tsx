@@ -3,14 +3,14 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { ParsedUser } from '../../../../types/user';
-import LinkButton from '../common/LinkButton';
+import NavLink from '../common/NavLink';
 import Logo from './Logo';
 
 interface Props {
-  session: ParsedUser;
+  session?: ParsedUser;
 }
 
-// todo overflow in menu bei mobile, dann auch bild raus
+// todo overflow in menu bei mobile, dann auch logo raus?
 
 const Navbar = ({ session }: Props) => {
   const router = useRouter();
@@ -20,26 +20,30 @@ const Navbar = ({ session }: Props) => {
       <AppBar position="static" color="transparent" elevation={0}>
         <Toolbar>
           <Logo clickHandler={() => router.push('/')} />
-          <Box sx={{ width: 50 }} />
+          {session !== undefined ? (
+            <>
+              <Box sx={{ width: 50 }} />
 
-          <LinkButton href="/temps">Aushilfen</LinkButton>
-          {session.access > 1 ? <LinkButton href="/employees">Mitarbeiter</LinkButton> : null}
-          {session.access === 4 ? <LinkButton href="/manage">Verwaltung</LinkButton> : null}
+              <NavLink href="/temps">Aushilfen</NavLink>
+              {session.access > 1 ? <NavLink href="/employees">Mitarbeiter</NavLink> : null}
+              {session.access === 4 ? <NavLink href="/users">Benutzer</NavLink> : null}
 
-          <Box sx={{ flexGrow: 1 }} />
+              <Box sx={{ flexGrow: 1 }} />
 
-          <IconButton
-            size="large"
-            color="inherit"
-            onClick={() => {
-              // wichtig: muss post sein, sonst löscht sich das cookie nicht
-              axios.post('/api/session/logout').then(() => {
-                router.push('/login');
-              });
-            }}
-          >
-            <LogoutIcon />
-          </IconButton>
+              <IconButton
+                size="large"
+                color="inherit"
+                onClick={() => {
+                  // wichtig: muss post sein, sonst löscht sich das cookie nicht
+                  axios.post('/api/session/logout').then(() => {
+                    router.push('/login');
+                  });
+                }}
+              >
+                <LogoutIcon />
+              </IconButton>
+            </>
+          ) : null}
         </Toolbar>
       </AppBar>
     </Box>

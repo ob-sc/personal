@@ -4,7 +4,7 @@ import { ParsedUser } from '../../../../types/user';
 import Navbar from './Navbar';
 
 interface Props extends CProps {
-  session: ParsedUser;
+  session?: ParsedUser;
 }
 
 const Layout = ({ session, children }: Props) => (

@@ -4,13 +4,15 @@ import { parseOUStation } from '../../../src/lib/parseUser';
 import { withSessionApi } from '../../../src/lib/withSession';
 import Jacando from '../../../src/server/jacando';
 import ldap from '../../../src/server/ldap';
+import response from '../../../src/server/response';
 import { Employee } from '../../../types/user';
 
 const syncAdHandler: NextApiHandler = async (req, res) => {
   const { method } = req;
+  const { error, success, methodError } = response(res);
 
-  if (method?.toUpperCase() === 'POST') {
-    try {
+  try {
+    if (method?.toUpperCase() === 'POST') {
       // DB (MySQL)
       const dbUsers = await db.users.findAll();
 
@@ -54,15 +56,10 @@ const syncAdHandler: NextApiHandler = async (req, res) => {
           } // else throw new Error(`Kein Jacando User gefunden für ${username}`);
         }
       }
-
-      res.status(200).json({ newEntries, previousEntries: dbUsers });
-    } catch (err) {
-      const errMsg = err instanceof Error ? err.message : err;
-      res.status(500).json({ error: errMsg });
-    }
-  } else {
-    res.setHeader('Allow', ['POST']);
-    res.status(405).json({ error: `Methode ${method} nicht erlaubt` });
+      success({ newEntries, previousEntries: dbUsers });
+    } else methodError(method, { post: true });
+  } catch (err) {
+    error(err);
   }
 };
 

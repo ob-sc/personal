@@ -10,7 +10,7 @@ declare module 'iron-session' {
 }
 
 // default handler mit redirect
-const sessionHandler: (
+const sessionPropHandler: (
   context: GetServerSidePropsContext
 ) => GetServerSidePropsResult<{ user: ParsedUser }> = ({ req }) => {
   const { user } = req.session;
@@ -29,19 +29,32 @@ const sessionHandler: (
   };
 };
 
-// unter pages/api/
-export const withSessionApi = (handler: NextApiHandler) =>
-  withIronSessionApiRoute(handler, sessionConfig);
+/**
+ * Session wird vor Handler geprüft.
+ * Gibt `req` auch das Session-Objekt.
+ * @example
+ * const userHandler: NextApiHandler = async (req, res) => { const { session } = req; ... };
+ * export default withSessionApi(userHandler);
+ */
+export const withSessionApi = (handler: NextApiHandler, noAuth?: boolean) => {
+  const authHandler: NextApiHandler = (req, res) => {
+    const { session } = req;
+    if (session.user?.id === undefined) {
+      res.status(401).json({ message: 'Nicht eingeloggt' });
+      return;
+    }
+    handler(req, res);
+  };
 
-// unter pages/, kompatibel mit InferGetStaticPropsType https://nextjs.org/docs/basic-features/data-fetching#typescript-use-getstaticprops
-export const withSessionSsr = () => withIronSessionSsr(sessionHandler, sessionConfig);
+  return withIronSessionApiRoute(noAuth ? handler : authHandler, sessionConfig);
+};
 
-/*
-export function withSessionSsr<P extends { [key: string]: unknown } = { [key: string]: unknown }>(
-  handler: (
-    context: GetServerSidePropsContext
-  ) => GetServerSidePropsResult<P> | Promise<GetServerSidePropsResult<P>>
-) {
-  return withIronSessionSsr(handler, options);
-}
-*/
+/**
+ * Redirect ohne Session, sonst Session als Prop.
+ * Kompatibel mit `InferGetServerSidePropsType`
+ * @example
+ * export const getServerSideProps = withSessionSsr();
+ * const Manage = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) => { ... };
+ * export default Manage;
+ */
+export const withSessionSsr = () => withIronSessionSsr(sessionPropHandler, sessionConfig);

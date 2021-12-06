@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { InferGetServerSidePropsType } from 'next';
-import { Box, CircularProgress, IconButton, TextField } from '@mui/material';
+import { useRouter } from 'next/router';
+import axios from 'axios';
 import { GridColDef } from '@mui/x-data-grid';
+import { CircularProgress } from '@mui/material';
 import SyncIcon from '@mui/icons-material/Sync';
 import { withSessionSsr } from '../../src/lib/withSession';
 import Layout from '../../src/client/components/layout/Layout';
@@ -10,19 +12,22 @@ import DataGrid from '../../src/client/components/common/DataGrid';
 import { DBUser } from '../../src/db/users';
 import { toLocalDate } from '../../src/lib/util';
 import { RowClickHandler } from '../../types';
-import searchFilter from '../../src/client/util/searchFilter';
-import axios from 'axios';
-// import styles from "../styles/Home.module.css";
 
 export const getServerSideProps = withSessionSsr();
 
 // Home: NextPage
-const Manage = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Users = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { data, error, mutate } = useRequest<DBUser[]>({ url: '/api/users' });
+  const router = useRouter();
   const [syncing, setSyncing] = useState(false);
-  const [search, setSearch] = useState('');
 
-  const rows = searchFilter<DBUser>(search, data ?? []);
+  const actionHandler = () => {
+    setSyncing(true);
+    axios.post('/api/directory/sync').finally(() => {
+      mutate();
+      setSyncing(false);
+    });
+  };
 
   const columns: GridColDef[] = [
     { field: 'username', headerName: 'Benutzer', width: 200 },
@@ -67,43 +72,24 @@ const Manage = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>
     },
   ];
 
-  const rowClickHandler: RowClickHandler = (e) => {
-    console.log(e);
+  const rowClickHandler: RowClickHandler = async (e) => {
+    const { id } = e;
+    router.push(`/users/${id}`);
   };
 
   return (
     <Layout session={user}>
-      <Box mb={1}>
-        <IconButton
-          sx={{ mr: 2 }}
-          onClick={() => {
-            setSyncing(true);
-            axios.post('/api/directory/sync').then(() => {
-              mutate();
-              setSyncing(false);
-            });
-          }}
-        >
-          {syncing ? <CircularProgress size={22} /> : <SyncIcon />}
-        </IconButton>
-        <TextField
-          placeholder="Suche"
-          size="small"
-          value={search}
-          onChange={(e) => {
-            setSearch(e.target.value);
-          }}
-        />
-      </Box>
       <DataGrid
         columns={columns}
-        rows={rows}
+        rows={data ?? []}
         error={!!error}
         loading={!data && !error}
         rowClickHandler={rowClickHandler}
+        actionHandler={actionHandler}
+        actionIcon={syncing ? <CircularProgress size={22} /> : <SyncIcon />}
       />
     </Layout>
   );
 };
 
-export default Manage;
+export default Users;

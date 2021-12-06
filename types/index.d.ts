@@ -3,13 +3,14 @@ import {
   FormEventHandler as FEH,
   MouseEventHandler as MEH,
   MouseEvent,
-  ReactNode,
+  ReactNode as RN,
   SyntheticEvent,
 } from 'react';
 import { GridCallbackDetails, GridCellParams, GridRowParams, MuiEvent } from '@mui/x-data-grid';
 
-// React Events
+// React allgemein
 
+export type ReactNode = RN;
 export type ChangeEventHandler = CEH<HTMLTextAreaElement | HTMLInputElement>;
 export type FormEventHandler = FEH<HTMLFormElement>;
 export type MouseEventHandler = MEH<
@@ -17,7 +18,11 @@ export type MouseEventHandler = MEH<
   HTMLImageElement
 >;
 
-// DataGrid
+export interface CProps {
+  children?: ReactNode;
+}
+
+// MUI DataGrid
 
 export type RowClickHandler = (
   params: GridRowParams<{
@@ -32,9 +37,3 @@ export type CellClickHandler = (
   event: MuiEvent<MouseEvent<Element, globalThis.MouseEvent>>,
   details: GridCallbackDetails
 ) => void;
-
-// React ChildrenProps
-
-export interface CProps {
-  children?: ReactNode;
-}

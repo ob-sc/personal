@@ -7,7 +7,7 @@ import { styled } from '@mui/material/styles';
 
 // https://github.com/mui-org/material-ui/blob/d26d33d3fd22212356715d5d8e5671528c1cb666/examples/nextjs-with-typescript/src/Link.tsx
 
-// Add support for the sx prop for consistency with the other branches.
+// sx prop
 const Anchor = styled('a')({});
 
 interface NextLinkComposedProps
@@ -19,8 +19,10 @@ interface NextLinkComposedProps
 }
 
 export const NextLinkComposed = forwardRef<HTMLAnchorElement, NextLinkComposedProps>(
+  // kann hier keine anonyme funtion passen
   // eslint-disable-next-line prefer-arrow-callback
   function NextLinkComposed(props, ref) {
+    // muss href rausnehmen für Anchor
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { to, linkAs, href, replace, scroll, shallow, prefetch, locale, ...other } = props;
 
@@ -49,7 +51,6 @@ export type LinkProps = {
 } & Omit<NextLinkComposedProps, 'to' | 'linkAs' | 'href'> &
   Omit<MuiLinkProps, 'href'>;
 
-// A styled version of the Next.js Link component:
 // https://nextjs.org/docs/#with-link
 // eslint-disable-next-line prefer-arrow-callback
 const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(props, ref) {
@@ -60,7 +61,7 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(props, ref) 
     href,
     noLinkStyle,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    role, // Link don't have roles.
+    role, // Links haben keine role
     ...other
   } = props;
 

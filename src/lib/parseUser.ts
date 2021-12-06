@@ -8,10 +8,11 @@ import {
 } from '../../types/user';
 import { DBUser } from '../db/users';
 
-// todo alle throws testen
+// todo alle exceptions testen
 
 type ParseUser = (dbUser: DBUser, domainUser: DomainUser, employee: Employee) => ParsedUser;
 
+// string aus db (stations in users), mit komma getrennte stationsnummern
 export const parseStations = (stations: string | null | undefined): UserStations => {
   if (!stations) return null;
 
@@ -94,8 +95,6 @@ const parseUser: ParseUser = (dbUser, domainUser, employee) => {
     gender: employee.gender.trim(),
     personellNumber: Number(employee.personellNumber),
   };
-
-  console.log(user);
 
   return user;
 };

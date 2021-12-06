@@ -26,7 +26,7 @@ const createClient = (): Promise<Client> =>
 
     client.on('error', (err) => {
       console.log('client error: ', err.message);
-      logger.error(err); // todo ECONNRESET nach 15 min? ich mache doch .destroy() auf jeden client?
+      logger.error(err);
     });
 
     client.on('connectRefused', (err) => {
@@ -77,7 +77,7 @@ const add = (client: Client, entry: Partial<DomainUser>, dn: string) =>
 const auth = (client: Client, dn: string, password: string) =>
   new Promise((resolve, reject) => {
     client.bind(dn, password, (err) => {
-      if (err) reject(createError(err));
+      if (err) reject(createError(err, 'Benutzer oder Passwort ungültig'));
       resolve(true);
     });
   });
@@ -110,7 +110,7 @@ const search = (client: Client, user?: string) =>
       ],
     };
     client.search(searchTree, options, (err, res) => {
-      if (err) reject(createError(err));
+      if (err) reject(createError(err, 'Fehler bei LDAP Suche'));
 
       const entries: DomainUser[] = [];
 

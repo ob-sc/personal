@@ -1,20 +1,16 @@
+import { Box } from '@mui/material';
 import Image from 'next/image';
 import { MouseEventHandler } from '../../../../types';
-import styles from '../../styles/Logo.module.css';
 
 interface Props {
   clickHandler: MouseEventHandler;
 }
 
 const Logo = ({ clickHandler }: Props) => (
-  <Image
-    width="64px"
-    height="64px"
-    src="/favicon.ico"
-    alt="logo"
-    onClick={clickHandler}
-    className={styles.logo}
-  />
+  <Box sx={{ '&:hover': { cursor: 'pointer' } }}>
+    {/* favicon hat einen png layer mit 256x256 px */}
+    <Image width="64px" height="64px" src="/favicon.ico" alt="logo" onClick={clickHandler} />
+  </Box>
 );
 
 export default Logo;

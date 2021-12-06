@@ -23,8 +23,6 @@ function jacandoAPI<Req = unknown, Res = unknown>(
       },
     };
 
-    console.log(options.path);
-
     if (upperCaseMethod !== 'GET' && upperCaseMethod !== 'DELETE') {
       options.headers = {
         ...options.headers,

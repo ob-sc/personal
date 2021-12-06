@@ -1,22 +1,24 @@
 import type { NextApiHandler } from 'next';
 import { withSessionApi } from '../../../src/lib/withSession';
+import response from '../../../src/server/response';
 
 const userHandler: NextApiHandler = (req, res) => {
   const {
-    query: { id, name },
+    query: { id },
     method,
   } = req;
+  const { error, success, methodError } = response(res);
 
-  switch (method?.toUpperCase()) {
-    case 'GET':
-      res.status(200).json({ id, name: `User ${id}` });
-      break;
-    case 'POST':
-      res.status(200).json({ id, name: name || `User ${id}` });
-      break;
-    default:
-      res.setHeader('Allow', ['GET', 'POST']);
-      res.status(405).json({ error: `Methode ${method} nicht erlaubt` });
+  try {
+    switch (method?.toUpperCase()) {
+      case 'GET':
+        success({ id });
+        break;
+      default:
+        methodError(method, { get: true });
+    }
+  } catch (err) {
+    error(err);
   }
 };
 
