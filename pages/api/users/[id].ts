@@ -7,7 +7,7 @@ const userHandler: NextApiHandler = (req, res) => {
     query: { id },
     method,
   } = req;
-  const { error, success, methodError } = response(res);
+  const { error, success, httpMethodError } = response(res);
 
   try {
     switch (method?.toUpperCase()) {
@@ -15,7 +15,7 @@ const userHandler: NextApiHandler = (req, res) => {
         success({ id });
         break;
       default:
-        methodError(method, { get: true });
+        httpMethodError(method, { get: true });
     }
   } catch (err) {
     error(err);

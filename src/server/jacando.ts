@@ -34,7 +34,7 @@ function jacandoAPI<Req = unknown, Res = unknown>(
     const httpReq = https.request(options, (httpRes) => {
       const statusCode = httpRes.statusCode === undefined ? 'undefined' : httpRes.statusCode;
       if (statusCode === 'undefined' || statusCode < 200 || statusCode >= 300) {
-        return reject(new Error(`Jacando status code ${statusCode}`));
+        return reject(new Error(`Jacando status: ${statusCode} - ${httpRes.statusMessage}`));
       }
 
       const body: Buffer[] = [];
@@ -61,23 +61,32 @@ function jacandoAPI<Req = unknown, Res = unknown>(
   });
 }
 
-class Jacando<Response = unknown> {
-  public resource: string;
-  constructor(resource: string) {
-    this.resource = resource;
-  }
-  get<Res = Response>() {
-    return jacandoAPI<never, Res>('get', this.resource);
-  }
-  post<Req = unknown, Res = Response>(data: Req) {
-    return jacandoAPI<Req, Res>('post', this.resource, data);
-  }
-  put<Req = unknown, Res = Response>(data: Req) {
-    return jacandoAPI<Req, Res>('put', this.resource, data);
-  }
-  delete<Res = Response>() {
-    return jacandoAPI<never, Res>('delete', this.resource);
-  }
-}
+// T um type für alle responses zu geben, kann man aber auch zb bei .get<Type>()
+const jacando = <T = unknown>(collection: string) => ({
+  get: <Res = T>(resource?: string | number) => {
+    const path =
+      typeof resource === 'string' // wenn string dann id
+        ? `${collection}/${resource}`
+        : typeof resource === 'number' // wenn number dann page
+        ? `${collection}?page=${resource}`
+        : collection;
+    return jacandoAPI<undefined, Res>('get', path);
+  },
 
-export default Jacando;
+  // eslint-disable-next-line arrow-body-style
+  post: <Req = unknown, Res = T>(data: Req) => {
+    return jacandoAPI<Req, Res>('post', collection, data);
+  },
+
+  put: <Req = unknown, Res = T>(resource: string, data: Req) => {
+    const path = `${collection}/${resource}`;
+    return jacandoAPI<Req, Res>('put', path, data);
+  },
+
+  delete: <Res = T>(resource: string) => {
+    const path = `${collection}/${resource}`;
+    return jacandoAPI<undefined, Res>('delete', path);
+  },
+});
+
+export default jacando;

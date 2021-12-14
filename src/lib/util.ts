@@ -18,3 +18,5 @@ export const toLocalDate = (date: string | undefined | null) => {
 };
 
 export const trueString = (str: unknown) => str === 'true' || str === true;
+
+export const sanitizedLower = (str: string) => str.trim().toLowerCase();

@@ -25,7 +25,6 @@ const createClient = (): Promise<Client> =>
     const client = ldapjs.createClient(options);
 
     client.on('error', (err) => {
-      console.log('client error: ', err.message);
       logger.error(err);
     });
 

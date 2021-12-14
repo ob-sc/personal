@@ -2,7 +2,7 @@ import { NextApiHandler } from 'next';
 import { Employee } from '../../../types/user';
 import { withSessionApi } from '../../../src/lib/withSession';
 import ldap from '../../../src/server/ldap';
-import Jacando from '../../../src/server/jacando';
+import jacando from '../../../src/server/jacando';
 import db from '../../../src/db';
 import parseUser from '../../../src/lib/parseUser';
 import response from '../../../src/server/response';
@@ -13,7 +13,7 @@ const loginHandler: NextApiHandler = async (req, res) => {
     session,
     method,
   } = req;
-  const { error, success, methodError } = response(res);
+  const { error, success, httpMethodError } = response(res);
 
   let errorStatus = 400;
   try {
@@ -37,15 +37,15 @@ const loginHandler: NextApiHandler = async (req, res) => {
 
       const { id } = dbUser;
 
-      const jacando = new Jacando(`employees/${id}`);
-      const employee = await jacando.get<Employee>();
+      const employees = jacando('employees');
+      const employee = await employees.get<Employee>(id);
 
       const user = parseUser(dbUser, adUser, employee);
 
       session.user = user;
       await session.save();
       success('Login erfolgreich');
-    } else methodError(method, { post: true });
+    } else httpMethodError(method, { post: true });
   } catch (err) {
     error(err, errorStatus);
   }

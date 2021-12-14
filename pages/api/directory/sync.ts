@@ -1,15 +1,17 @@
 import type { NextApiHandler } from 'next';
 import db from '../../../src/db';
+import logger from '../../../src/lib/log';
 import { parseOUStation } from '../../../src/lib/parseUser';
+import { sanitizedLower } from '../../../src/lib/util';
 import { withSessionApi } from '../../../src/lib/withSession';
-import Jacando from '../../../src/server/jacando';
+import jacando from '../../../src/server/jacando';
 import ldap from '../../../src/server/ldap';
 import response from '../../../src/server/response';
 import { Employee } from '../../../types/user';
 
 const syncAdHandler: NextApiHandler = async (req, res) => {
   const { method } = req;
-  const { error, success, methodError } = response(res);
+  const { error, success, httpMethodError } = response(res);
 
   try {
     if (method?.toUpperCase() === 'POST') {
@@ -23,24 +25,54 @@ const syncAdHandler: NextApiHandler = async (req, res) => {
       client.destroy();
 
       // Jacando X
-      const jacando = new Jacando('employees');
-      const jacandoUsers = await jacando.get<Employee[]>();
+      const employees = jacando<Employee[]>('employees');
 
-      // neue DB Einträge für response
-      const newEntries: string[] = [];
+      const jacandoUserPages = {
+        p0: await employees.get(0),
+        p1: await employees.get(1),
+        p2: await employees.get(2),
+        p3: await employees.get(3),
+        p4: await employees.get(4),
+        p5: await employees.get(5),
+        p6: await employees.get(6),
+        p7: await employees.get(7),
+        p8: await employees.get(8),
+        p9: await employees.get(9),
+      };
+
+      let jacandoUsers = Object.values(jacandoUserPages).flat();
+
+      // suche weitere Seiten, wenn die letzte Seite voll ist
+      if (Array.isArray(jacandoUserPages.p9) && jacandoUserPages.p9.length === 100) {
+        let isFullPage = true;
+        let pageIndex = 9;
+        while (isFullPage) {
+          pageIndex++;
+          const nextPage = await employees.get<Employee[]>(pageIndex);
+          jacandoUsers = [...jacandoUsers, ...nextPage];
+          if (nextPage.length < 100) isFullPage = false;
+        }
+      }
+
+      const jacandoUserIds = jacandoUsers.map((user) => user.id);
+      const jacandoUserIdsUnique = new Set(jacandoUserIds); // muss ich nicht zum array machen, einfach .size method statt .length
+
+      if (jacandoUserIdsUnique.size !== jacandoUsers.length) {
+        logger.error('jacandoUserIdsUnique.size !== jacandoUsers.length');
+      }
 
       // für jeden AD-User
       for (let i = 0; i < adUsers.length; i++) {
         const adUser = adUsers[i];
-        const username = adUser.sAMAccountName.toLowerCase();
+        const username = sanitizedLower(adUser.sAMAccountName);
         const dbUsersIndex = dbUsers.findIndex(
-          (dbUser) => dbUser.username.toLowerCase() === username
+          (dbUser) => sanitizedLower(dbUser.username) === username
         );
         // wenn nicht in DB eingetragen und Mail im AD vorhanden suche in Jacando nach Mail
         // manche AD User haben keine Mail, das sind dann keine richtigen User
         if (dbUsersIndex === -1 && adUser.mail) {
           const jacandoUser = jacandoUsers.find(
-            (jacUser) => jacUser.email.toLowerCase() === adUser.mail.toLowerCase()
+            (jacUser) => sanitizedLower(jacUser.email) === sanitizedLower(adUser.mail)
           );
           // wenn Jacando User gefunden dann Eintrag in DB, mit Station aus AD
           const adstation = parseOUStation(adUser.distinguishedName);
@@ -52,12 +84,12 @@ const syncAdHandler: NextApiHandler = async (req, res) => {
               domain: 'starcar',
               adstation,
             });
-            newEntries.push(username);
           } // else throw new Error(`Kein Jacando User gefunden für ${username}`);
-        }
+          // todo statt console.log in array pushen und das als response senden
+        } else console.log(`kein user in jacando für ${username} mit Mail ${adUser.mail}`);
       }
-      success({ newEntries, previousEntries: dbUsers });
-    } else methodError(method, { post: true });
+      success();
+    } else httpMethodError(method, { post: true });
   } catch (err) {
     error(err);
   }

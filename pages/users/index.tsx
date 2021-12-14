@@ -23,7 +23,7 @@ const Users = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>)
 
   const actionHandler = () => {
     setSyncing(true);
-    axios.post('/api/directory/sync').finally(() => {
+    axios.put('/api/directory/sync').finally(() => {
       mutate();
       setSyncing(false);
     });
@@ -82,7 +82,7 @@ const Users = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>)
       <DataGrid
         columns={columns}
         rows={data ?? []}
-        error={!!error}
+        error={error !== undefined}
         loading={!data && !error}
         rowClickHandler={rowClickHandler}
         actionHandler={actionHandler}

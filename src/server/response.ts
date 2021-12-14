@@ -2,8 +2,10 @@ import { NextApiResponse } from 'next';
 import logger from '../lib/log';
 
 const response = (res: NextApiResponse) => ({
-  success: (data: string | object[] | object) => {
-    res.status(200).json(typeof data === 'string' ? { message: data } : data);
+  success: (data?: string | object[] | object) => {
+    res.status(200);
+    if (!data) res.end();
+    else res.json(typeof data === 'string' ? { message: data } : data);
   },
 
   error: (...args: (unknown | number | string)[]) => {
@@ -21,15 +23,15 @@ const response = (res: NextApiResponse) => ({
     res.status(status).json({ message, error: err });
   },
 
-  methodError: (method: string | undefined, allowed: { [key: string]: boolean }) => {
+  httpMethodError: (method: string | undefined, allowed: { [key: string]: boolean }) => {
     const allowedMethods: string[] = [];
 
     for (const [k, v] of Object.entries(allowed)) {
       if (v === true) allowedMethods.push(k.toUpperCase());
     }
 
-    res.setHeader('Allow', allowedMethods);
     res
+      .setHeader('Allow', allowedMethods)
       .status(405)
       .json({ error: method ? `Methode ${method} nicht erlaubt` : 'Keine Methode angegeben' });
   },

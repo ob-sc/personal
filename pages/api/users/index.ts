@@ -5,21 +5,23 @@ import response from '../../../src/server/response';
 
 const userHandler: NextApiHandler = async (req, res) => {
   const { method } = req;
-  const { error, success, methodError } = response(res);
+  const { error, success, httpMethodError } = response(res);
 
   try {
     let data;
     switch (method?.toUpperCase()) {
       case 'GET':
         data = await db.users.findAll();
-        success(data);
+        return success(data);
         break;
       default:
-        methodError(method, { get: true });
+        return httpMethodError(method, { get: true });
     }
   } catch (err) {
-    error(err);
+    return error(err);
   }
+
+  success('stalled');
 };
 
 export default withSessionApi(userHandler);

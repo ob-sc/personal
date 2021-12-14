@@ -72,7 +72,7 @@ const DataGrid = ({
         disableSelectionOnClick
         disableColumnSelector
         components={{
-          // Footer kann kein eigener component sein, brauche state und props
+          // Footer kann kein component sein, brauche hier state und props
           // todo nach einem tastendruck im search input verliert er focus, aber kein onblur? eigener komponent, dann einfach bdrüber und footer disablen?
           Footer: () => (
             <Box sx={{ display: 'flex', mb: 2, mx: 2 }}>
