@@ -34,8 +34,7 @@ const Navbar = ({ session }: Props) => {
                 size="large"
                 color="inherit"
                 onClick={() => {
-                  // wichtig: muss post sein, sonst löscht sich das cookie nicht
-                  axios.post('/api/session/logout').then(() => {
+                  axios.delete('/api/session').then(() => {
                     router.push('/login');
                   });
                 }}

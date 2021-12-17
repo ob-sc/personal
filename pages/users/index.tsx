@@ -23,7 +23,7 @@ const Users = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>)
 
   const actionHandler = () => {
     setSyncing(true);
-    axios.put('/api/directory/sync').finally(() => {
+    axios.post('/api/directory/sync').finally(() => {
       mutate();
       setSyncing(false);
     });

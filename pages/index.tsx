@@ -6,7 +6,7 @@ export const getServerSideProps = withSessionSsr();
 
 // Home: NextPage
 const Home = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const ka = 'Ka was ich mit der Seite mache';
+  const ka = 'Home';
   return <Layout session={user}>{ka}</Layout>;
 };
 

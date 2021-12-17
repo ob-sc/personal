@@ -8,15 +8,13 @@ import {
 } from '../../types/user';
 import { DBUser } from '../db/users';
 
-// todo alle exceptions testen
-
 type ParseUser = (dbUser: DBUser, domainUser: DomainUser, employee: Employee) => ParsedUser;
 
 // string aus db (stations in users), mit komma getrennte stationsnummern
 export const parseStations = (stations: string | null | undefined): UserStations => {
-  if (!stations) return null;
-
   const numStations: UserStations = [];
+
+  if (!stations) return numStations;
 
   // leerstellen entfernen
   const stationsString = stations.replace(/\s+/g, '');
@@ -31,17 +29,6 @@ export const parseStations = (stations: string | null | undefined): UserStations
 
   return numStations;
 };
-
-// const findStation = (employee: Employee) => {
-//   let kst;
-//   for (const { names, customFields } of employee.customFieldSections) {
-//     if (names.de === 'API') {
-//       kst = customFields?.find(({ title }) => title.de === 'Kostenstelle')?.value;
-//     }
-//   }
-//   kst = Number(kst);
-//   return Number.isNaN(kst) ? undefined : kst;
-// };
 
 export const parseOUStation = (dn: string) => {
   const dnParts = dn.split('=');
@@ -77,10 +64,6 @@ const parseUser: ParseUser = (dbUser, domainUser, employee) => {
   const access = numericAccess[accessIndex as UserAccess] ?? 0;
 
   const stations = parseStations(stationString);
-
-  if (stations === null || stations.length === 0) {
-    throw new Error(`Keine Stationen in Feld stations bei ${username}`);
-  }
 
   const user: ParsedUser = {
     id: employee.id,

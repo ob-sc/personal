@@ -7,7 +7,7 @@ import db from '../../../src/db';
 import parseUser from '../../../src/lib/parseUser';
 import response from '../../../src/server/response';
 
-const loginHandler: NextApiHandler = async (req, res) => {
+const sessionHandler: NextApiHandler = async (req, res) => {
   const {
     body: { username, password },
     session,
@@ -15,9 +15,9 @@ const loginHandler: NextApiHandler = async (req, res) => {
   } = req;
   const { error, success, httpMethodError } = response(res);
 
-  let errorStatus = 400;
-  try {
-    if (method?.toUpperCase() === 'POST') {
+  const handleLogin = async () => {
+    let errorStatus = 400;
+    try {
       const isUndefined = username === undefined || password === undefined;
 
       if (isUndefined) {
@@ -30,6 +30,7 @@ const loginHandler: NextApiHandler = async (req, res) => {
       client.destroy();
 
       const dbUser = await db.users.findOne({ where: { username } });
+
       if (dbUser === null) throw new Error('Benutzer nicht gefunden');
 
       // ab hier nicht mehr User-Eingabefehler
@@ -45,10 +46,36 @@ const loginHandler: NextApiHandler = async (req, res) => {
       session.user = user;
       await session.save();
       success('Login erfolgreich');
-    } else httpMethodError(method, { post: true });
-  } catch (err) {
-    error(err, errorStatus);
+    } catch (err) {
+      error(err, errorStatus);
+    }
+  };
+
+  const handleLogout = () => {
+    try {
+      req.session.destroy();
+      success('Session entfernt');
+    } catch (err) {
+      error(err);
+    }
+  };
+
+  switch (method?.toUpperCase()) {
+    case 'POST':
+      handleLogin();
+      break;
+    case 'DELETE':
+      handleLogout();
+      break;
+    default:
+      httpMethodError(method, { post: true, delete: true });
   }
 };
 
-export default withSessionApi(loginHandler, true);
+export default withSessionApi(sessionHandler, true);
+
+export const config = {
+  api: {
+    externalResolver: true,
+  },
+};

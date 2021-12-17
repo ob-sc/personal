@@ -1,19 +1,13 @@
 export type UserAccess = 'idl' | 'sl' | 'rl' | 'admin';
 export type UserRegion = 'alle' | 'hamburg' | 'berlin' | 'nord' | 'süd' | 'ost' | 'west' | 'mitte';
-export type UserStations = number[] | null;
+export type UserStations = number[];
 
 export interface ParsedUser {
   /** Jacando ID */
   id: string;
   /** username aus AD (sAMAccountName) */
   username: string;
-  /**
-   * 0: keine Berechtigung,
-   * 1: IDL,
-   * 2: SL,
-   * 3: RL,
-   * 4: Admin
-   */
+  /** leer (0), idl (1), sl (2), rl (3), admin (4) */
   access: number;
   /** Region oder null */
   region: UserRegion | null;

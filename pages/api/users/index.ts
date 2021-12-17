@@ -12,16 +12,20 @@ const userHandler: NextApiHandler = async (req, res) => {
     switch (method?.toUpperCase()) {
       case 'GET':
         data = await db.users.findAll();
-        return success(data);
+        success(data);
         break;
       default:
-        return httpMethodError(method, { get: true });
+        httpMethodError(method, { get: true });
     }
   } catch (err) {
-    return error(err);
+    error(err);
   }
-
-  success('stalled');
 };
 
 export default withSessionApi(userHandler);
+
+export const config = {
+  api: {
+    externalResolver: true,
+  },
+};

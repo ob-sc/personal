@@ -1,15 +1,10 @@
 import { useState } from 'react';
-import { Box, IconButton, Pagination, TextField } from '@mui/material';
-import {
-  GridColDef,
-  GridRowsProp,
-  DataGrid as MuiDataGrid,
-  useGridApiContext,
-  useGridState,
-} from '@mui/x-data-grid';
+import { Box } from '@mui/material';
+import { GridColDef, GridRowsProp, DataGrid as MuiDataGrid } from '@mui/x-data-grid';
 import { CellClickHandler, MouseEventHandler, ReactNode, RowClickHandler } from '../../../../types';
 import dataGridLocale from '../../util/dataGridLocale';
 import searchFilter from '../../util/searchFilter';
+import DataGridFooter from './DataGridFooter';
 
 interface Props {
   columns: GridColDef[];
@@ -18,25 +13,8 @@ interface Props {
   loading: boolean;
   rowClickHandler?: RowClickHandler;
   cellClickHandler?: CellClickHandler;
-  actionHandler: MouseEventHandler;
-  actionIcon: ReactNode;
-}
-
-function CustomPagination() {
-  const apiRef = useGridApiContext();
-  const [state] = useGridState(apiRef);
-
-  return (
-    <Pagination
-      color="primary"
-      variant="outlined"
-      shape="rounded"
-      size="large"
-      count={state.pagination.pageCount}
-      page={state.pagination.page + 1}
-      onChange={(event, value) => apiRef.current.setPage(value - 1)}
-    />
-  );
+  actionHandler?: MouseEventHandler;
+  actionIcon?: ReactNode;
 }
 
 const DataGrid = ({
@@ -72,27 +50,10 @@ const DataGrid = ({
         disableSelectionOnClick
         disableColumnSelector
         components={{
-          // Footer kann kein component sein, brauche hier state und props
-          // todo nach einem tastendruck im search input verliert er focus, aber kein onblur? eigener komponent, dann einfach bdrüber und footer disablen?
-          Footer: () => (
-            <Box sx={{ display: 'flex', mb: 2, mx: 2 }}>
-              <TextField
-                placeholder="Suche"
-                size="small"
-                value={search}
-                onChange={(e) => {
-                  setSearch(e.target.value);
-                }}
-              />
-              {actionHandler !== undefined ? (
-                <IconButton sx={{ ml: 2 }} onClick={actionHandler}>
-                  {actionIcon}
-                </IconButton>
-              ) : null}
-              <Box sx={{ flexGrow: 1 }} />
-              <CustomPagination />
-            </Box>
-          ),
+          Footer: DataGridFooter,
+        }}
+        componentsProps={{
+          footer: { search, setSearch, actionHandler, actionIcon },
         }}
       />
     </Box>

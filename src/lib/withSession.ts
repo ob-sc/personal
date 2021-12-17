@@ -32,6 +32,7 @@ const sessionPropHandler: (
 /**
  * Session wird vor Handler geprüft.
  * Gibt `req` auch das Session-Objekt.
+ * Bei Erfolg wird session erneuert.
  * @example
  * const userHandler: NextApiHandler = async (req, res) => { const { session } = req; ... };
  * export default withSessionApi(userHandler);
@@ -43,6 +44,7 @@ export const withSessionApi = (handler: NextApiHandler, noAuth?: boolean) => {
       res.status(401).json({ message: 'Nicht eingeloggt' });
       return;
     }
+    session.save();
     handler(req, res);
   };
 

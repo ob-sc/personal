@@ -55,26 +55,25 @@ const syncAdHandler: NextApiHandler = async (req, res) => {
       }
 
       const jacandoUserIds = jacandoUsers.map((user) => user.id);
-      const jacandoUserIdsUnique = new Set(jacandoUserIds); // muss ich nicht zum array machen, einfach .size method statt .length
+      const jacandoUserIdsUnique = new Set(jacandoUserIds);
 
       if (jacandoUserIdsUnique.size !== jacandoUsers.length) {
         logger.error('jacandoUserIdsUnique.size !== jacandoUsers.length');
       }
 
-      // für jeden AD-User
       for (let i = 0; i < adUsers.length; i++) {
         const adUser = adUsers[i];
         const username = sanitizedLower(adUser.sAMAccountName);
         const dbUsersIndex = dbUsers.findIndex(
           (dbUser) => sanitizedLower(dbUser.username) === username
         );
-        // wenn nicht in DB eingetragen und Mail im AD vorhanden suche in Jacando nach Mail
-        // manche AD User haben keine Mail, das sind dann keine richtigen User
+        // wenn nicht in DB eingetragen und Mail im AD vorhanden: suche in Jacando nach Mail
+        // manche AD User haben keine Mail, diese vernachlässigen
         if (dbUsersIndex === -1 && adUser.mail) {
           const jacandoUser = jacandoUsers.find(
             (jacUser) => sanitizedLower(jacUser.email) === sanitizedLower(adUser.mail)
           );
-          // wenn Jacando User gefunden dann Eintrag in DB, mit Station aus AD
+          // wenn Jacando User gefunden: Eintrag in DB, mit Station aus AD
           const adstation = parseOUStation(adUser.distinguishedName);
 
           if (jacandoUser) {
@@ -84,9 +83,8 @@ const syncAdHandler: NextApiHandler = async (req, res) => {
               domain: 'starcar',
               adstation,
             });
-          } // else throw new Error(`Kein Jacando User gefunden für ${username}`);
-          // todo statt console.log in array pushen und das als response senden
-        } else console.log(`kein user in jacando für ${username} mit Mail ${adUser.mail}`);
+          }
+        }
       }
       success();
     } else httpMethodError(method, { post: true });
