@@ -22,8 +22,7 @@ const response = (res: NextApiResponse) => ({
       if (arg instanceof Error) err = arg;
     }
 
-    if (status === 401 || status === 419) {
-      res.setHeader('WWW-Authenticate', 'Basic realm="https://personal.starcar.de"'); // todo realm noch richtig?
+    if (status === 403) {
       res.status(status).json({ message: message ?? 'Authentifizierung erforderlich' });
       return;
     }

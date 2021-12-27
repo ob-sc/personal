@@ -16,11 +16,15 @@ const sessionPropHandler: (
 ) => GetServerSidePropsResult<{ user: ParsedUser }> = ({ req }) => {
   const { user } = req.session;
 
+  console.log(req.url);
+
   if (user === undefined) {
+    const destination =
+      req.url && req.url !== '/' ? `/login?redirect=${encodeURIComponent(req.url)}` : '/login';
+
     return {
       redirect: {
-        // kann nicht unterscheiden ob expired oder einfach nur nicht angemeldet
-        destination: '/login?no_auth=true',
+        destination,
         permanent: false,
       },
     };
@@ -51,20 +55,11 @@ export const withSessionSsr = () => withIronSessionSsr(sessionPropHandler, sessi
  */
 export const withSessionApi = (handler: NextApiHandler, noAuth?: boolean) => {
   const authHandler: NextApiHandler = (req, res) => {
-    const { session, url } = req;
+    const { session } = req;
     const { error } = response(res);
     // nicht authentifiziert
     if (session.user === undefined) {
-      // wenn kein login-Versuch, ohne auth auf andere Seite wird von withIronSessionSsr redirect abgefangen
-      // deshalb die Annahme, dass ein Versuch von anderen Seiten mit abgelaufener Session sein müsste
-      // (user ist schon auf der Seite -> Cookie läuft ab -> Request wenn user zurück ist -> kommt obwohl abgelaufen weil kein wechsel)
-      if (url !== '/api/session') {
-        // 419 kein "offizieller" Fehlercode, kommt von Laravel und bedeutet: Page Expired (CSRF Token is missing or expired)
-        error('Session abgelaufen', 419);
-        return;
-      }
-      // bei /api/session: 401
-      error('Authentifizierung erforderlich', 401);
+      error('Authentifizierung erforderlich', 403);
       return;
     }
     // wenn authentifiziert, Session erneuern

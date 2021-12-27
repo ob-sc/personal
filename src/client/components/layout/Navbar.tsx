@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { ParsedUser } from '../../../../types/user';
 import NavLink from '../common/NavLink';
 import Logo from './Logo';
+import { useSessionContext } from '../../context/session';
 
 interface Props {
   session?: ParsedUser;
@@ -14,6 +15,14 @@ interface Props {
 
 const Navbar = ({ session }: Props) => {
   const router = useRouter();
+  const { updateSession } = useSessionContext();
+
+  const handleLogout = () => {
+    axios.delete('/api/session').then(() => {
+      updateSession(false);
+      router.push('/login');
+    });
+  };
 
   return (
     <Box component="nav" sx={{ flexGrow: 1, my: 2 }}>
@@ -30,15 +39,7 @@ const Navbar = ({ session }: Props) => {
 
               <Box sx={{ flexGrow: 1 }} />
 
-              <IconButton
-                size="large"
-                color="inherit"
-                onClick={() => {
-                  axios.delete('/api/session').then(() => {
-                    router.push('/login');
-                  });
-                }}
-              >
+              <IconButton size="large" color="inherit" onClick={handleLogout}>
                 <LogoutIcon />
               </IconButton>
             </>

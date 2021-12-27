@@ -4,9 +4,9 @@ import { useForm } from 'react-hook-form';
 import axios, { AxiosError } from 'axios';
 import { Box, Grid, Typography } from '@mui/material';
 import theme from '../../config/theme';
-import { isDev, trueString } from '../../src/lib/util';
 import Input from '../../src/client/components/common/Input';
 import SubmitButton from '../../src/client/components/common/SubmitButton';
+import { useSessionContext } from '../../src/client/context/session';
 
 interface LoginInputs {
   username: string;
@@ -23,21 +23,25 @@ const fullScreenCenter = {
 
 const Login = () => {
   const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState<AxiosError | null>(null); // eigentlich AxiosError statt Error
+  const [error, setError] = useState<AxiosError | null>(null);
   const {
     handleSubmit,
     control,
     formState: { errors },
   } = useForm<LoginInputs>();
   const router = useRouter();
-  const { expired, no_auth } = router.query;
+  const { redirect } = router.query;
+
+  const { session, updateSession } = useSessionContext();
 
   const onSubmit = async (values: LoginInputs) => {
     setSubmitting(true);
     try {
       await axios.post('/api/session', values);
-      setError(null);
-      router.push('/');
+      updateSession(true);
+      // router.push(typeof redirect === 'string' ? redirect : '/');
+      // setError(null);
+      // setSubmitting(false);
     } catch (err) {
       setSubmitting(false);
       setError(err as AxiosError);
@@ -77,24 +81,18 @@ const Login = () => {
             <Grid item>
               <SubmitButton text="Anmelden" loading={submitting} />
             </Grid>
+
             {error?.response ? (
               <Grid item xs={12}>
                 <Typography color="error" fontSize={12}>
-                  {isDev
-                    ? error.response.data.error ?? error.response.data.message
-                    : error.response.data.message ?? 'Es ist ein Fehler aufgetreten'}
+                  {error.response.data.message ?? 'Unbekannter Fehler'}
                 </Typography>
               </Grid>
             ) : null}
 
-            {trueString(expired) ? (
+            {!error?.response && session ? (
               <Grid item xs={12}>
                 <Typography color="error">Session ist abgelaufen</Typography>
-              </Grid>
-            ) : null}
-            {trueString(no_auth) ? (
-              <Grid item xs={12}>
-                <Typography color="error">Nicht angemeldet</Typography>
               </Grid>
             ) : null}
           </Grid>

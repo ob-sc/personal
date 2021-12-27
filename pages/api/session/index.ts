@@ -6,8 +6,6 @@ import db from '../../../src/db';
 import parseUser from '../../../src/lib/parseUser';
 import response from '../../../src/server/response';
 
-const ldap = new LdapAuth(ldapConfig);
-
 const sessionHandler: NextApiHandler = async (req, res) => {
   const {
     body: { username, password },
@@ -21,12 +19,15 @@ const sessionHandler: NextApiHandler = async (req, res) => {
       const isUndefined = username === undefined || password === undefined;
 
       if (isUndefined) {
-        error('Benutzername und Passwort müssen angegeben werden', 401);
+        error('Benutzername und Passwort müssen angegeben werden', 403);
       }
 
+      const ldap = new LdapAuth(ldapConfig);
+
       ldap.authenticate(username, password, async (err, user) => {
+        ldap.close();
         if (err) {
-          error(err, 401);
+          error(err, 403);
           return;
         }
 

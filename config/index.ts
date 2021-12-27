@@ -40,44 +40,38 @@ const env = {
 
 // DB
 
-const db = {
-  development: 'development',
-  test: 'test',
-  production: 'production',
-};
-const host = '127.0.0.1';
-const dialect = 'mysql' as Dialect;
-
-export const dbConfig: {
+type Databases = {
   development: SequelizeOptions;
   test: SequelizeOptions;
   production: SequelizeOptions;
-} = {
+};
+
+const host = '127.0.0.1';
+const dialect = 'mysql' as Dialect;
+
+const baseDbConfig: Partial<SequelizeOptions> = {
+  username: env.db_user,
+  password: env.db_password,
+  host,
+  dialect,
+  logging: false,
+};
+
+export const dbConfig: Databases = {
   development: {
-    username: env.db_user,
-    password: env.db_password,
-    database: db.development,
-    host,
-    dialect,
+    ...baseDbConfig,
+    database: 'development',
     logging: (msg: unknown) => logger.debug(msg),
   },
 
   test: {
-    username: env.db_user,
-    password: env.db_password,
-    database: db.test,
-    host,
-    dialect,
-    logging: false,
+    ...baseDbConfig,
+    database: 'test',
   },
 
   production: {
-    username: env.db_user,
-    password: env.db_password,
-    database: db.production,
-    host,
-    dialect,
-    logging: false,
+    ...baseDbConfig,
+    database: 'production',
   },
 };
 

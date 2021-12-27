@@ -44,8 +44,8 @@ export default function useRequest<Data = unknown, Error = unknown>(
     }
   );
 
-  // siehe withSession.ts, 419 bedeutet Session abgelaufen
-  if (error?.response?.status === 419) location.href = '/login?expired=true';
+  // hier meist wenn session abgelaufen (sonst würde frontend das schon abfangen)
+  if (error?.response?.status === 403) location.href = '/login';
 
   return {
     data: response && response.data,
