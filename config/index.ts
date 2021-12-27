@@ -30,7 +30,6 @@ const parseEnv = {
 const env = {
   db_user: parseEnv.toString('DB_USER'),
   db_password: parseEnv.toString('DB_PASSSWORD'),
-  jacando: parseEnv.toString('JACANDO'),
   ldap_user: parseEnv.toString('LDAP_USER'),
   ldap_password: parseEnv.toString('LDAP_PASSWORD'),
   ldap_url: parseEnv.toString('LDAP_URL'),
@@ -90,7 +89,6 @@ export const ldapConfig: LdapOptions = {
   url: env.ldap_url,
   bindDN: `CN=${env.ldap_user},CN=Users,${baseDN}`,
   bindCredentials: env.ldap_password,
-  bindProperty: 'sAMAccountName',
   searchBase: `OU=User,OU=STARCAR,${baseDN}`,
   searchFilter: '(sAMAccountName={{username}})',
   searchAttributes: [

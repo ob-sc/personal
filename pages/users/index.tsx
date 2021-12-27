@@ -18,7 +18,7 @@ const Users = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>)
 
   const columns: GridColDef[] = [
     { field: 'username', headerName: 'Benutzer', width: 200 },
-    { field: 'domain', headerName: 'Domain', width: 130 },
+    { field: 'domain', headerName: 'Domain', width: 150 },
     {
       field: 'access',
       headerName: 'Berechtigung',
@@ -32,12 +32,6 @@ const Users = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>)
       valueFormatter: (params) => (params.value === null ? '-' : params.value),
     },
     {
-      field: 'adstation',
-      headerName: 'AD Station',
-      width: 150,
-      valueFormatter: (params) => (params.value === 0 ? '-' : params.value),
-    },
-    {
       field: 'stations',
       headerName: 'Stationen',
       width: 150,
@@ -46,14 +40,14 @@ const Users = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>)
     {
       field: 'createdAt',
       headerName: 'Erstellt',
-      width: 100,
+      width: 150,
       type: 'date',
       valueFormatter: (params) => toLocalDate(params.value as string),
     },
     {
       field: 'updatedAt',
       headerName: 'Update',
-      width: 100,
+      width: 150,
       type: 'date',
       valueFormatter: (params) => toLocalDate(params.value as string),
     },

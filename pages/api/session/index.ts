@@ -27,7 +27,8 @@ const sessionHandler: NextApiHandler = async (req, res) => {
 
       ldap.authenticate(username, password, async (err, user) => {
         if (err) {
-          throw err instanceof Error ? err : new Error(err);
+          error(err, errorStatus);
+          return;
         }
 
         const dbUser = await db.users.findOne({ where: { username } });
@@ -41,6 +42,7 @@ const sessionHandler: NextApiHandler = async (req, res) => {
 
         session.user = parsed;
         await session.save();
+
         success('Login erfolgreich');
       });
     } catch (err) {

@@ -10,7 +10,7 @@ const response = (res: NextApiResponse) => ({
 
   error: (...params: unknown[]) => {
     let status = 500;
-    let message = 'Es ist ein Fehler aufgetreten';
+    let message;
     let err: Error | undefined;
 
     for (const arg of params) {
@@ -19,8 +19,10 @@ const response = (res: NextApiResponse) => ({
       if (arg instanceof Error) err = arg;
     }
 
+    if (message === undefined) message = err?.message ?? 'Unbekannter Fehler';
+
     if (status >= 400) logger.error(err?.message ?? message);
-    res.status(status).json({ message, error: err?.message });
+    res.status(status).json({ message });
   },
 
   httpMethodError: (method: string | undefined, allowed: ('get' | 'post' | 'put' | 'delete')[]) => {
@@ -29,7 +31,7 @@ const response = (res: NextApiResponse) => ({
     res
       .setHeader('Allow', upperMethods)
       .status(405)
-      .json({ error: method ? `Methode ${method} nicht erlaubt` : 'Keine Methode angegeben' });
+      .json({ message: method ? `Methode ${method} nicht erlaubt` : 'Keine Methode angegeben' });
   },
 });
 

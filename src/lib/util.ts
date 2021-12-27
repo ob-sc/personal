@@ -20,3 +20,10 @@ export const toLocalDate = (date: string | undefined | null) => {
 export const trueString = (str: unknown) => str === 'true' || str === true;
 
 export const sanitizedLower = (str: string) => str.trim().toLowerCase();
+
+export const createError = (err: unknown) => {
+  if (err instanceof Error) return err;
+  if (typeof err === 'string') return new Error(err);
+
+  return new Error('Unbekannter Fehler');
+};

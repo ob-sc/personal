@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import axios, { AxiosError } from 'axios';
 import { Box, Grid, Typography } from '@mui/material';
 import theme from '../../config/theme';
-import { trueString } from '../../src/lib/util';
+import { isDev, trueString } from '../../src/lib/util';
 import Input from '../../src/client/components/common/Input';
 import SubmitButton from '../../src/client/components/common/SubmitButton';
 
@@ -85,7 +85,9 @@ const Login = () => {
             {error?.response ? (
               <Grid item xs={12}>
                 <Typography color="error" fontSize={12}>
-                  {error.response.data.error}
+                  {isDev
+                    ? error.response.data.error ?? error.response.data.message
+                    : error.response.data.message ?? 'Es ist ein Fehler aufgetreten'}
                 </Typography>
               </Grid>
             ) : null}

@@ -40,7 +40,7 @@ const sessionPropHandler: (
 export const withSessionApi = (handler: NextApiHandler, noAuth?: boolean) => {
   const authHandler: NextApiHandler = (req, res) => {
     const { session } = req;
-    if (session.user?.id === undefined) {
+    if (session.user === undefined) {
       res.status(401).json({ message: 'Nicht eingeloggt' });
       return;
     }
