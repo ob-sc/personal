@@ -30,7 +30,7 @@ const Login = () => {
     formState: { errors },
   } = useForm<LoginInputs>();
   const router = useRouter();
-  const { expired } = router.query;
+  const { expired, no_auth } = router.query;
 
   const onSubmit = async (values: LoginInputs) => {
     setSubmitting(true);
@@ -61,11 +61,6 @@ const Login = () => {
           }}
         >
           <Grid container spacing={1}>
-            {trueString(expired) ? (
-              <Grid item xs={12}>
-                <Typography color="error">Session ist abgelaufen</Typography>
-              </Grid>
-            ) : null}
             <Grid item xs={12}>
               <Input name="username" label="Benutzer" control={control} errors={errors} required />
             </Grid>
@@ -89,6 +84,17 @@ const Login = () => {
                     ? error.response.data.error ?? error.response.data.message
                     : error.response.data.message ?? 'Es ist ein Fehler aufgetreten'}
                 </Typography>
+              </Grid>
+            ) : null}
+
+            {trueString(expired) ? (
+              <Grid item xs={12}>
+                <Typography color="error">Session ist abgelaufen</Typography>
+              </Grid>
+            ) : null}
+            {trueString(no_auth) ? (
+              <Grid item xs={12}>
+                <Typography color="error">Nicht angemeldet</Typography>
               </Grid>
             ) : null}
           </Grid>

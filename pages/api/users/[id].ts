@@ -12,12 +12,15 @@ const userHandler: NextApiHandler = (req, res) => {
   try {
     switch (method?.toUpperCase()) {
       case 'GET':
+        console.log('ho');
         success({ id });
         break;
       default:
+        console.log('hi');
         httpMethodError(method, ['get']);
     }
   } catch (err) {
+    console.log('hi');
     error(err);
   }
 };

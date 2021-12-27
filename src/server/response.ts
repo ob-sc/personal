@@ -4,8 +4,11 @@ import logger from '../lib/log';
 const response = (res: NextApiResponse) => ({
   success: (data?: string | object[] | object) => {
     res.status(data ? 200 : 204);
-    if (!data) res.end();
-    else res.json(typeof data === 'string' ? { message: data } : data);
+    if (!data) {
+      res.end();
+      return;
+    }
+    res.json(typeof data === 'string' ? { message: data } : data);
   },
 
   error: (...params: unknown[]) => {
@@ -17,6 +20,12 @@ const response = (res: NextApiResponse) => ({
       if (typeof arg === 'number') status = arg;
       if (typeof arg === 'string') message = arg;
       if (arg instanceof Error) err = arg;
+    }
+
+    if (status === 401 || status === 419) {
+      res.setHeader('WWW-Authenticate', 'Basic realm="https://personal.starcar.de"'); // todo realm noch richtig?
+      res.status(status).json({ message: message ?? 'Authentifizierung erforderlich' });
+      return;
     }
 
     if (message === undefined) message = err?.message ?? 'Unbekannter Fehler';

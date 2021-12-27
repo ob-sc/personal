@@ -1,5 +1,9 @@
 # Datenbank
 
+## Tabellen
+
+Siehe `src/db/`, jede Tabelle eine Datei.
+
 ## Installation
 
 MySQL installieren und einrichten
@@ -20,86 +24,22 @@ FLUSH PRIVILEGES;
 exit
 ```
 
-Schauen ob der Service läuft mit `systemctl status mysql.service`, sonst starten. Schauen ob user und Passwort klappen mit `sudo mysqladmin -p -u starcar version`, im prompt Passwort eingeben. Dann DB importieren.
+Schauen ob der Service läuft mit `systemctl status mysql.service`, sonst starten. Schauen ob user und Passwort klappen mit `sudo mysqladmin -p -u starcar version`, im prompt Passwort eingeben. Wenns nicht klappt dann gibt es noch `sudo mysql -u root`, sonst DB importieren.
 
-## Sicherung der DB
+## Sicherung
 
-todo bla
+todo
 
-# Tabellen
+## Extrafelder der Mitarbeiter
 
-## Users
+- Status: IDL | SL | RL | ADMIN
 
-| Feld     | Beschreibung            | Beispiel                   |
-| -------- | ----------------------- | -------------------------- |
-| id       | Jacando ID              | `5eg5e2b211070502555bcb59` |
-| domain   | Domäne                  | `starcar`                  |
-| username | `sAMAccountName` aus AD | `max.mustermann`           |
+  - wenn leer: Disponent (minimale Berechtigungen)
 
-## zeiten
+- Extrastation: Stationen durch Komma getrennt | "\*" für alle Stationen
 
-- zu times
+  - wenn leer: Keine Extrastation
 
-- id: übernehmen wie bisher, primary und fortlaufend
+- Region: 'alle' | 'hamburg' | 'berlin' | 'nord' | 'süd' | 'ost' | 'west' | 'mitte'
 
-# todo
-
-- ich mache am besten neue tabellen und dann am besten iwas wie `INSERT INTO db_1.tabelle SELECT * FROM db_2.tabelle ...`, ka wie der genaue Befehl wäre
-
-  - mit sequelize? https://sequelize.org/master/manual/model-querying-basics.html#creating-in-bulk
-
-- datenmodell
-
-- datensicherung:
-
-  - db und upload in docker volumes
-  - ein bind mount mit backups
-  - diese backups täglich erstellen?
-
-- pdf in db nicht upload?
-
-## sequelize:
-
-- siehe links sequelize (typescript example)
-
-```js
-interface ProjectAttributes {
-  id: number;
-  ownerId: number;
-  name: string;
-}
-
-interface ProjectCreationAttributes extends Optional<ProjectAttributes, "id"> {}
-
-class Project extends Model<ProjectAttributes, ProjectCreationAttributes>
-  implements ProjectAttributes {
-  public id!: number;
-  public ownerId!: number;
-  public name!: string;
-
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
-}
-
-Project.init(
-  {
-    id: {
-      type: DataTypes.INTEGER.UNSIGNED,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    ownerId: {
-      type: DataTypes.INTEGER.UNSIGNED,
-      allowNull: false,
-    },
-    name: {
-      type: new DataTypes.STRING(128),
-      allowNull: false,
-    },
-  },
-  {
-    sequelize,
-    tableName: "projects",
-  }
-);
-```
+  - wenn leer: Keine Region

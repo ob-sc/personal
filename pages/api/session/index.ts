@@ -17,26 +17,22 @@ const sessionHandler: NextApiHandler = async (req, res) => {
   const { error, success, httpMethodError } = response(res);
 
   const handleLogin = async () => {
-    let errorStatus = 401;
     try {
       const isUndefined = username === undefined || password === undefined;
 
       if (isUndefined) {
-        throw new Error('Benutzername und Passwort müssen angegeben werden');
+        error('Benutzername und Passwort müssen angegeben werden', 401);
       }
 
       ldap.authenticate(username, password, async (err, user) => {
         if (err) {
-          error(err, errorStatus);
+          error(err, 401);
           return;
         }
 
         const dbUser = await db.users.findOne({ where: { username } });
 
         if (dbUser === null) throw new Error('Benutzer nicht gefunden');
-
-        // ab hier nicht mehr Auth-Fehler
-        errorStatus = 500;
 
         const parsed = parseUser(dbUser, user);
 
@@ -46,7 +42,7 @@ const sessionHandler: NextApiHandler = async (req, res) => {
         success('Login erfolgreich');
       });
     } catch (err) {
-      error(err, errorStatus);
+      error(err);
     }
   };
 

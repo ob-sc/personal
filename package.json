@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev | pino-pretty -c",
-    "trace": "NODE_OPTIONS='--trace-warnings' next dev | pino-pretty -c",
+    "debug": "NODE_OPTIONS='--trace-warnings' next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

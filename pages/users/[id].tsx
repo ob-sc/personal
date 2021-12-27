@@ -12,7 +12,7 @@ export const getServerSideProps = withSessionSsr();
 const User = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
   const { id } = router.query;
-  const { data, error } = useRequest<ParsedUser>({ url: `/api/users/${id}` });
+  const { data, error } = useRequest<ParsedUser>({ url: `/api/users/${id}`, method: 'put' });
 
   return (
     <Layout session={user}>{!data && !error ? <CircularProgress /> : JSON.stringify(data)}</Layout>
