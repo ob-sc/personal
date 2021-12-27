@@ -1,10 +1,6 @@
-import { useState } from 'react';
 import { InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
-import axios from 'axios';
 import { GridColDef } from '@mui/x-data-grid';
-import { CircularProgress } from '@mui/material';
-import SyncIcon from '@mui/icons-material/Sync';
 import { withSessionSsr } from '../../src/lib/withSession';
 import Layout from '../../src/client/components/layout/Layout';
 import useRequest from '../../src/client/hooks/useRequest';
@@ -17,17 +13,8 @@ export const getServerSideProps = withSessionSsr();
 
 // Home: NextPage
 const Users = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const { data, error, mutate } = useRequest<DBUser[]>({ url: '/api/users' });
+  const { data, error } = useRequest<DBUser[]>({ url: '/api/users' });
   const router = useRouter();
-  const [syncing, setSyncing] = useState(false);
-
-  const actionHandler = () => {
-    setSyncing(true);
-    axios.post('/api/directory/sync').finally(() => {
-      mutate();
-      setSyncing(false);
-    });
-  };
 
   const columns: GridColDef[] = [
     { field: 'username', headerName: 'Benutzer', width: 200 },
@@ -85,8 +72,6 @@ const Users = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>)
         error={error !== undefined}
         loading={!data && !error}
         rowClickHandler={rowClickHandler}
-        actionHandler={actionHandler}
-        actionIcon={syncing ? <CircularProgress size={22} /> : <SyncIcon />}
       />
     </Layout>
   );

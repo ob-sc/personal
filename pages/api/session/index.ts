@@ -1,11 +1,12 @@
 import { NextApiHandler } from 'next';
-import { Employee } from '../../../types/user';
+import LdapAuth from 'ldapauth-fork';
+import { ldapConfig } from '../../../config';
 import { withSessionApi } from '../../../src/lib/withSession';
-import ldap from '../../../src/server/ldap';
-import jacando from '../../../src/server/jacando';
 import db from '../../../src/db';
 import parseUser from '../../../src/lib/parseUser';
 import response from '../../../src/server/response';
+
+const ldap = new LdapAuth(ldapConfig);
 
 const sessionHandler: NextApiHandler = async (req, res) => {
   const {
@@ -16,7 +17,7 @@ const sessionHandler: NextApiHandler = async (req, res) => {
   const { error, success, httpMethodError } = response(res);
 
   const handleLogin = async () => {
-    let errorStatus = 400;
+    let errorStatus = 401;
     try {
       const isUndefined = username === undefined || password === undefined;
 
@@ -24,28 +25,24 @@ const sessionHandler: NextApiHandler = async (req, res) => {
         throw new Error('Benutzername und Passwort müssen angegeben werden');
       }
 
-      const client = await ldap.client();
-      const [adUser] = await ldap.operation.search(client, username);
-      await ldap.operation.auth(client, adUser?.distinguishedName ?? '', password);
-      client.destroy();
+      ldap.authenticate(username, password, async (err, user) => {
+        if (err) {
+          throw err instanceof Error ? err : new Error(err);
+        }
 
-      const dbUser = await db.users.findOne({ where: { username } });
+        const dbUser = await db.users.findOne({ where: { username } });
 
-      if (dbUser === null) throw new Error('Benutzer nicht gefunden');
+        if (dbUser === null) throw new Error('Benutzer nicht gefunden');
 
-      // ab hier nicht mehr User-Eingabefehler
-      errorStatus = 500;
+        // ab hier nicht mehr Auth-Fehler
+        errorStatus = 500;
 
-      const { id } = dbUser;
+        const parsed = parseUser(dbUser, user);
 
-      const employees = jacando('employees');
-      const employee = await employees.get<Employee>(id);
-
-      const user = parseUser(dbUser, adUser, employee);
-
-      session.user = user;
-      await session.save();
-      success('Login erfolgreich');
+        session.user = parsed;
+        await session.save();
+        success('Login erfolgreich');
+      });
     } catch (err) {
       error(err, errorStatus);
     }
@@ -68,7 +65,7 @@ const sessionHandler: NextApiHandler = async (req, res) => {
       handleLogout();
       break;
     default:
-      httpMethodError(method, { post: true, delete: true });
+      httpMethodError(method, ['post', 'delete']);
   }
 };
 

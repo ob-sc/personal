@@ -1,7 +1,7 @@
 import { Dialect, Options as SequelizeOptions } from 'sequelize';
-import { ClientOptions as LdapjsOptions } from 'ldapjs';
 import { IronSessionOptions } from 'iron-session';
 import logger from '../src/lib/log';
+import { Options as LdapOptions } from 'ldapauth-fork';
 
 const validateEnv = (envName: string, fallback?: string | number, number?: boolean) => {
   const env = process.env[envName];
@@ -34,14 +34,10 @@ const env = {
   ldap_user: parseEnv.toString('LDAP_USER'),
   ldap_password: parseEnv.toString('LDAP_PASSWORD'),
   ldap_url: parseEnv.toString('LDAP_URL'),
-  session_name: parseEnv.toString('SESSION_NAME', 'scp'),
+  session_name: parseEnv.toString('SESSION_NAME', 'scps'),
   session_password: parseEnv.toString('SESSION_PASSWORD'),
   session_ttl: parseEnv.toNumber('SESSION_TTL', 20 * 60),
 };
-
-// Jacando X
-
-export const jacandoConfig = env.jacando;
 
 // DB
 
@@ -88,14 +84,30 @@ export const dbConfig: {
 
 // LDAP
 
-export const ldapConfig: {
-  user: string;
-  password: string;
-  options: LdapjsOptions;
-} = {
-  user: env.ldap_user,
-  password: env.ldap_password,
-  options: { url: env.ldap_url },
+const baseDN = 'DC=starcar,DC=local';
+
+export const ldapConfig: LdapOptions = {
+  url: env.ldap_url,
+  bindDN: `CN=${env.ldap_user},CN=Users,${baseDN}`,
+  bindCredentials: env.ldap_password,
+  bindProperty: 'sAMAccountName',
+  searchBase: `OU=User,OU=STARCAR,${baseDN}`,
+  searchFilter: '(sAMAccountName={{username}})',
+  searchAttributes: [
+    'cn',
+    'sn',
+    'l',
+    'postalCode',
+    'telephoneNumber',
+    'givenName',
+    'distinguishedName',
+    'displayName',
+    'streetAddress',
+    'sAMAccountName',
+    'userPrincipalName',
+    'userAccountControl',
+    'mail',
+  ],
 };
 
 // SESSION

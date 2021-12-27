@@ -1,14 +1,7 @@
-import {
-  DomainUser,
-  Employee,
-  ParsedUser,
-  UserAccess,
-  UserRegion,
-  UserStations,
-} from '../../types/user';
+import { DomainUser, ParsedUser, UserAccess, UserRegion, UserStations } from '../../types/user';
 import { DBUser } from '../db/users';
 
-type ParseUser = (dbUser: DBUser, domainUser: DomainUser, employee: Employee) => ParsedUser;
+type ParseUser = (dbUser: DBUser, domainUser: DomainUser) => ParsedUser;
 
 // string aus db (stations in users), mit komma getrennte stationsnummern
 export const parseStations = (stations: string | null | undefined): UserStations => {
@@ -36,19 +29,8 @@ export const parseOUStation = (dn: string) => {
   return Number.isNaN(station) ? 0 : station;
 };
 
-const parseUser: ParseUser = (dbUser, domainUser, employee) => {
-  const {
-    username,
-    access: accessString,
-    region: regionString,
-    adstation,
-    stations: stationString,
-  } = dbUser;
-
-  const email = domainUser.mail.toLowerCase();
-  if (email !== employee.email.toLowerCase()) {
-    throw new Error(`AD Mail-Adresse von ${username} entspricht nicht der Jacando Adresse`);
-  }
+const parseUser: ParseUser = (dbUser, domainUser) => {
+  const { username, access: accessString, region: regionString, stations: stationString } = dbUser;
 
   const region =
     typeof regionString === 'string' ? (regionString.toLowerCase() as UserRegion) : null;
@@ -63,20 +45,21 @@ const parseUser: ParseUser = (dbUser, domainUser, employee) => {
   const accessIndex = accessString?.toLowerCase() ?? 'undefined';
   const access = numericAccess[accessIndex as UserAccess] ?? 0;
 
-  const stations = parseStations(stationString);
+  const ouStation = parseOUStation(domainUser.distinguishedName);
+
+  // 0 bei keiner OU Station
+  const extraStations = parseStations(stationString);
+
+  const stations = [ouStation, ...extraStations];
 
   const user: ParsedUser = {
-    id: employee.id,
     username,
+    email: domainUser.mail.toLowerCase(),
+    firstName: domainUser.givenName,
+    lastName: domainUser.sn,
     access,
     region,
-    adstation,
     stations,
-    email,
-    firstName: employee.firstName.trim(),
-    lastName: employee.lastName.trim(),
-    gender: employee.gender.trim(),
-    personellNumber: Number(employee.personellNumber),
   };
 
   return user;

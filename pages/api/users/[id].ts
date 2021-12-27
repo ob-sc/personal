@@ -15,7 +15,7 @@ const userHandler: NextApiHandler = (req, res) => {
         success({ id });
         break;
       default:
-        httpMethodError(method, { get: true });
+        httpMethodError(method, ['get']);
     }
   } catch (err) {
     error(err);

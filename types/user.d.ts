@@ -3,64 +3,23 @@ export type UserRegion = 'alle' | 'hamburg' | 'berlin' | 'nord' | 'süd' | 'ost'
 export type UserStations = number[];
 
 export interface ParsedUser {
-  /** Jacando ID */
-  id: string;
   /** username aus AD (sAMAccountName) */
   username: string;
+  /** Mail aus AD */
+  email: string;
+  /** Vorname aus AD */
+  firstName: string;
+  /** Nachname aus AD */
+  lastName: string;
   /** leer (0), idl (1), sl (2), rl (3), admin (4) */
   access: number;
   /** Region oder null */
   region: UserRegion | null;
-  /** Stationsnummer aus OU im AD */
-  adstation: number;
   /** Array aus stationen, "*" oder null */
   stations: UserStations;
-  /** Mail aus AD und Jacando wurde abgeglichen */
-  email: string;
-  /** Vorname aus Jacando */
-  firstName: string;
-  /** Nachname aus Jacando */
-  lastName: string;
-  /** Geschlecht aus Jacando */
-  gender: string;
-  /** Personalnummer aus Jacando */
-  personellNumber: number;
 }
 
-// Jacando
-
-// aus jacando /employees
-/* ACHTUNG: noch andere persönliche Daten, die wir nicht brauchen und auf jeden Fall raus müssen, immer nur mit parseUser() */
-export interface Employee {
-  id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  gender: string;
-  personellNumber: string;
-  clients: [{ id: string; name: string }];
-  roles: [{ name: string }];
-  updatedAt: string;
-  createdAt: string;
-  publicEmail: string;
-  imageUrl: string | null; // nicht sicher ob das stimmt, kein Bild zum testen (wird aber eh nicht benutzt)
-  archived: boolean;
-  customFieldSections: {
-    names: {
-      en?: string;
-      de: string;
-    };
-    customFields: {
-      title: {
-        de: string;
-      };
-      type: string;
-      value: string;
-    }[];
-  }[];
-}
-
-// LDAP Active Directory / Domain STARCAR
+// Active Directory / Domain STARCAR
 
 export interface DomainUser {
   cn: string; // "SC - Bergen, Ole"
@@ -75,15 +34,15 @@ export interface DomainUser {
   displayName: string; // "STARCAR GmbH - Ole Bergen"
   streetAddress: string; // "Süderstr. 282"
   sAMAccountName: string; // "bergen", Login-Name
-  sAMAccountType: string; // "805306368", diesen Typ für MA
   userPrincipalName: string; // "bergen@starcar.de"
-  objectClass: string[]; // ['top', 'person', 'organizationalPerson', 'user']
   userAccountControl: string; // Account aktiv | 512 = ja, 514 = nein
   mail: string; // "ole.bergen@starcar.de"
 }
 
 export interface DomainAllAttributes extends DomainUser {
   dn: string; // "CN=SC - Bergen\\, Ole,OU=_IT,OU=_Flotte,OU=Verwaltung,OU=User,OU=STARCAR,DC=starcar,DC=local"
+  sAMAccountType: string; // "805306368", diesen Typ für MA
+  objectClass: string[]; // ['top', 'person', 'organizationalPerson', 'user']
   controls: [];
   description: string; // "Hat NB von SC"
   instanceType: string; // "4"

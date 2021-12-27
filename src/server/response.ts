@@ -23,15 +23,11 @@ const response = (res: NextApiResponse) => ({
     res.status(status).json({ message, error: err?.message });
   },
 
-  httpMethodError: (method: string | undefined, allowed: { [key: string]: boolean }) => {
-    const allowedMethods: string[] = [];
-
-    for (const [k, v] of Object.entries(allowed)) {
-      if (v === true) allowedMethods.push(k.toUpperCase());
-    }
+  httpMethodError: (method: string | undefined, allowed: ('get' | 'post' | 'put' | 'delete')[]) => {
+    const upperMethods = allowed.map((m) => m.toUpperCase());
 
     res
-      .setHeader('Allow', allowedMethods)
+      .setHeader('Allow', upperMethods)
       .status(405)
       .json({ error: method ? `Methode ${method} nicht erlaubt` : 'Keine Methode angegeben' });
   },
