@@ -25,3 +25,26 @@ export const createError = (err: unknown) => {
 
   return new Error('Unbekannter Fehler');
 };
+
+export const redirectUrl = (url: string) => {
+  if (url.includes('_next')) {
+    const parts = url.split('/');
+
+    // die ersten 4 weg, letztes element ist .json
+    // bei /users/1 [ '', '_next', 'data', 'development', 'users', '1.json' ]
+    // development wird in prod nur durch ein bundle getauscht?
+    const slice = parts.slice(4);
+
+    // home
+    if (slice.length === 1 && slice[0] === 'index.json') return '/';
+
+    const json = slice.at(-1);
+    // hier muss es ein letztes element geben
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const [ressource] = json!.split('.json');
+    slice.pop();
+
+    return [...slice, ressource !== 'index' ? ressource : undefined].join('/');
+  }
+  return url;
+};

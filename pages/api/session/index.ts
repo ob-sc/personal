@@ -5,6 +5,22 @@ import { withSessionApi } from '../../../src/lib/withSession';
 import db from '../../../src/db';
 import parseUser from '../../../src/lib/parseUser';
 import response from '../../../src/server/response';
+import logger from '../../../src/lib/log';
+
+const parseLdapError = (err: unknown): Error => {
+  console.log(err);
+  // vermutlich LDAPError
+  if (err instanceof Error) {
+    if (err.message.includes('data 52e')) return new Error('Passwort falsch');
+  }
+
+  // das ist komischerweise nur string
+  if (typeof err === 'string') {
+    if (err.includes('no such user')) return new Error('Benutzer nicht gefunden');
+  }
+
+  return new Error(String(err));
+};
 
 const sessionHandler: NextApiHandler = async (req, res) => {
   const {
@@ -24,12 +40,23 @@ const sessionHandler: NextApiHandler = async (req, res) => {
 
       const ldap = new LdapAuth(ldapConfig);
 
+      ldap.on('error', (err) => {
+        logger.error(err);
+      });
+
       ldap.authenticate(username, password, async (err, user) => {
-        ldap.close();
+        ldap.close((er) => {
+          if (er) console.log('ldap close', er);
+        });
+
         if (err) {
-          error(err, 403);
+          const ldapError = parseLdapError(err);
+          error(ldapError, 403);
           return;
         }
+
+        // ole-test
+        // Password01
 
         const dbUser = await db.users.findOne({ where: { username } });
 

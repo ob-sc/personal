@@ -1,6 +1,6 @@
 import { InferGetServerSidePropsType } from 'next';
-import { useRouter } from 'next/router';
 import { GridColDef } from '@mui/x-data-grid';
+import { useRouter } from 'next/router';
 import { withSessionSsr } from '../../src/lib/withSession';
 import Layout from '../../src/client/components/layout/Layout';
 import useRequest from '../../src/client/hooks/useRequest';
@@ -14,6 +14,7 @@ export const getServerSideProps = withSessionSsr();
 // Home: NextPage
 const Users = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { data, error } = useRequest<DBUser[]>({ url: '/api/users' });
+
   const router = useRouter();
 
   const columns: GridColDef[] = [
@@ -55,6 +56,7 @@ const Users = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>)
 
   const rowClickHandler: RowClickHandler = async (e) => {
     const { id } = e;
+    // window.location.href = `/users/${id}`;
     router.push(`/users/${id}`);
   };
 

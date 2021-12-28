@@ -22,14 +22,14 @@ const response = (res: NextApiResponse) => ({
       if (arg instanceof Error) err = arg;
     }
 
+    if (message === undefined) message = err?.message ?? 'Unbekannter Fehler';
+    logger.error(message);
+
     if (status === 403) {
       res.status(status).json({ message: message ?? 'Authentifizierung erforderlich' });
       return;
     }
 
-    if (message === undefined) message = err?.message ?? 'Unbekannter Fehler';
-
-    if (status >= 400) logger.error(err?.message ?? message);
     res.status(status).json({ message });
   },
 

@@ -8,8 +8,13 @@ interface Props {
 
 const Logo = ({ clickHandler }: Props) => (
   <Box sx={{ '&:hover': { cursor: 'pointer' } }}>
-    {/* favicon hat einen png layer mit 256x256 px */}
-    <Image width="64px" height="64px" src="/favicon.ico" alt="logo" onClick={clickHandler} />
+    <Image
+      width="184px"
+      height="35px"
+      src="/logo_starcar2x.png"
+      alt="logo"
+      onClick={clickHandler}
+    />
   </Box>
 );
 

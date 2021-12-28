@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import axios, { AxiosError } from 'axios';
@@ -6,7 +6,6 @@ import { Box, Grid, Typography } from '@mui/material';
 import theme from '../../config/theme';
 import Input from '../../src/client/components/common/Input';
 import SubmitButton from '../../src/client/components/common/SubmitButton';
-import { useSessionContext } from '../../src/client/context/session';
 
 interface LoginInputs {
   username: string;
@@ -28,20 +27,42 @@ const Login = () => {
     handleSubmit,
     control,
     formState: { errors },
+    setError: setFormError,
   } = useForm<LoginInputs>();
   const router = useRouter();
+
   const { redirect } = router.query;
 
-  const { session, updateSession } = useSessionContext();
+  const [expired, setExpired] = useState('');
+
+  useEffect(() => {
+    if (window) setExpired(window.sessionStorage.getItem('session') ?? '');
+
+    if (error?.response?.data.message) {
+      const formError = error.response.data.message;
+
+      if (formError === 'Benutzer nicht gefunden') {
+        setFormError('username', {
+          message: formError,
+        });
+      }
+
+      if (formError === 'Passwort falsch') {
+        setFormError('password', {
+          message: formError,
+        });
+      }
+    }
+  }, [error?.response?.data.message, setFormError]);
 
   const onSubmit = async (values: LoginInputs) => {
     setSubmitting(true);
     try {
       await axios.post('/api/session', values);
-      updateSession(true);
-      // router.push(typeof redirect === 'string' ? redirect : '/');
-      // setError(null);
-      // setSubmitting(false);
+      window.sessionStorage.setItem('session', 'true');
+
+      router.push(typeof redirect === 'string' ? redirect : '/');
+      // window.location.href = typeof redirect === 'string' ? redirect : '/';
     } catch (err) {
       setSubmitting(false);
       setError(err as AxiosError);
@@ -84,13 +105,13 @@ const Login = () => {
 
             {error?.response ? (
               <Grid item xs={12}>
-                <Typography color="error" fontSize={12}>
+                <Typography color="error">
                   {error.response.data.message ?? 'Unbekannter Fehler'}
                 </Typography>
               </Grid>
             ) : null}
 
-            {!error?.response && session ? (
+            {!error?.response && expired === 'true' ? (
               <Grid item xs={12}>
                 <Typography color="error">Session ist abgelaufen</Typography>
               </Grid>

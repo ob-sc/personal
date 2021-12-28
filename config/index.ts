@@ -108,4 +108,5 @@ export const sessionConfig: IronSessionOptions = {
   cookieName: env.session_name,
   password: env.session_password,
   ttl: env.session_ttl, // in sekunden
+  cookieOptions: { maxAge: env.session_ttl - 30 },
 };

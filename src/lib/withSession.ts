@@ -3,6 +3,7 @@ import { GetServerSidePropsContext, GetServerSidePropsResult, NextApiHandler } f
 import { sessionConfig } from '../../config';
 import { ParsedUser } from '../../types/user';
 import response from '../server/response';
+import { redirectUrl } from './util';
 
 declare module 'iron-session' {
   interface IronSessionData {
@@ -16,11 +17,10 @@ const sessionPropHandler: (
 ) => GetServerSidePropsResult<{ user: ParsedUser }> = ({ req }) => {
   const { user } = req.session;
 
-  console.log(req.url);
-
-  if (user === undefined) {
-    const destination =
-      req.url && req.url !== '/' ? `/login?redirect=${encodeURIComponent(req.url)}` : '/login';
+  if (user?.username === undefined) {
+    const url = redirectUrl(req.url ?? '/');
+    const encodeRedirect = `/login?redirect=${encodeURIComponent(url)}`;
+    const destination = url !== '/' ? encodeRedirect : '/login';
 
     return {
       redirect: {

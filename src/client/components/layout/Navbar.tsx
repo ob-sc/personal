@@ -2,10 +2,9 @@ import { AppBar, Box, IconButton, Toolbar } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import Logo from './Logo';
 import { ParsedUser } from '../../../../types/user';
 import NavLink from '../common/NavLink';
-import Logo from './Logo';
-import { useSessionContext } from '../../context/session';
 
 interface Props {
   session?: ParsedUser;
@@ -15,11 +14,11 @@ interface Props {
 
 const Navbar = ({ session }: Props) => {
   const router = useRouter();
-  const { updateSession } = useSessionContext();
 
   const handleLogout = () => {
     axios.delete('/api/session').then(() => {
-      updateSession(false);
+      window.sessionStorage.clear();
+      // window.location.href = '/login';
       router.push('/login');
     });
   };
@@ -28,7 +27,12 @@ const Navbar = ({ session }: Props) => {
     <Box component="nav" sx={{ flexGrow: 1, my: 2 }}>
       <AppBar position="static" color="transparent" elevation={0}>
         <Toolbar>
-          <Logo clickHandler={() => router.push('/')} />
+          <Logo
+            clickHandler={() => {
+              // window.location.href = '/';
+              router.push('/');
+            }}
+          />
           {session !== undefined ? (
             <>
               <Box sx={{ width: 50 }} />
