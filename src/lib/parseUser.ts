@@ -31,6 +31,8 @@ export const parseOUStation = (dn: string) => {
 
 const parseUser: ParseUser = (dbUser, domainUser) => {
   const { username, access: accessString, region: regionString, stations: stationString } = dbUser;
+  const { distinguishedName, mail, givenName, sn } = domainUser;
+  const email = mail?.toLowerCase() ?? '';
 
   const region =
     typeof regionString === 'string' ? (regionString.toLowerCase() as UserRegion) : null;
@@ -45,7 +47,7 @@ const parseUser: ParseUser = (dbUser, domainUser) => {
   const accessIndex = accessString?.toLowerCase() ?? 'undefined';
   const access = numericAccess[accessIndex as UserAccess] ?? 0;
 
-  const ouStation = parseOUStation(domainUser.distinguishedName);
+  const ouStation = parseOUStation(distinguishedName);
 
   // 0 bei keiner OU Station
   const extraStations = parseStations(stationString);
@@ -54,9 +56,9 @@ const parseUser: ParseUser = (dbUser, domainUser) => {
 
   const user: ParsedUser = {
     username,
-    email: domainUser.mail.toLowerCase(),
-    firstName: domainUser.givenName,
-    lastName: domainUser.sn,
+    email,
+    firstName: givenName,
+    lastName: sn,
     access,
     region,
     stations,

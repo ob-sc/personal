@@ -7,7 +7,7 @@ import Layout from '../src/client/components/layout/Layout';
 const Custom404 = () => (
   <Layout>
     <Head>
-      {/* eslint-disable-next-line @next/next/no-page-custom-font */}
+      {/* eslint-disable-next-line @next/next/no-page-custom-font, @next/next/google-font-display */}
       <link href="https://fonts.googleapis.com/css2?family=Cedarville+Cursive" rel="stylesheet" />
     </Head>
     <Container

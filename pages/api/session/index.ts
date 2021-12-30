@@ -4,11 +4,12 @@ import { ldapConfig } from '../../../config';
 import { withSessionApi } from '../../../src/lib/withSession';
 import db from '../../../src/db';
 import parseUser from '../../../src/lib/parseUser';
-import response from '../../../src/server/response';
+import { error, httpMethodError, success } from '../../../src/server/response';
 import logger from '../../../src/lib/log';
+import { unresolved } from '../../../src/lib/util';
 
+// todo mit ldapjs in das modul
 const parseLdapError = (err: unknown): Error => {
-  console.log(err);
   // vermutlich LDAPError
   if (err instanceof Error) {
     if (err.message.includes('data 52e')) return new Error('Passwort falsch');
@@ -28,14 +29,13 @@ const sessionHandler: NextApiHandler = async (req, res) => {
     session,
     method,
   } = req;
-  const { error, success, httpMethodError } = response(res);
 
   const handleLogin = async () => {
     try {
       const isUndefined = username === undefined || password === undefined;
 
       if (isUndefined) {
-        error('Benutzername und Passwort müssen angegeben werden', 403);
+        error(res, 'Benutzername und Passwort müssen angegeben werden', 403);
       }
 
       const ldap = new LdapAuth(ldapConfig);
@@ -45,41 +45,41 @@ const sessionHandler: NextApiHandler = async (req, res) => {
       });
 
       ldap.authenticate(username, password, async (err, user) => {
-        ldap.close((er) => {
-          if (er) console.log('ldap close', er);
-        });
+        ldap.close();
 
         if (err) {
           const ldapError = parseLdapError(err);
-          error(ldapError, 403);
+          error(res, ldapError, 403);
           return;
         }
 
-        // ole-test
-        // Password01
+        let dbUser = await db.users.findOne({ where: { username } });
 
-        const dbUser = await db.users.findOne({ where: { username } });
-
-        if (dbUser === null) throw new Error('Benutzer nicht gefunden');
+        if (dbUser === null) {
+          dbUser = await db.users.create({
+            domain: 'starcar',
+            username,
+          });
+        }
 
         const parsed = parseUser(dbUser, user);
 
         session.user = parsed;
         await session.save();
 
-        success('Login erfolgreich');
+        success(res, 'Login erfolgreich');
       });
     } catch (err) {
-      error(err);
+      error(res, err);
     }
   };
 
   const handleLogout = () => {
     try {
       req.session.destroy();
-      success('Session entfernt');
+      success(res, 'Session entfernt');
     } catch (err) {
-      error(err);
+      error(res, err);
     }
   };
 
@@ -91,14 +91,10 @@ const sessionHandler: NextApiHandler = async (req, res) => {
       handleLogout();
       break;
     default:
-      httpMethodError(method, ['post', 'delete']);
+      httpMethodError(res, method, ['POST', 'DELETE']);
   }
 };
 
 export default withSessionApi(sessionHandler, true);
 
-export const config = {
-  api: {
-    externalResolver: true,
-  },
-};
+export const config = unresolved;

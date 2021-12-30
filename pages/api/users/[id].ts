@@ -1,28 +1,34 @@
 import type { NextApiHandler } from 'next';
+import db from '../../../src/db';
+import { unresolved } from '../../../src/lib/util';
 import { withSessionApi } from '../../../src/lib/withSession';
-import response from '../../../src/server/response';
+import { error, httpMethodError, success } from '../../../src/server/response';
 
-const userHandler: NextApiHandler = (req, res) => {
+const userHandler: NextApiHandler = async (req, res) => {
   const {
     query: { id },
     method,
   } = req;
-  const { error, success, httpMethodError } = response(res);
+
+  const singleUser = async () => {
+    const user = await db.users.findOne({ where: { id } });
+
+    success(res, user);
+  };
 
   try {
     switch (method?.toUpperCase()) {
       case 'GET':
-        console.log(id, '  users id success');
-        success({ id });
+        singleUser();
         break;
       default:
-        console.log(method, '  users id method error');
-        httpMethodError(method, ['get']);
+        httpMethodError(res, method, ['GET']);
     }
   } catch (err) {
-    console.log(err, '  users id error');
-    error(err);
+    error(res, err);
   }
 };
 
 export default withSessionApi(userHandler);
+
+export const config = unresolved;

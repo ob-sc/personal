@@ -1,31 +1,30 @@
 import type { NextApiHandler } from 'next';
 import db from '../../../src/db';
+import { unresolved } from '../../../src/lib/util';
 import { withSessionApi } from '../../../src/lib/withSession';
-import response from '../../../src/server/response';
+import { error, httpMethodError, success } from '../../../src/server/response';
 
 const userHandler: NextApiHandler = async (req, res) => {
   const { method } = req;
-  const { error, success, httpMethodError } = response(res);
+
+  const allUsers = async () => {
+    const data = await db.users.findAll();
+    success(res, data);
+  };
 
   try {
-    let data;
     switch (method?.toUpperCase()) {
       case 'GET':
-        data = await db.users.findAll();
-        success(data);
+        allUsers();
         break;
       default:
-        httpMethodError(method, ['get']);
+        httpMethodError(res, method, ['GET']);
     }
   } catch (err) {
-    error(err);
+    error(res, err);
   }
 };
 
 export default withSessionApi(userHandler);
 
-export const config = {
-  api: {
-    externalResolver: true,
-  },
-};
+export const config = unresolved;

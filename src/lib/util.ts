@@ -1,5 +1,11 @@
 export const isDev = process.env.NODE_ENV !== 'production';
 
+export const unresolved = {
+  api: {
+    externalResolver: true,
+  },
+};
+
 export const prepend0 = (num: number) => (num < 10 ? `0${num}` : num);
 
 export const toLocalDate = (date: string | undefined | null) => {

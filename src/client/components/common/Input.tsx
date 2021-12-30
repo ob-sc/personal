@@ -4,6 +4,8 @@ import { Control, Controller, FieldError } from 'react-hook-form';
 interface Props {
   name: string;
   label: string;
+  // kann Control nicht genauer definieren ohne alle Objekte wie LoginInputs zu übergeben
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control: Control<any>;
   errors: Record<string, FieldError | undefined>;
   type?: 'text' | 'number' | 'password';
@@ -44,8 +46,10 @@ const Input = (props: Props) => {
           error={!!err}
           disabled={disabled}
           helperText={errorText}
+          autoComplete={
+            name === 'password' ? 'current-password' : name === 'username' ? 'username' : undefined
+          }
           {...field}
-          // autoComplete={autoComplete}
         />
       )}
     />

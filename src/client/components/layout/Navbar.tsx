@@ -2,18 +2,25 @@ import { AppBar, Box, IconButton, Toolbar } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import Logo from './Logo';
 import { ParsedUser } from '../../../../types/user';
+import useMobileScreen from '../../hooks/useMobileScreen';
 import NavLink from '../common/NavLink';
+import Logo from './Logo';
+import MobileMenu from './MobileMenu';
 
 interface Props {
   session?: ParsedUser;
 }
 
-// todo overflow in menu bei mobile, dann auch logo raus?
+const menuItems = [
+  { access: 0, route: '/temps', label: 'Aushilfen' },
+  { access: 2, route: '/employees', label: 'Mitarbeiter' },
+  { access: 4, route: '/users', label: 'Benutzer' },
+];
 
 const Navbar = ({ session }: Props) => {
   const router = useRouter();
+  const mobile = useMobileScreen();
 
   const handleLogout = () => {
     axios.delete('/api/session').then(() => {
@@ -33,21 +40,31 @@ const Navbar = ({ session }: Props) => {
               router.push('/');
             }}
           />
-          {session !== undefined ? (
+          {session === undefined ? null : (
             <>
-              <Box sx={{ width: 50 }} />
+              <Box sx={{ width: 20 }} />
 
-              <NavLink href="/temps">Aushilfen</NavLink>
-              {session.access > 1 ? <NavLink href="/employees">Mitarbeiter</NavLink> : null}
-              {session.access === 4 ? <NavLink href="/users">Benutzer</NavLink> : null}
+              {mobile
+                ? null
+                : menuItems
+                    .filter((item) => session.access >= item.access)
+                    .map((item) => (
+                      <NavLink key={item.route} href={item.route}>
+                        {item.label}
+                      </NavLink>
+                    ))}
 
               <Box sx={{ flexGrow: 1 }} />
+
+              {!mobile ? null : (
+                <MobileMenu mobile={mobile} session={session} menuItems={menuItems} />
+              )}
 
               <IconButton size="large" color="inherit" onClick={handleLogout}>
                 <LogoutIcon />
               </IconButton>
             </>
-          ) : null}
+          )}
         </Toolbar>
       </AppBar>
     </Box>

@@ -2,7 +2,7 @@ import { withIronSessionApiRoute, withIronSessionSsr } from 'iron-session/next';
 import { GetServerSidePropsContext, GetServerSidePropsResult, NextApiHandler } from 'next';
 import { sessionConfig } from '../../config';
 import { ParsedUser } from '../../types/user';
-import response from '../server/response';
+import { error } from '../server/response';
 import { redirectUrl } from './util';
 
 declare module 'iron-session' {
@@ -56,10 +56,9 @@ export const withSessionSsr = () => withIronSessionSsr(sessionPropHandler, sessi
 export const withSessionApi = (handler: NextApiHandler, noAuth?: boolean) => {
   const authHandler: NextApiHandler = (req, res) => {
     const { session } = req;
-    const { error } = response(res);
     // nicht authentifiziert
     if (session.user === undefined) {
-      error('Authentifizierung erforderlich', 403);
+      error(res, 'Authentifizierung erforderlich', 403);
       return;
     }
     // wenn authentifiziert, Session erneuern
