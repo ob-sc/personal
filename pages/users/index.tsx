@@ -12,7 +12,7 @@ import { RowClickHandler } from '../../types';
 export const getServerSideProps = withSessionSsr();
 
 // Home: NextPage
-const Users = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const AllUsersPage = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { data, error } = useRequest<DBUser[]>({ url: '/api/users' });
 
   const router = useRouter();
@@ -73,4 +73,4 @@ const Users = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>)
   );
 };
 
-export default Users;
+export default AllUsersPage;

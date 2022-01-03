@@ -22,7 +22,9 @@ export interface CProps {
   children?: ReactNode;
 }
 
-// MUI DataGrid
+// MUI
+
+// DataGrid
 
 export type RowClickHandler = (
   params: GridRowParams<{
@@ -37,3 +39,7 @@ export type CellClickHandler = (
   event: MuiEvent<MouseEvent<Element, globalThis.MouseEvent>>,
   details: GridCallbackDetails
 ) => void;
+
+// MultiSelect Options
+
+export type SelectOption = { optval: number | string; optlabel: string };

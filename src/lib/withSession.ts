@@ -54,15 +54,17 @@ export const withSessionSsr = () => withIronSessionSsr(sessionPropHandler, sessi
  * export default withSessionApi(routeHandler);
  */
 export const withSessionApi = (handler: NextApiHandler, noAuth?: boolean) => {
-  const authHandler: NextApiHandler = (req, res) => {
+  const authHandler: NextApiHandler = async (req, res) => {
     const { session } = req;
     // nicht authentifiziert
     if (session.user === undefined) {
       error(res, 'Authentifizierung erforderlich', 403);
       return;
     }
+
     // wenn authentifiziert, Session erneuern
-    session.save();
+    await session.save();
+
     // weiter wie next()
     handler(req, res);
   };

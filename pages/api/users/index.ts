@@ -4,7 +4,7 @@ import { unresolved } from '../../../src/lib/util';
 import { withSessionApi } from '../../../src/lib/withSession';
 import { error, httpMethodError, success } from '../../../src/server/response';
 
-const userHandler: NextApiHandler = async (req, res) => {
+const usersHandler: NextApiHandler = async (req, res) => {
   const { method } = req;
 
   const allUsers = async () => {
@@ -25,6 +25,6 @@ const userHandler: NextApiHandler = async (req, res) => {
   }
 };
 
-export default withSessionApi(userHandler);
+export default withSessionApi(usersHandler);
 
 export const config = unresolved;

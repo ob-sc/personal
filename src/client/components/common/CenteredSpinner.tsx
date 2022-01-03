@@ -1,6 +1,10 @@
 import { Box, CircularProgress } from '@mui/material';
 
-const CenteredSpinner = () => (
+interface Props {
+  size?: number | string; // in px bei num, sonst unit mitgeben (3rem etc)
+}
+
+const CenteredSpinner = ({ size }: Props) => (
   <Box
     sx={{
       width: '100%',
@@ -10,7 +14,7 @@ const CenteredSpinner = () => (
       alignItems: 'center',
     }}
   >
-    <CircularProgress />
+    <CircularProgress size={size} />
   </Box>
 );
 

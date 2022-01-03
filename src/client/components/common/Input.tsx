@@ -1,5 +1,5 @@
 import { TextField } from '@mui/material';
-import { Control, Controller, FieldError } from 'react-hook-form';
+import { Control, Controller, FieldErrors } from 'react-hook-form';
 
 interface Props {
   name: string;
@@ -7,7 +7,7 @@ interface Props {
   // kann Control nicht genauer definieren ohne alle Objekte wie LoginInputs zu übergeben
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control: Control<any>;
-  errors: Record<string, FieldError | undefined>;
+  errors: FieldErrors;
   type?: 'text' | 'number' | 'password';
   disabled?: boolean;
   errorHelper?: boolean;

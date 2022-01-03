@@ -4,7 +4,7 @@ import { unresolved } from '../../../src/lib/util';
 import { withSessionApi } from '../../../src/lib/withSession';
 import { error, httpMethodError, success } from '../../../src/server/response';
 
-const userHandler: NextApiHandler = async (req, res) => {
+const userIdHandler: NextApiHandler = async (req, res) => {
   const {
     query: { id },
     method,
@@ -12,14 +12,13 @@ const userHandler: NextApiHandler = async (req, res) => {
 
   const singleUser = async () => {
     const user = await db.users.findOne({ where: { id } });
-
     success(res, user);
   };
 
   try {
     switch (method?.toUpperCase()) {
       case 'GET':
-        singleUser();
+        await singleUser();
         break;
       default:
         httpMethodError(res, method, ['GET']);
@@ -29,6 +28,6 @@ const userHandler: NextApiHandler = async (req, res) => {
   }
 };
 
-export default withSessionApi(userHandler);
+export default withSessionApi(userIdHandler);
 
 export const config = unresolved;

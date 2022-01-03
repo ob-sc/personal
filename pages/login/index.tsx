@@ -20,7 +20,7 @@ const fullScreenCenter = {
   justifyContent: 'center',
 };
 
-const Login = () => {
+const LoginPage = () => {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<AxiosError | null>(null);
   const {
@@ -123,4 +123,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginPage;
