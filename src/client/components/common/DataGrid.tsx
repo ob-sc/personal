@@ -29,13 +29,21 @@ const DataGrid = ({
 }: Props) => {
   const [search, setSearch] = useState('');
 
-  // mui bug: bei error === false trotzdem error state, undefined nicht
+  // MUI bug: bei error === false trotzdem error state, undefined nicht
   const err = error ? true : undefined;
 
   const filteredRows = searchFilter(search, rows);
 
   return (
-    <Box sx={{ height: 650, width: '100%' }}>
+    <Box
+      sx={{
+        height: 650,
+        width: '100%',
+        '& .MuiDataGrid-row:hover': {
+          cursor: 'pointer',
+        },
+      }}
+    >
       <MuiDataGrid
         rows={filteredRows}
         columns={columns}

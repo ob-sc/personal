@@ -3,7 +3,7 @@ import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 export type GetRequest = AxiosRequestConfig | null;
 
-interface Return<Data, Error>
+interface RequestReturn<Data, Error>
   extends Pick<
     SWRResponse<AxiosResponse<Data>, AxiosError<Error>>,
     'isValidating' | 'error' | 'mutate'
@@ -20,7 +20,7 @@ export interface Config<Data = unknown, Error = unknown>
 export default function useRequest<Data = unknown, Error = unknown>(
   request: GetRequest,
   { fallbackData, ...config }: Config<Data, Error> = {}
-): Return<Data, Error> {
+): RequestReturn<Data, Error> {
   const {
     data: response,
     error,
@@ -44,7 +44,7 @@ export default function useRequest<Data = unknown, Error = unknown>(
     }
   );
 
-  // hier meist wenn session abgelaufen (sonst würde frontend das schon abfangen)
+  // wenn session abgelaufen (sonst würde frontend das schon abfangen)
   if (error?.response?.status === 403) location.href = '/login';
 
   return {

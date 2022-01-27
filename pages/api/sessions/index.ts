@@ -10,14 +10,14 @@ import { unresolved } from '../../../src/lib/util';
 
 // todo mit ldapjs in das modul
 const parseLdapError = (err: unknown): Error => {
-  // vermutlich LDAPError
-  if (err instanceof Error) {
-    if (err.message.includes('data 52e')) return new Error('Passwort falsch');
+  // pw falsch, vermutlich Instanz von LDAPError
+  if (err instanceof Error && err.message.includes('data 52e')) {
+    return new Error('Passwort falsch');
   }
 
-  // das ist komischerweise nur string
-  if (typeof err === 'string') {
-    if (err.includes('no such user')) return new Error('Benutzer nicht gefunden');
+  // user nicht gefunden, komischerweise nur string
+  if (typeof err === 'string' && err.includes('no such user')) {
+    return new Error('Benutzer nicht gefunden');
   }
 
   return new Error(String(err));

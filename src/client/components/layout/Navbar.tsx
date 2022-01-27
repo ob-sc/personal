@@ -1,12 +1,12 @@
 import { AppBar, Box, IconButton, Toolbar } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
-import axios from 'axios';
 import { useRouter } from 'next/router';
 import { ParsedUser } from '../../../../types/user';
 import useMobileScreen from '../../hooks/useMobileScreen';
 import NavLink from '../common/NavLink';
 import Logo from './Logo';
 import MobileMenu from './MobileMenu';
+import { deleteSession } from '../../api/sessions';
 
 interface Props {
   session?: ParsedUser;
@@ -22,12 +22,11 @@ const Navbar = ({ session }: Props) => {
   const router = useRouter();
   const mobile = useMobileScreen();
 
-  const handleLogout = () => {
-    axios.delete('/api/session').then(() => {
-      window.sessionStorage.clear();
-      // window.location.href = '/login';
-      router.push('/login');
-    });
+  const handleLogout = async () => {
+    await deleteSession();
+    window.sessionStorage.clear();
+    // window.location.href = '/login';
+    router.push('/login');
   };
 
   return (

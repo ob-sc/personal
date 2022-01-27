@@ -3,17 +3,16 @@ import { GridColDef } from '@mui/x-data-grid';
 import { useRouter } from 'next/router';
 import { withSessionSsr } from '../../src/lib/withSession';
 import Layout from '../../src/client/components/layout/Layout';
-import useRequest from '../../src/client/hooks/useRequest';
 import DataGrid from '../../src/client/components/common/DataGrid';
-import { DBUser } from '../../src/db/users';
 import { toLocalDate } from '../../src/lib/util';
 import { RowClickHandler } from '../../types';
+import { useGetUsers } from '../../src/client/api/users';
 
 export const getServerSideProps = withSessionSsr();
 
 // Home: NextPage
 const AllUsersPage = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const { data, error } = useRequest<DBUser[]>({ url: '/api/users' });
+  const { data, error } = useGetUsers();
 
   const router = useRouter();
 

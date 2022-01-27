@@ -22,6 +22,12 @@ interface Props {
 
 // todo https://mui.com/components/selects/#MultipleSelectCheckmarks.tsx
 
+/**
+ * options ist Array mit Objekten, die optval und optlabel enthalten
+ * @example
+ * const options = [{ optval: 'hi', optlabel: 'ho' }, { optval: 'hu', optlabel: 'ha' }];
+ * return <MultiSelect options={options} ... />;
+ */
 function MultiSelect({ name, label, options, required, control, errors }: Props) {
   return (
     <Controller

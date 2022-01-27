@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
-import axios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 import { Box, Grid, Typography } from '@mui/material';
 import theme from '../../config/theme';
 import Input from '../../src/client/components/common/Input';
 import SubmitButton from '../../src/client/components/common/SubmitButton';
+import { postSession } from '../../src/client/api/sessions';
 
 interface LoginInputs {
   username: string;
@@ -58,7 +59,8 @@ const LoginPage = () => {
   const onSubmit = async (values: LoginInputs) => {
     setSubmitting(true);
     try {
-      await axios.post('/api/session', values);
+      await postSession(values);
+      // um zu sehen ob user schon eingeloggt war, dann kommt bei 403 "session abgelaufen"
       window.sessionStorage.setItem('session', 'true');
 
       router.push(typeof redirect === 'string' ? redirect : '/');
