@@ -10,6 +10,8 @@ import { GridCallbackDetails, GridCellParams, GridRowParams, MuiEvent } from '@m
 
 // React allgemein
 
+// abgewandelt (teilweise gleich) hier exportieren, um nur diese Datei für types zu importieren
+
 export type ReactNode = RN;
 export type ChangeEventHandler = CEH<HTMLTextAreaElement | HTMLInputElement>;
 export type FormEventHandler = FEH<HTMLFormElement>;
