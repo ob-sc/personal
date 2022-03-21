@@ -37,6 +37,7 @@ const LoginPage = () => {
   const [expired, setExpired] = useState('');
 
   useEffect(() => {
+    // session bleibt im backend, localstorage nur um zu zeigen, dass es eine gab und diese expired ist
     if (window) setExpired(window.sessionStorage.getItem('session') ?? '');
 
     if (error?.response?.data.message) {
