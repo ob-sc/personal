@@ -1,7 +1,17 @@
 import { useState } from 'react';
 import { Box } from '@mui/material';
-import { GridColDef, GridRowsProp, DataGrid as MuiDataGrid, deDE } from '@mui/x-data-grid';
-import { CellClickHandler, MouseEventHandler, ReactNode, RowClickHandler } from '../../../../types';
+import {
+  GridColDef,
+  GridRowsProp,
+  DataGrid as MuiDataGrid,
+  deDE,
+} from '@mui/x-data-grid';
+import {
+  CellClickHandler,
+  MouseEventHandler,
+  ReactNode,
+  RowClickHandler,
+} from '../../../../types';
 import searchFilter from '../../util/searchFilter';
 import DataGridFooter from './DataGridFooter';
 

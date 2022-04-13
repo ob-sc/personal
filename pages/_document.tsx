@@ -1,5 +1,11 @@
 import { Children } from 'react';
-import Document, { DocumentContext, Head, Html, Main, NextScript } from 'next/document';
+import Document, {
+  DocumentContext,
+  Head,
+  Html,
+  Main,
+  NextScript,
+} from 'next/document';
 import createEmotionServer from '@emotion/server/create-instance';
 import createEmotionCache from '../src/client/util/createEmotionCache';
 
@@ -13,7 +19,8 @@ class MyDocument extends Document {
     ctx.renderPage = () =>
       originalRenderPage({
         // eslint-disable-next-line react/display-name, @typescript-eslint/no-explicit-any
-        enhanceApp: (App: any) => (props) => <App emotionCache={cache} {...props} />,
+        enhanceApp: (App: any) => (props) =>
+          <App emotionCache={cache} {...props} />,
       });
 
     const initialProps = await Document.getInitialProps(ctx);

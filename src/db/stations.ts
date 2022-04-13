@@ -28,7 +28,12 @@ class Station extends Model<StationAttributes> implements StationAttributes {
 }
 
 export const stations = {
-  id: { type: DataTypes.NUMBER, allowNull: false, unique: true, primaryKey: true },
+  id: {
+    type: DataTypes.NUMBER,
+    allowNull: false,
+    unique: true,
+    primaryKey: true,
+  },
   name: { type: DataTypes.STRING, allowNull: false },
   address: { type: DataTypes.STRING, allowNull: false },
   city: { type: DataTypes.STRING, allowNull: false },

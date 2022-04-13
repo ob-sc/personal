@@ -56,7 +56,11 @@ const Navbar = ({ session }: Props) => {
               <Box sx={{ flexGrow: 1 }} />
 
               {!mobile ? null : (
-                <MobileMenu mobile={mobile} session={session} menuItems={menuItems} />
+                <MobileMenu
+                  mobile={mobile}
+                  session={session}
+                  menuItems={menuItems}
+                />
               )}
 
               <IconButton size="large" color="inherit" onClick={handleLogout}>

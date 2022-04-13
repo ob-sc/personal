@@ -8,7 +8,13 @@ interface Props {
 const Logo = ({ clickHandler }: Props) => (
   <Box sx={{ '&:hover': { cursor: 'pointer' } }}>
     {/* eslint-disable-next-line @next/next/no-img-element */}
-    <img width="184px" height="35px" src="/logo_starcar2x.png" alt="logo" onClick={clickHandler} />
+    <img
+      width="184px"
+      height="35px"
+      src="/logo_starcar2x.png"
+      alt="logo"
+      onClick={clickHandler}
+    />
   </Box>
 );
 

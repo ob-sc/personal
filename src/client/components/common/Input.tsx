@@ -47,7 +47,11 @@ const Input = (props: Props) => {
           disabled={disabled}
           helperText={errorText}
           autoComplete={
-            name === 'password' ? 'current-password' : name === 'username' ? 'username' : undefined
+            name === 'password'
+              ? 'current-password'
+              : name === 'username'
+              ? 'username'
+              : undefined
           }
           {...field}
         />

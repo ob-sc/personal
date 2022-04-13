@@ -11,7 +11,9 @@ import { useGetUsers } from '../../src/client/api/users';
 export const getServerSideProps = withSessionSsr();
 
 // Home: NextPage
-const AllUsersPage = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const AllUsersPage = ({
+  user,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { data, error } = useGetUsers();
 
   const router = useRouter();

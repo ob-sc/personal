@@ -9,7 +9,9 @@ import { useGetUser } from '../../src/client/api/users';
 
 export const getServerSideProps = withSessionSsr();
 
-const SingleUserPage = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const SingleUserPage = ({
+  user,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
   const { id } = router.query;
   const { data, isValidating } = useGetUser(Number(id));

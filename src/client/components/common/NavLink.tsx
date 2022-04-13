@@ -15,7 +15,12 @@ const NavLink = ({ href, children }: Props) => {
     <Link
       href={href}
       color={current === -1 ? 'secondary' : 'primary'}
-      sx={{ textDecoration: 'none', fontWeight: 500, mx: 2, '&:hover': { color: 'primary.dark' } }}
+      sx={{
+        textDecoration: 'none',
+        fontWeight: 500,
+        mx: 2,
+        '&:hover': { color: 'primary.dark' },
+      }}
     >
       {children}
     </Link>

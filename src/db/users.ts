@@ -16,7 +16,10 @@ export interface DBUser extends UserAttributes {
 }
 
 class User
-  extends Model<UserAttributes, Optional<UserAttributes, 'id' | 'access' | 'region' | 'stations'>>
+  extends Model<
+    UserAttributes,
+    Optional<UserAttributes, 'id' | 'access' | 'region' | 'stations'>
+  >
   implements UserAttributes
 {
   public id!: number;
@@ -50,7 +53,9 @@ export const users = {
   },
   region: {
     type: DataTypes.STRING,
-    isIn: [['alle', 'hamburg', 'berlin', 'nord', 'süd', 'ost', 'west', 'mitte']],
+    isIn: [
+      ['alle', 'hamburg', 'berlin', 'nord', 'süd', 'ost', 'west', 'mitte'],
+    ],
   },
   stations: {
     type: DataTypes.STRING,

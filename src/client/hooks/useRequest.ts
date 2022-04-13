@@ -13,7 +13,10 @@ interface RequestReturn<Data, Error>
 }
 
 export interface Config<Data = unknown, Error = unknown>
-  extends Omit<SWRConfiguration<AxiosResponse<Data>, AxiosError<Error>>, 'fallbackData'> {
+  extends Omit<
+    SWRConfiguration<AxiosResponse<Data>, AxiosError<Error>>,
+    'fallbackData'
+  > {
   fallbackData?: Data;
 }
 

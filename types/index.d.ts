@@ -6,7 +6,12 @@ import {
   ReactNode as RN,
   SyntheticEvent,
 } from 'react';
-import { GridCallbackDetails, GridCellParams, GridRowParams, MuiEvent } from '@mui/x-data-grid';
+import {
+  GridCallbackDetails,
+  GridCellParams,
+  GridRowParams,
+  MuiEvent,
+} from '@mui/x-data-grid';
 
 // React allgemein
 

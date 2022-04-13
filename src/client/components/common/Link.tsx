@@ -18,13 +18,26 @@ interface NextLinkComposedProps
   href?: NextLinkProps['href'];
 }
 
-export const NextLinkComposed = forwardRef<HTMLAnchorElement, NextLinkComposedProps>(
+export const NextLinkComposed = forwardRef<
+  HTMLAnchorElement,
+  NextLinkComposedProps
+>(
   // kann hier keine anonyme funtion passen
   // eslint-disable-next-line prefer-arrow-callback
   function NextLinkComposed(props, ref) {
     // muss href rausnehmen für Anchor
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { to, linkAs, href, replace, scroll, shallow, prefetch, locale, ...other } = props;
+    const {
+      to,
+      linkAs,
+      href,
+      replace,
+      scroll,
+      shallow,
+      prefetch,
+      locale,
+      ...other
+    } = props;
 
     return (
       <NextLink
@@ -53,7 +66,10 @@ export type LinkProps = {
 
 // https://nextjs.org/docs/#with-link
 // eslint-disable-next-line prefer-arrow-callback
-const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(props, ref) {
+const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(
+  props,
+  ref
+) {
   const {
     activeClassName = 'active',
     as: linkAs,
@@ -72,7 +88,8 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(props, ref) 
   });
 
   const isExternal =
-    typeof href === 'string' && (href.indexOf('http') === 0 || href.indexOf('mailto:') === 0);
+    typeof href === 'string' &&
+    (href.indexOf('http') === 0 || href.indexOf('mailto:') === 0);
 
   if (isExternal) {
     if (noLinkStyle) {
@@ -83,7 +100,9 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(props, ref) 
   }
 
   if (noLinkStyle) {
-    return <NextLinkComposed className={className} ref={ref} to={href} {...other} />;
+    return (
+      <NextLinkComposed className={className} ref={ref} to={href} {...other} />
+    );
   }
 
   return (

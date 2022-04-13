@@ -1,5 +1,9 @@
 import { withIronSessionApiRoute, withIronSessionSsr } from 'iron-session/next';
-import { GetServerSidePropsContext, GetServerSidePropsResult, NextApiHandler } from 'next';
+import {
+  GetServerSidePropsContext,
+  GetServerSidePropsResult,
+  NextApiHandler,
+} from 'next';
 import { sessionConfig } from '../../config';
 import { ParsedUser } from '../../types/user';
 import { error } from '../server/response';
@@ -43,7 +47,8 @@ const sessionPropHandler: (
  * const Manage = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) => { ... };
  * export default Manage;
  */
-export const withSessionSsr = () => withIronSessionSsr(sessionPropHandler, sessionConfig);
+export const withSessionSsr = () =>
+  withIronSessionSsr(sessionPropHandler, sessionConfig);
 
 /**
  * Middleware die auf login prüft (session existiert).

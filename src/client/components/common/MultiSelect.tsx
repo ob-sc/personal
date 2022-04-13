@@ -28,7 +28,14 @@ interface Props {
  * const options = [{ optval: 'hi', optlabel: 'ho' }, { optval: 'hu', optlabel: 'ha' }];
  * return <MultiSelect options={options} ... />;
  */
-function MultiSelect({ name, label, options, required, control, errors }: Props) {
+function MultiSelect({
+  name,
+  label,
+  options,
+  required,
+  control,
+  errors,
+}: Props) {
   return (
     <Controller
       name={name}
@@ -36,7 +43,12 @@ function MultiSelect({ name, label, options, required, control, errors }: Props)
       defaultValue=""
       rules={{ required }}
       render={({ field }) => (
-        <FormControl variant="outlined" error={!!errors[name]} fullWidth={true} size="small">
+        <FormControl
+          variant="outlined"
+          error={!!errors[name]}
+          fullWidth={true}
+          size="small"
+        >
           <InputLabel id={`${name}-label`}>{label}</InputLabel>
           <Select
             multiple
@@ -54,7 +66,10 @@ function MultiSelect({ name, label, options, required, control, errors }: Props)
             ) : (
               options.map(({ optval, optlabel }) => (
                 <MenuItem key={optval} value={optval}>
-                  <Checkbox color="primary" checked={field.value.indexOf(optval) > -1} />
+                  <Checkbox
+                    color="primary"
+                    checked={field.value.indexOf(optval) > -1}
+                  />
                   <ListItemText primary={optlabel} />
                 </MenuItem>
               ))

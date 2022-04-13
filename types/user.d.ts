@@ -1,5 +1,13 @@
 export type UserAccess = 'idl' | 'sl' | 'rl' | 'admin';
-export type UserRegion = 'alle' | 'hamburg' | 'berlin' | 'nord' | 'süd' | 'ost' | 'west' | 'mitte';
+export type UserRegion =
+  | 'alle'
+  | 'hamburg'
+  | 'berlin'
+  | 'nord'
+  | 'süd'
+  | 'ost'
+  | 'west'
+  | 'mitte';
 export type UserStations = number[];
 
 export interface ParsedUser {

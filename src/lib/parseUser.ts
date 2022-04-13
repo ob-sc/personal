@@ -1,10 +1,18 @@
-import { DomainUser, ParsedUser, UserAccess, UserRegion, UserStations } from '../../types/user';
+import {
+  DomainUser,
+  ParsedUser,
+  UserAccess,
+  UserRegion,
+  UserStations,
+} from '../../types/user';
 import { DBUser } from '../db/users';
 
 type ParseUser = (dbUser: DBUser, domainUser: DomainUser) => ParsedUser;
 
 // string aus db (stations in users), mit komma getrennte stationsnummern
-export const parseStations = (stations: string | null | undefined): UserStations => {
+export const parseStations = (
+  stations: string | null | undefined
+): UserStations => {
   const numStations: UserStations = [];
 
   if (!stations) return numStations;
@@ -30,12 +38,19 @@ export const parseOUStation = (dn: string) => {
 };
 
 const parseUser: ParseUser = (dbUser, domainUser) => {
-  const { username, access: accessString, region: regionString, stations: stationString } = dbUser;
+  const {
+    username,
+    access: accessString,
+    region: regionString,
+    stations: stationString,
+  } = dbUser;
   const { distinguishedName, mail, givenName, sn } = domainUser;
   const email = mail?.toLowerCase() ?? '';
 
   const region =
-    typeof regionString === 'string' ? (regionString.toLowerCase() as UserRegion) : null;
+    typeof regionString === 'string'
+      ? (regionString.toLowerCase() as UserRegion)
+      : null;
 
   const numericAccess = {
     idl: 1,

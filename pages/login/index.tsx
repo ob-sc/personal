@@ -90,7 +90,13 @@ const LoginPage = () => {
         >
           <Grid container spacing={1}>
             <Grid item xs={12}>
-              <Input name="username" label="Benutzer" control={control} errors={errors} required />
+              <Input
+                name="username"
+                label="Benutzer"
+                control={control}
+                errors={errors}
+                required
+              />
             </Grid>
             <Grid item xs={12}>
               <Input

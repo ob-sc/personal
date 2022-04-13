@@ -10,7 +10,12 @@ interface Props {
   actionIcon?: ReactNode;
 }
 
-const DataGridFooter = ({ search, setSearch, actionHandler, actionIcon }: Props) => {
+const DataGridFooter = ({
+  search,
+  setSearch,
+  actionHandler,
+  actionIcon,
+}: Props) => {
   const apiRef = useGridApiContext();
   const [state] = useGridState(apiRef);
 

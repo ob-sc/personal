@@ -8,7 +8,10 @@ const Custom404 = () => (
   <Layout>
     <Head>
       {/* eslint-disable-next-line @next/next/no-page-custom-font, @next/next/google-font-display */}
-      <link href="https://fonts.googleapis.com/css2?family=Cedarville+Cursive" rel="stylesheet" />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Cedarville+Cursive"
+        rel="stylesheet"
+      />
     </Head>
     <Container
       sx={{
@@ -19,7 +22,14 @@ const Custom404 = () => (
         flexDirection: 'column',
       }}
     >
-      <div style={{ fontFamily: "'Cedarville Cursive', cursive", fontSize: '10rem' }}>404</div>
+      <div
+        style={{
+          fontFamily: "'Cedarville Cursive', cursive",
+          fontSize: '10rem',
+        }}
+      >
+        404
+      </div>
     </Container>
   </Layout>
 );

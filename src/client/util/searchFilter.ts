@@ -1,4 +1,7 @@
-const searchFilter = <T = { [key: string]: unknown }>(searchInput: string, array: readonly T[]) =>
+const searchFilter = <T = { [key: string]: unknown }>(
+  searchInput: string,
+  array: readonly T[]
+) =>
   searchInput.length < 2
     ? array
     : array.filter((entry: T) => {

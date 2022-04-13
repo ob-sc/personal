@@ -3,7 +3,11 @@ import { IronSessionOptions } from 'iron-session';
 import logger from '../src/lib/log';
 import { Options as LdapOptions } from 'ldapauth-fork';
 
-const validateEnv = (envName: string, fallback?: string | number, number?: boolean) => {
+const validateEnv = (
+  envName: string,
+  fallback?: string | number,
+  number?: boolean
+) => {
   const env = process.env[envName];
   const message = `env ${envName}: nicht vorhanden`;
 
@@ -23,8 +27,10 @@ const validateEnv = (envName: string, fallback?: string | number, number?: boole
 };
 
 const parseEnv = {
-  toString: (envName: string, fallback?: string) => validateEnv(envName, fallback) as string,
-  toNumber: (envName: string, fallback?: number) => validateEnv(envName, fallback, true) as number,
+  toString: (envName: string, fallback?: string) =>
+    validateEnv(envName, fallback) as string,
+  toNumber: (envName: string, fallback?: number) =>
+    validateEnv(envName, fallback, true) as number,
 };
 
 const env = {
