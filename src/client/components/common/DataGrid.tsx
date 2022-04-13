@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { Box } from '@mui/material';
-import { GridColDef, GridRowsProp, DataGrid as MuiDataGrid } from '@mui/x-data-grid';
+import { GridColDef, GridRowsProp, DataGrid as MuiDataGrid, deDE } from '@mui/x-data-grid';
 import { CellClickHandler, MouseEventHandler, ReactNode, RowClickHandler } from '../../../../types';
-import dataGridLocale from '../../util/dataGridLocale';
 import searchFilter from '../../util/searchFilter';
 import DataGridFooter from './DataGridFooter';
 
@@ -49,7 +48,7 @@ const DataGrid = ({
         columns={columns}
         pageSize={10}
         rowsPerPageOptions={[10]}
-        localeText={dataGridLocale}
+        localeText={deDE.components.MuiDataGrid.defaultProps.localeText}
         loading={loading}
         error={err}
         onCellClick={cellClickHandler}

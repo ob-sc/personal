@@ -3,12 +3,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "pretty": "next dev | pino-pretty -c",
-    "debug": "NODE_OPTIONS='--trace-warnings' next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "deploy": "./deploy.sh"
+    "deploy": "./deploy.sh",
+    "pretty": "next dev | pino-pretty -c",
+    "debug": "NODE_OPTIONS='--trace-warnings' next dev"
   },
   "dependencies": {
     "@emotion/cache": "^11.6.0",
@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "@types/node": "16.11.7",
-    "@types/react": "17.0.34",
+    "@types/react": "18.0.1",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
     "eslint": "7",
@@ -42,8 +42,6 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-scza": "^1.0.6",
     "pino-pretty": "^7.3.0",
-    "prettier": "^2.4.1",
-    "prettier-config-scza": "^1.0.0"
-  },
-  "prettier": "prettier-config-scza"
+    "prettier": "^2.4.1"
+  }
 }

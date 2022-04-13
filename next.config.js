@@ -4,4 +4,8 @@ module.exports = {
     defaultLocale: 'de-DE',
   },
   reactStrictMode: true,
+  // für Docker
+  experimental: {
+    outputStandalone: true,
+  },
 };
