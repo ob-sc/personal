@@ -2,7 +2,8 @@
   "name": "personal",
   "private": true,
   "scripts": {
-    "dev": "next dev | pino-pretty -c",
+    "dev": "next dev",
+    "pretty": "next dev | pino-pretty -c",
     "debug": "NODE_OPTIONS='--trace-warnings' next dev",
     "build": "next build",
     "start": "next start",
