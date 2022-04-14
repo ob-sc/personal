@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 import { Box, IconButton, Pagination, TextField } from '@mui/material';
-import { useGridApiContext, useGridState } from '@mui/x-data-grid';
+import { useGridApiContext } from '@mui/x-data-grid';
 import { MouseEventHandler, ReactNode } from '../../../../types';
 
 interface Props {
@@ -17,7 +17,7 @@ const DataGridFooter = ({
   actionIcon,
 }: Props) => {
   const apiRef = useGridApiContext();
-  const [state] = useGridState(apiRef);
+  const { state } = apiRef.current;
 
   return (
     <Box sx={{ display: 'flex', mb: 2, mx: 2 }}>

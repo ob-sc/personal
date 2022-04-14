@@ -1,3 +1,14 @@
+# links
+
+## docker
+
+- https://github.com/vercel/next.js/blob/canary/docs/deployment.md#docker-image=
+- https://github.com/vercel/next.js/blob/canary/examples/with-docker
+- https://github.com/vercel/next.js/tree/canary/examples/with-docker-multi-env
+
+- https://github.com/kachar/yadi/tree/main/web/next.js
+- https://github.com/kachar/yadi#build-multi-stage-build-explained=
+
 ## infra
 
 - docker compose:

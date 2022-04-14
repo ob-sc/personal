@@ -9,7 +9,7 @@ const NODE_ENV = process.env.NODE_ENV ?? 'development';
 const config = dbConfig[NODE_ENV];
 const { database, username, password, ...options } = config;
 
-// workaround für "Error: Please install mysql2 package manually"
+// workaround für "Error: Please install mysql2 package manually" in Docker
 if (options.dialect === 'mysql') {
   options.dialectModule = mysql2;
 }
@@ -18,7 +18,7 @@ const hasOptions =
   database !== undefined && username !== undefined && password !== undefined;
 
 if (!hasOptions) {
-  logger.error('Fehler bei Sequelize initialisierung');
+  logger.error('Fehler bei Sequelize Optionen');
   process.exit(1);
 }
 

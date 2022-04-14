@@ -29,6 +29,9 @@ const Input = (props: Props) => {
   const err = errors[name];
   const errorText = errorHelper === true ? err : undefined;
 
+  const isPassword = name === 'password';
+  const isUsername = name === 'username';
+
   return (
     <Controller
       name={name}
@@ -47,9 +50,9 @@ const Input = (props: Props) => {
           disabled={disabled}
           helperText={errorText}
           autoComplete={
-            name === 'password'
+            isPassword
               ? 'current-password'
-              : name === 'username'
+              : isUsername
               ? 'username'
               : undefined
           }

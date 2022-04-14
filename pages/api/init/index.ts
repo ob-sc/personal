@@ -2,13 +2,13 @@ import { NextApiHandler } from 'next';
 import { sequelize } from '../../../src/db';
 import logger from '../../../src/lib/log';
 import { isDev, unresolved } from '../../../src/lib/util';
-import { httpMethodError } from '../../../src/server/response';
+import { error, httpMethodError } from '../../../src/server/response';
 
 const testSequelizeConnection = async () => {
   try {
     await sequelize.authenticate();
     logger.info('DB ok');
-  } catch (error) {
+  } catch (err) {
     logger.error('DB Fehler');
   }
 };
@@ -18,7 +18,7 @@ const initHandler: NextApiHandler = (req, res) => {
 
   const handleInit = () => {
     if (!isDev) {
-      logger.error('Kann auf prod nicht initialisieren');
+      error(res, 'Init auf prod nicht erlaubt');
       return;
     }
 

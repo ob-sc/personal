@@ -46,6 +46,7 @@ export const users = {
   username: {
     type: DataTypes.STRING,
     allowNull: false,
+    unique: true,
   },
   access: {
     type: DataTypes.STRING,
