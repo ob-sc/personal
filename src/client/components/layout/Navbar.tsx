@@ -39,6 +39,7 @@ const Navbar = ({ session }: Props) => {
               router.push('/');
             }}
           />
+
           {session === undefined ? null : (
             <>
               <Box sx={{ width: 20 }} />

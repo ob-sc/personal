@@ -1,3 +1,11 @@
+# todo
+
+login ohne db eintrag - was dann?
+eintrag wird leer gemacht
+fehlermeldung?
+
+---
+
 init, env und db (+ domain?) verbindung prüfen?
 
 testconnection wird jedes mal abgefragt?

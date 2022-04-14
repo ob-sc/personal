@@ -8,6 +8,11 @@ import Input from '../../src/client/components/common/Input';
 import SubmitButton from '../../src/client/components/common/SubmitButton';
 import { postSession } from '../../src/client/api/sessions';
 
+import { IconButton } from '@mui/material';
+import SyncIcon from '@mui/icons-material/Sync';
+import { isDev } from '../../src/lib/util';
+import { postInit } from '../../src/client/api/init';
+
 interface LoginInputs {
   username: string;
   password: string;
@@ -110,6 +115,15 @@ const LoginPage = () => {
             </Grid>
             <Grid item>
               <SubmitButton text="Anmelden" loading={submitting} />
+
+              {
+                // zum initialisieren von sequelize, wenn nicht prod
+                !isDev ? null : (
+                  <IconButton size="large" color="inherit" onClick={postInit}>
+                    <SyncIcon />
+                  </IconButton>
+                )
+              }
             </Grid>
 
             {error?.response ? (
