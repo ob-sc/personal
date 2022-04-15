@@ -4,28 +4,28 @@ import { withSessionSsr } from '../../src/lib/withSession';
 import Layout from '../../src/client/components/layout/Layout';
 import DataGrid from '../../src/client/components/common/DataGrid';
 import { RowClickHandler } from '../../types';
-import { useGetUsers } from '../../src/client/api/users';
-import userColumns from '../../src/client/tables/users';
+import stationColumns from '../../src/client/tables/stations';
+import { useGetStations } from '../../src/client/api/stations';
 
 export const getServerSideProps = withSessionSsr();
 
 // Home: NextPage
-const AllUsersPage = ({
+const AllStationsPage = ({
   user,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const { data, error } = useGetUsers();
+  const { data, error } = useGetStations();
   const router = useRouter();
 
   const rowClickHandler: RowClickHandler = async (e) => {
     const { id } = e;
     // window.location.href = `/users/${id}`;
-    router.push(`/users/${id}`);
+    router.push(`/stations/${id}`);
   };
 
   return (
     <Layout session={user}>
       <DataGrid
-        columns={userColumns}
+        columns={stationColumns}
         rows={data ?? []}
         error={error !== undefined}
         loading={!data && !error}
@@ -35,4 +35,4 @@ const AllUsersPage = ({
   );
 };
 
-export default AllUsersPage;
+export default AllStationsPage;

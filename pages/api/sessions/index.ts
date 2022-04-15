@@ -6,7 +6,7 @@ import db from '../../../src/db';
 import parseUser from '../../../src/lib/parseUser';
 import { error, httpMethodError, success } from '../../../src/server/response';
 import logger from '../../../src/lib/log';
-import { unresolved } from '../../../src/lib/util';
+import { isDev, unresolved } from '../../../src/lib/util';
 
 // todo mit ldapjs in das modul
 const parseLdapError = (err: unknown): Error => {
@@ -19,6 +19,8 @@ const parseLdapError = (err: unknown): Error => {
   if (typeof err === 'string' && err.includes('no such user')) {
     return new Error('Benutzer nicht gefunden');
   }
+
+  if (!isDev) return new Error('Fehler bei LDAP Authentifizierung');
 
   return new Error(String(err));
 };

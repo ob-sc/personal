@@ -28,6 +28,7 @@ const DataGridFooter = ({
         onChange={(e) => {
           setSearch(e.target.value);
         }}
+        sx={{ width: 300 }}
       />
 
       {actionHandler && actionIcon ? (

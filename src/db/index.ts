@@ -3,7 +3,7 @@ import mysql2 from 'mysql2';
 import { dbConfig } from '../../config';
 import logger from '../lib/log';
 import User, { users } from './users';
-// import Station, { stations } from './stations';
+import Station, { stations } from './stations';
 
 const NODE_ENV = process.env.NODE_ENV ?? 'development';
 const config = dbConfig[NODE_ENV];
@@ -25,8 +25,8 @@ if (!hasOptions) {
 export const sequelize = new Sequelize(database, username, password, options);
 
 User.init(users, { tableName: 'users', sequelize });
-// Station.init(stations, { tableName: 'stations', sequelize });
+Station.init(stations, { tableName: 'stations', sequelize });
 
-const db = { users: User };
+const db = { users: User, stations: Station };
 
 export default db;
