@@ -9,13 +9,10 @@ import {
 import {
   GridCallbackDetails,
   GridCellParams,
+  GridColDef,
   GridRowParams,
   MuiEvent,
 } from '@mui/x-data-grid';
-
-// React allgemein
-
-// abgewandelt (teilweise gleich) hier exportieren, um nur diese Datei für types zu importieren
 
 export type ReactNode = RN;
 export type ChangeEventHandler = CEH<HTMLTextAreaElement | HTMLInputElement>;
@@ -29,9 +26,19 @@ export interface CProps {
   children?: ReactNode;
 }
 
-// MUI
+// Form
+
+export interface FormField {
+  name: string;
+  label: string;
+  type: 'text' | 'number' | 'password' | 'date' | 'header';
+}
 
 // DataGrid
+
+export interface GridCol extends GridColDef {
+  sm?: boolean;
+}
 
 export type RowClickHandler = (
   params: GridRowParams<{

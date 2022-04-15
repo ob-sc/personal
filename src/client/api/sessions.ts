@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-export const postSession = async (values: unknown) =>
-  axios.post('/api/sessions', values);
+const route = '/api/sessions';
 
-export const deleteSession = async () => axios.delete('/api/sessions');
+export const postSession = (values: unknown) => axios.post(route, values);
+
+export const deleteSession = () => axios.delete(route);

@@ -5,6 +5,7 @@ export interface StationAttributes {
   name: string;
   address: string;
   city: string;
+  zip: number;
   telephone: string;
   fax: string;
   email: string;
@@ -17,6 +18,7 @@ class Station extends Model<StationAttributes> implements StationAttributes {
   public name!: string;
   public address!: string;
   public city!: string;
+  public zip!: number;
   public telephone!: string;
   public fax!: string;
   public email!: string;
@@ -36,10 +38,11 @@ export const stations = {
   name: { type: DataTypes.STRING, allowNull: false },
   address: { type: DataTypes.STRING, allowNull: false },
   city: { type: DataTypes.STRING, allowNull: false },
+  zip: { type: DataTypes.INTEGER, allowNull: false },
   telephone: { type: DataTypes.STRING },
   fax: { type: DataTypes.STRING },
   email: { type: DataTypes.STRING, allowNull: false },
-  region: { type: DataTypes.STRING },
+  region: { type: DataTypes.STRING, allowNull: false },
   subregion: { type: DataTypes.STRING },
 };
 

@@ -6,10 +6,10 @@ import NavLink from '../common/NavLink';
 import Logo from './Logo';
 import MobileMenu from './MobileMenu';
 import { deleteSession } from '../../api/sessions';
+import useMobileContext from '../../context/MobileContext';
 
 interface Props {
   session?: ParsedUser;
-  mobile: boolean;
 }
 
 const menuItems = [
@@ -19,8 +19,9 @@ const menuItems = [
   { access: 4, route: '/stations', label: 'Stationen' },
 ];
 
-const Navbar = ({ session, mobile }: Props) => {
+const Navbar = ({ session }: Props) => {
   const router = useRouter();
+  const { mobile } = useMobileContext();
 
   const handleLogout = async () => {
     await deleteSession();
@@ -30,7 +31,7 @@ const Navbar = ({ session, mobile }: Props) => {
   };
 
   return (
-    <Box component="nav" sx={{ flexGrow: 1, my: 2 }}>
+    <Box component="nav" sx={{ my: 2 }}>
       <AppBar position="static" color="transparent" elevation={0}>
         <Toolbar>
           <Logo

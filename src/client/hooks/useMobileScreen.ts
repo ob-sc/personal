@@ -1,23 +1,39 @@
 import { useEffect, useState } from 'react';
 import { useTheme } from '@mui/material';
 
-const useMobileScreen = () => {
-  const { breakpoints } = useTheme();
-  const [width, setWidth] = useState(breakpoints.values.lg);
+export interface Mobile {
+  md: boolean;
+  sm: boolean;
+  mobile: boolean;
+}
 
-  const handleWindowSizeChange = () => {
-    setWidth(window.innerWidth);
-  };
+// chromium gibt im mobile mode falsche breite, es kommt hier 600+ an obwohl < 600 eingestellt und angezeigt wird
+
+const useMobileScreen = (): Mobile => {
+  const { breakpoints } = useTheme();
+
+  const [medium, setMedium] = useState(true);
+  const [small, setSmall] = useState(true);
 
   useEffect(() => {
-    setWidth(window.innerWidth);
+    function checkMobileSize(width: number) {
+      setMedium(width < breakpoints.values.lg);
+      setSmall(width < breakpoints.values.sm);
+    }
+    // initial checken
+    checkMobileSize(window.innerWidth);
+
+    // beim resize nochmal checken
+    const handleWindowSizeChange = () => {
+      checkMobileSize(window.innerWidth);
+    };
     window.addEventListener('resize', handleWindowSizeChange);
     return () => {
       window.removeEventListener('resize', handleWindowSizeChange);
     };
-  }, []);
+  }, [breakpoints.values.lg, breakpoints.values.sm]);
 
-  return width <= breakpoints.values.md;
+  return { md: medium, sm: small, mobile: small || medium };
 };
 
 export default useMobileScreen;

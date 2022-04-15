@@ -1,3 +1,5 @@
 import axios from 'axios';
 
-export const postInit = async () => axios.post('/api/init');
+const route = '/api/init';
+
+export const postInit = () => axios.post(route);

@@ -9,20 +9,33 @@ import logger from '../../../src/lib/log';
 import { isDev, unresolved } from '../../../src/lib/util';
 
 // todo mit ldapjs in das modul
-const parseLdapError = (err: unknown): Error => {
+const parseLdapError = (
+  err: unknown
+): { error: Error; field: string | null } => {
+  let e;
+  /**
+   * 1: allgemeiner Fehler
+   * 2: Benutzername falsch
+   * 3: Passwort falsch
+   */
+  let field = null;
+
+  if (!isDev) e = new Error('Fehler bei LDAP Authentifizierung');
+  else e = new Error(String(err));
+
   // pw falsch, vermutlich Instanz von LDAPError
   if (err instanceof Error && err.message.includes('data 52e')) {
-    return new Error('Passwort falsch');
+    e = new Error('Passwort falsch');
+    field = 'password';
   }
 
   // user nicht gefunden, komischerweise nur string
   if (typeof err === 'string' && err.includes('no such user')) {
-    return new Error('Benutzer nicht gefunden');
+    e = new Error('Benutzer nicht gefunden');
+    field = 'username';
   }
 
-  if (!isDev) return new Error('Fehler bei LDAP Authentifizierung');
-
-  return new Error(String(err));
+  return { error: e, field };
 };
 
 const sessionHandler: NextApiHandler = async (req, res) => {
@@ -51,7 +64,8 @@ const sessionHandler: NextApiHandler = async (req, res) => {
 
         if (err) {
           const ldapError = parseLdapError(err);
-          error(res, ldapError, 403);
+          const field = ldapError.field ? { field: ldapError.field } : null;
+          error(res, ldapError.error, field, 403);
           return;
         }
 

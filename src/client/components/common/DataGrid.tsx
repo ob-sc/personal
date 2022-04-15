@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Box } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 import {
   GridColDef,
   GridRowsProp,
@@ -8,20 +9,23 @@ import {
 } from '@mui/x-data-grid';
 import {
   CellClickHandler,
+  GridCol,
   MouseEventHandler,
   ReactNode,
   RowClickHandler,
 } from '../../../../types';
 import searchFilter from '../../util/searchFilter';
 import DataGridFooter from './DataGridFooter';
+import useMobileContext from '../../context/MobileContext';
 
 interface Props {
-  columns: GridColDef[];
+  columns: GridCol[];
   rows: GridRowsProp;
   error: boolean;
   loading: boolean;
   rowClickHandler?: RowClickHandler;
   cellClickHandler?: CellClickHandler;
+  add?: boolean;
   actionHandler?: MouseEventHandler;
   actionIcon?: ReactNode;
 }
@@ -33,15 +37,31 @@ const DataGrid = ({
   loading,
   rowClickHandler,
   cellClickHandler,
+  add,
   actionHandler,
   actionIcon,
 }: Props) => {
+  const mobile = useMobileContext();
   const [search, setSearch] = useState('');
 
   // MUI bug: bei error === false trotzdem error state, undefined nicht
   const err = error ? true : undefined;
 
   const filteredRows = searchFilter(search, rows);
+
+  const cols: GridColDef[] = [];
+
+  if (mobile.sm) {
+    for (const obj of columns) {
+      for (const [k, v] of Object.entries(obj)) {
+        if (k === 'sm' && v === true) {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { sm, ...filtered } = obj;
+          cols.push({ ...filtered });
+        }
+      }
+    }
+  }
 
   return (
     <Box
@@ -55,7 +75,7 @@ const DataGrid = ({
     >
       <MuiDataGrid
         rows={filteredRows}
-        columns={columns}
+        columns={mobile.sm ? cols : columns}
         pageSize={10}
         rowsPerPageOptions={[10]}
         localeText={deDE.components.MuiDataGrid.defaultProps.localeText}
@@ -70,7 +90,13 @@ const DataGrid = ({
           Footer: DataGridFooter,
         }}
         componentsProps={{
-          footer: { search, setSearch, actionHandler, actionIcon },
+          footer: {
+            mobile,
+            search,
+            setSearch,
+            actionHandler,
+            actionIcon: add ? <AddIcon /> : actionIcon,
+          },
         }}
       />
     </Box>

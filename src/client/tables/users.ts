@@ -1,8 +1,8 @@
-import { GridColDef } from '@mui/x-data-grid';
+import { GridCol } from '../../../types';
 import { toLocalDate } from '../../lib/util';
 
-const userColumns: GridColDef[] = [
-  { field: 'username', headerName: 'Benutzer', width: 200 },
+const userColumns: GridCol[] = [
+  { field: 'username', headerName: 'Benutzer', width: 200, sm: true },
   { field: 'domain', headerName: 'Domain', width: 150 },
   {
     field: 'access',
