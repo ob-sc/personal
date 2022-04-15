@@ -1,40 +1,22 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useForm } from 'react-hook-form';
-import { AxiosError } from 'axios';
-import { Box, Grid, Typography } from '@mui/material';
-import theme from '../../config/theme';
-import Input from '../../src/client/components/common/Input';
-import SubmitButton from '../../src/client/components/common/SubmitButton';
+import { Box, Typography } from '@mui/material';
 import { postSession } from '../../src/client/api/sessions';
 
 import { IconButton } from '@mui/material';
 import SyncIcon from '@mui/icons-material/Sync';
 import { isDev } from '../../src/lib/util';
 import { postInit } from '../../src/client/api/init';
+import Form from '../../src/client/components/common/Form';
+import { FormField } from '../../types';
+import theme from '../../config/theme';
 
-interface LoginInputs {
-  username: string;
-  password: string;
-}
-
-const fullScreenCenter = {
-  height: '100vh',
-  width: '100vw',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-};
+const fields: FormField[] = [
+  { name: 'username', label: 'Benutzer', type: 'text' },
+  { name: 'password', label: 'Passwort', type: 'password' },
+];
 
 const LoginPage = () => {
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState<AxiosError | null>(null);
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-    setError: setFormError,
-  } = useForm<LoginInputs>();
   const router = useRouter();
 
   const { redirect } = router.query;
@@ -44,105 +26,62 @@ const LoginPage = () => {
   useEffect(() => {
     // session bleibt im backend, localstorage nur um zu zeigen, dass es eine gab und diese expired ist
     if (window) setExpired(window.sessionStorage.getItem('session') ?? '');
+  }, []);
 
-    if (error?.response?.data.message) {
-      const formError = error.response.data.message;
+  const handleSubmit = async (values: unknown) => {
+    await postSession(values);
+    // wenn ok: speichern um zu sehen ob user schon eingeloggt war
+    // dann kommt bei 403 "session abgelaufen"
+    window.sessionStorage.setItem('session', 'true');
 
-      if (formError === 'Benutzer nicht gefunden') {
-        setFormError('username', {
-          message: formError,
-        });
-      }
-
-      if (formError === 'Passwort falsch') {
-        setFormError('password', {
-          message: formError,
-        });
-      }
-    }
-  }, [error?.response?.data.message, setFormError]);
-
-  const onSubmit = async (values: LoginInputs) => {
-    setSubmitting(true);
-    try {
-      await postSession(values);
-      // um zu sehen ob user schon eingeloggt war, dann kommt bei 403 "session abgelaufen"
-      window.sessionStorage.setItem('session', 'true');
-
-      router.push(typeof redirect === 'string' ? redirect : '/');
-      // window.location.href = typeof redirect === 'string' ? redirect : '/';
-    } catch (err) {
-      setSubmitting(false);
-      setError(err as AxiosError);
-    }
+    router.push(typeof redirect === 'string' ? redirect : '/');
+    // window.location.href = typeof redirect === 'string' ? redirect : '/';
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Box sx={fullScreenCenter}>
+    <>
+      <Box
+        sx={{
+          height: '100vh',
+          width: '100vw',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        {expired === 'true' ? (
+          <Box>
+            <Typography color="error">Die Sitzung ist abgelaufen</Typography>
+          </Box>
+        ) : null}
+
         <Box
           sx={{
-            width: 300,
-            mx: 'auto',
             p: 1.5,
             border: 1,
             borderColor: theme.palette.secondary.light,
             borderRadius: 2,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
           }}
         >
-          <Grid container spacing={1}>
-            <Grid item xs={12}>
-              <Input
-                name="username"
-                label="Benutzer"
-                control={control}
-                errors={errors}
-                required
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Input
-                name="password"
-                type="password"
-                label="Passwort"
-                control={control}
-                errors={errors}
-                required
-              />
-            </Grid>
-            <Grid item>
-              <SubmitButton text="Anmelden" loading={submitting} />
-
-              {
-                // zum initialisieren von sequelize, wenn nicht prod
-                !isDev ? null : (
-                  <IconButton size="large" color="inherit" onClick={postInit}>
-                    <SyncIcon />
-                  </IconButton>
-                )
-              }
-            </Grid>
-
-            {error?.response ? (
-              <Grid item xs={12}>
-                <Typography color="error">
-                  {error.response.data.message ?? 'Unbekannter Fehler'}
-                </Typography>
-              </Grid>
-            ) : null}
-
-            {!error?.response && expired === 'true' ? (
-              <Grid item xs={12}>
-                <Typography color="error">Session ist abgelaufen</Typography>
-              </Grid>
-            ) : null}
-          </Grid>
+          <Form submit={handleSubmit} fields={fields} direction="column" />
         </Box>
       </Box>
-    </form>
+      {
+        // zum initialisieren von sequelize, wenn nicht prod
+        !isDev ? null : (
+          <IconButton
+            size="large"
+            color="inherit"
+            onClick={postInit}
+            sx={{ position: 'absolute', top: 10, right: 10 }}
+          >
+            <SyncIcon />
+          </IconButton>
+        )
+      }
+    </>
   );
 };
 

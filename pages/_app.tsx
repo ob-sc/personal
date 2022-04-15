@@ -7,6 +7,7 @@ import { CacheProvider } from '@emotion/react';
 import theme from '../config/theme';
 import createEmotionCache from '../src/client/util/createEmotionCache';
 import { EmotionCache } from '@emotion/cache';
+import { MobileContextProvider } from '../src/client/context/MobileContext';
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -24,8 +25,10 @@ export default function MyApp(props: MyAppProps) {
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Component {...pageProps} />
+        <MobileContextProvider>
+          <CssBaseline />
+          <Component {...pageProps} />
+        </MobileContextProvider>
       </ThemeProvider>
     </CacheProvider>
   );
