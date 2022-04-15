@@ -75,7 +75,11 @@ const DataGrid = ({
     >
       <MuiDataGrid
         rows={filteredRows}
+<<<<<<< HEAD
         columns={mobile.sm ? cols : columns}
+=======
+        columns={cols}
+>>>>>>> 34d7f95676f32012586997225f4176005cfc2479
         pageSize={10}
         rowsPerPageOptions={[10]}
         localeText={deDE.components.MuiDataGrid.defaultProps.localeText}
