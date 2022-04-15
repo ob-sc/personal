@@ -1,5 +1,6 @@
 import { TextField } from '@mui/material';
 import { Control, Controller, FieldErrors } from 'react-hook-form';
+import useMobileContext from '../../context/MobileContext';
 
 interface Props {
   name: string;
@@ -8,7 +9,7 @@ interface Props {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control: Control<any>;
   errors: FieldErrors;
-  type?: 'text' | 'number' | 'password';
+  type?: 'text' | 'number' | 'password' | 'date';
   disabled?: boolean;
   errorHelper?: boolean;
   required?: boolean;
@@ -25,6 +26,8 @@ const Input = (props: Props) => {
     errorHelper = false,
     required = false,
   } = props;
+
+  const { sm } = useMobileContext();
 
   const err = errors[name];
   const errorText = errorHelper === true ? err : undefined;
@@ -45,7 +48,7 @@ const Input = (props: Props) => {
           size="small"
           type={type}
           label={label}
-          fullWidth={true}
+          // fullWidth={true}
           error={!!err}
           disabled={disabled}
           helperText={errorText}
@@ -56,6 +59,10 @@ const Input = (props: Props) => {
               ? 'username'
               : undefined
           }
+          sx={{
+            minWidth: 160,
+            width: sm ? 'min(80vw, 250px)' : 340,
+          }}
           {...field}
         />
       )}

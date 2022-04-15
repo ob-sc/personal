@@ -30,6 +30,10 @@ const AllStationsPage = ({
         error={error !== undefined}
         loading={!data && !error}
         rowClickHandler={rowClickHandler}
+        add
+        actionHandler={() => {
+          router.push('/stations/new');
+        }}
       />
     </Layout>
   );
