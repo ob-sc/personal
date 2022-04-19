@@ -5,21 +5,17 @@ import { Box, Typography } from '@mui/material';
 import { CProps, FormField } from '../../../../types';
 import SubmitButton from './SubmitButton';
 import Input from './Input';
+import useMobileContext from '../../context/MobileContext';
 
 interface Props extends CProps {
   fields: FormField[];
   submit: (values: unknown) => Promise<void>;
   submitName?: string;
-  direction?:
-    | 'column'
-    | 'column wrap'
-    | 'column nowrap'
-    | 'row'
-    | 'row wrap'
-    | 'row nowrap';
+  size?: 'sm' | 'md' | 'lg';
+  cols?: number;
 }
 
-const Form = ({ submit, fields, submitName, direction }: Props) => {
+const Form = ({ submit, fields, submitName, size = 'md', cols = 1 }: Props) => {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<AxiosError | null>(null);
   const {
@@ -28,6 +24,20 @@ const Form = ({ submit, fields, submitName, direction }: Props) => {
     formState: { errors },
     setError: setFormError,
   } = useForm();
+
+  const { sm, md, mobile } = useMobileContext();
+
+  const width = {
+    sm: 280,
+    md: 340,
+    lg: 400,
+  };
+
+  const columns = sm ? 1 : md && cols >= 2 ? 2 : cols;
+
+  const colWidth = size &&
+    !mobile &&
+    !(columns > 1) && { width: width[size] ?? width.md };
 
   useEffect(() => {
     const errData = error?.response?.data ?? {};
@@ -50,8 +60,6 @@ const Form = ({ submit, fields, submitName, direction }: Props) => {
       });
   };
 
-  const dir = direction ?? 'row wrap';
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Box
@@ -62,28 +70,38 @@ const Form = ({ submit, fields, submitName, direction }: Props) => {
         }}
       >
         <Box
-          sx={{
-            display: 'flex',
-            flexFlow: dir,
-            gap: 1,
-          }}
+          sx={[
+            colWidth,
+            {
+              display: 'grid',
+              gridTemplateColumns: `repeat(${columns}, 1fr)`,
+              gridGap: 10,
+              // vor und nach header neue zeile
+              '& .gridItem + .gridHeader': { gridColumnStart: 1 },
+              '& .gridHeader + .gridItem': { gridColumnStart: 1 },
+            },
+          ]}
         >
           {fields.map((field) =>
             field.type === 'header' ? (
-              <Box sx={{ width: '100%', minHeight: 10 }}>
+              <Box
+                className="gridHeader"
+                sx={{ width: '100%', minHeight: 10 }}
+                key={field.name}
+              >
                 <Typography variant="h5">{field.label}</Typography>
               </Box>
             ) : (
-              <div key={field.name}>
-                <Input
-                  name={field.name}
-                  label={field.label}
-                  type={field.type}
-                  control={control}
-                  errors={errors}
-                  required
-                />
-              </div>
+              <Input
+                key={field.name}
+                name={field.name}
+                label={field.label}
+                type={field.type}
+                control={control}
+                errors={errors}
+                required={field.required ?? false}
+                grid
+              />
             )
           )}
         </Box>

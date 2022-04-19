@@ -15,7 +15,7 @@ export interface DBUser extends UserAttributes {
   updatedAt: Date;
 }
 
-class User
+class UserModel
   extends Model<
     UserAttributes,
     Optional<UserAttributes, 'id' | 'access' | 'region' | 'stations'>
@@ -63,4 +63,4 @@ export const users = {
   },
 };
 
-export default User;
+export default UserModel;

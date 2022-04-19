@@ -6,7 +6,7 @@ import db from '../../../src/db';
 import parseUser from '../../../src/lib/parseUser';
 import { error, httpMethodError, success } from '../../../src/server/response';
 import logger from '../../../src/lib/log';
-import { isDev, unresolved } from '../../../src/lib/util';
+import { isDev, unresolved } from '../../../src/utils/shared';
 
 // todo mit ldapjs in das modul
 const parseLdapError = (
@@ -101,7 +101,7 @@ const sessionHandler: NextApiHandler = async (req, res) => {
 
   switch (method?.toUpperCase()) {
     case 'POST':
-      handleLogin();
+      await handleLogin();
       break;
     case 'DELETE':
       handleLogout();

@@ -1,6 +1,6 @@
 import type { NextApiHandler } from 'next';
 import db from '../../../src/db';
-import { unresolved } from '../../../src/lib/util';
+import { unresolved } from '../../../src/utils/shared';
 import { withSessionApi } from '../../../src/lib/withSession';
 import { error, httpMethodError, success } from '../../../src/server/response';
 
@@ -15,7 +15,7 @@ const usersHandler: NextApiHandler = async (req, res) => {
   try {
     switch (method?.toUpperCase()) {
       case 'GET':
-        allUsers();
+        await allUsers();
         break;
       default:
         httpMethodError(res, method, ['GET']);

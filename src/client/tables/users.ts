@@ -1,5 +1,5 @@
 import { GridCol } from '../../../types';
-import { toLocalDate } from '../../lib/util';
+import { toLocalDate } from '../../utils/shared';
 
 const userColumns: GridCol[] = [
   { field: 'username', headerName: 'Benutzer', width: 200, sm: true },

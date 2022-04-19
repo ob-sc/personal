@@ -26,12 +26,13 @@ export interface CProps {
   children?: ReactNode;
 }
 
-// Form
+// Formular
 
 export interface FormField {
   name: string;
   label: string;
   type: 'text' | 'number' | 'password' | 'date' | 'header';
+  required?: boolean;
 }
 
 // DataGrid
@@ -54,6 +55,6 @@ export type CellClickHandler = (
   details: GridCallbackDetails
 ) => void;
 
-// MultiSelect Options
+// MultiSelect Optionen
 
 export type SelectOption = { optval: number | string; optlabel: string };

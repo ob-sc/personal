@@ -7,7 +7,7 @@ import {
 import { sessionConfig } from '../../config';
 import { ParsedUser } from '../../types/user';
 import { error } from '../server/response';
-import { redirectUrl } from './util';
+import { redirectUrl } from '../utils/shared';
 
 declare module 'iron-session' {
   interface IronSessionData {

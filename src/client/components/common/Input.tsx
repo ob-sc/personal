@@ -1,6 +1,5 @@
 import { TextField } from '@mui/material';
 import { Control, Controller, FieldErrors } from 'react-hook-form';
-import useMobileContext from '../../context/MobileContext';
 
 interface Props {
   name: string;
@@ -13,6 +12,7 @@ interface Props {
   disabled?: boolean;
   errorHelper?: boolean;
   required?: boolean;
+  grid?: boolean;
 }
 
 const Input = (props: Props) => {
@@ -25,9 +25,8 @@ const Input = (props: Props) => {
     disabled = false,
     errorHelper = false,
     required = false,
+    grid = false,
   } = props;
-
-  const { sm } = useMobileContext();
 
   const err = errors[name];
   const errorText = errorHelper === true ? err : undefined;
@@ -43,12 +42,13 @@ const Input = (props: Props) => {
       rules={{ required: !!required }}
       render={({ field }) => (
         <TextField
+          className={grid ? 'gridItem' : undefined}
           variant="outlined"
           color="primary"
           size="small"
           type={type}
           label={label}
-          // fullWidth={true}
+          fullWidth
           error={!!err}
           disabled={disabled}
           helperText={errorText}
@@ -59,10 +59,6 @@ const Input = (props: Props) => {
               ? 'username'
               : undefined
           }
-          sx={{
-            minWidth: 160,
-            width: sm ? 'min(80vw, 250px)' : 340,
-          }}
           {...field}
         />
       )}

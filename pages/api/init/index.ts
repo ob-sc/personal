@@ -1,7 +1,7 @@
 import { NextApiHandler } from 'next';
 import { sequelize } from '../../../src/db';
 import logger from '../../../src/lib/log';
-import { isDev, unresolved } from '../../../src/lib/util';
+import { isDev, unresolved } from '../../../src/utils/shared';
 import { error, httpMethodError } from '../../../src/server/response';
 
 const testSequelizeConnection = async () => {

@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction, useState } from 'react';
 import { Box, IconButton, Pagination, TextField } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import SearchIcon from '@mui/icons-material/Search';
+import SearchOffIcon from '@mui/icons-material/SearchOff';
 import { useGridApiContext } from '@mui/x-data-grid';
 import { MouseEventHandler, ReactNode } from '../../../../types';
 import { Mobile } from '../../hooks/useMobileScreen';
@@ -49,8 +50,19 @@ const DataGridFooter = ({
       )}
 
       {!sm ? null : (
-        <IconButton onClick={() => setSearching(!searching)}>
-          {searching ? <CheckIcon /> : <SearchIcon />}
+        <IconButton
+          onClick={() => {
+            if (!searching && search !== '') setSearch('');
+            else setSearching(!searching);
+          }}
+        >
+          {searching ? (
+            <CheckIcon />
+          ) : search ? (
+            <SearchOffIcon />
+          ) : (
+            <SearchIcon />
+          )}
         </IconButton>
       )}
 

@@ -5,7 +5,7 @@ import { postSession } from '../../src/client/api/sessions';
 
 import { IconButton } from '@mui/material';
 import SyncIcon from '@mui/icons-material/Sync';
-import { isDev } from '../../src/lib/util';
+import { isDev } from '../../src/utils/shared';
 import { postInit } from '../../src/client/api/init';
 import Form from '../../src/client/components/common/Form';
 import { FormField } from '../../types';
@@ -65,12 +65,12 @@ const LoginPage = () => {
             borderRadius: 2,
           }}
         >
-          <Form submit={handleSubmit} fields={fields} direction="column" />
+          <Form submit={handleSubmit} fields={fields} size="sm" />
         </Box>
       </Box>
       {
         // zum initialisieren von sequelize, wenn nicht prod
-        !isDev ? null : (
+        !isDev ? undefined : (
           <IconButton
             size="large"
             color="inherit"

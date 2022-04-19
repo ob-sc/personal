@@ -13,7 +13,10 @@ export interface StationAttributes {
   subregion: string;
 }
 
-class Station extends Model<StationAttributes> implements StationAttributes {
+class StationModel
+  extends Model<StationAttributes>
+  implements StationAttributes
+{
   public id!: number;
   public name!: string;
   public address!: string;
@@ -46,4 +49,4 @@ export const stations = {
   subregion: { type: DataTypes.STRING },
 };
 
-export default Station;
+export default StationModel;

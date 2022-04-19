@@ -23,15 +23,6 @@ export const toLocalDate = (date: string | undefined | null) => {
   return `${prepend0(d)}.${prepend0(m + 1)}.${y}`;
 };
 
-export const sanitizedLower = (str: string) => str.trim().toLowerCase();
-
-export const createError = (err: unknown) => {
-  if (err instanceof Error) return err;
-  if (typeof err === 'string') return new Error(err);
-
-  return new Error('Unbekannter Fehler');
-};
-
 export const redirectUrl = (url: string) => {
   if (url.includes('_next')) {
     const parts = url.split('/');

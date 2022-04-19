@@ -1,4 +1,8 @@
-const searchFilter = <T = { [key: string]: unknown }>(
+import createCache from '@emotion/cache';
+
+export const createEmotionCache = () => createCache({ key: 'css' });
+
+export const searchFilter = <T = { [key: string]: unknown }>(
   searchInput: string,
   array: readonly T[]
 ) =>
@@ -14,5 +18,3 @@ const searchFilter = <T = { [key: string]: unknown }>(
         }
         return false;
       });
-
-export default searchFilter;

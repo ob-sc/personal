@@ -2,8 +2,8 @@ import { Sequelize } from 'sequelize';
 import mysql2 from 'mysql2';
 import { dbConfig } from '../../config';
 import logger from '../lib/log';
-import User, { users } from './users';
-import Station, { stations } from './stations';
+import UserModel, { users } from './users';
+import StationModel, { stations } from './stations';
 
 const NODE_ENV = process.env.NODE_ENV ?? 'development';
 const config = dbConfig[NODE_ENV];
@@ -24,9 +24,9 @@ if (!hasOptions) {
 
 export const sequelize = new Sequelize(database, username, password, options);
 
-User.init(users, { tableName: 'users', sequelize });
-Station.init(stations, { tableName: 'stations', sequelize });
+UserModel.init(users, { tableName: 'users', sequelize });
+StationModel.init(stations, { tableName: 'stations', sequelize });
 
-const db = { users: User, stations: Station };
+const db = { users: UserModel, stations: StationModel };
 
 export default db;

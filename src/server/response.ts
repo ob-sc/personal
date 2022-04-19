@@ -4,7 +4,7 @@ import logger from '../lib/log';
 
 export const success = (
   res: NextApiResponse,
-  data?: string | unknown[] | Record<'string', unknown> | null
+  data?: string | object[] | object | null
 ) => {
   res.status(data ? 200 : 204);
   const body: SuccessResponse =

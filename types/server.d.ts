@@ -1,7 +1,7 @@
 export type SuccessResponse =
   | { message: string }
-  | Record<'string', unknown>
-  | unknwon[]
+  | object
+  | object[]
   | null
   | undefined;
 
