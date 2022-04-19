@@ -48,7 +48,7 @@ INSERT INTO development.users (`domain`,`username`,`access`,`stations`,`createdA
 
 ### Troubleshoot
 
-Schauen ob der Service läuft mit `systemctl status mysql.service`, sonst starten. Schauen ob user und Passwort klappen mit `sudo mysqladmin -p -u starcar version`, im prompt Passwort eingeben. Wenns nicht klappt dann gibt es noch `sudo mysql -u root` (eig reicht `sudo mysql`), sonst DB importieren.
+Schauen ob der Service läuft mit `systemctl status mysql.service`, sonst starten. Schauen ob user und Passwort klappen mit `sudo mysqladmin -p -u starcar version`, im prompt Passwort eingeben. Wenns nicht klappt dann gibt es noch `sudo mysql -u root` , sonst DB importieren.
 
 ## Sicherung
 

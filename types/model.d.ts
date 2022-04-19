@@ -1,5 +1,3 @@
-// Jeder input kommt als string, '' wenn leer (statt undefined)
-
 export interface LoginForm {
   username: string;
   password: string;

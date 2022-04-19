@@ -25,7 +25,7 @@ const stationsHandler: NextApiHandler = async (req, res) => {
     console.log(errors);
 
     if (errors.length === 0) {
-      await db.stations.create(values as any);
+      await db.stations.create(values);
       success(res);
     }
   };
