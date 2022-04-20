@@ -37,7 +37,7 @@ export interface FormField {
 
 // DataGrid
 
-export interface GridCol extends GridColDef {
+export interface DataGridCol extends GridColDef {
   sm?: boolean;
 }
 

@@ -1,12 +1,12 @@
 import useRequest from '../hooks/useRequest';
-import DBUser from '../../db/users';
+import { UserModel } from '../../../types/data';
 
 const route = '/api/users';
 
 export const useGetUser = (id: number) =>
-  useRequest<DBUser>({
+  useRequest<UserModel>({
     url: `${route}/${id}`,
     // method: 'get',
   });
 
-export const useGetUsers = () => useRequest<DBUser[]>({ url: route });
+export const useGetUsers = () => useRequest<UserModel[]>({ url: route });

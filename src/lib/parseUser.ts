@@ -1,13 +1,12 @@
+import { UserModel } from '../../types/data';
 import {
   DomainUser,
   ParsedUser,
   UserAccess,
-  UserRegion,
   UserStations,
 } from '../../types/user';
-import { DBUser } from '../db/users';
 
-type ParseUser = (dbUser: DBUser, domainUser: DomainUser) => ParsedUser;
+type ParseUser = (dbUser: UserModel, domainUser: DomainUser) => ParsedUser;
 
 // string aus db (stations in users), mit komma getrennte stationsnummern
 export const parseStations = (

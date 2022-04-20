@@ -1,9 +1,9 @@
 import type { NextApiHandler } from 'next';
-import db from '../../../src/db';
+import db from '../../../src/server/sequelize';
 import { unresolved } from '../../../src/utils/shared';
 import { withSessionApi } from '../../../src/lib/withSession';
 import { error, httpMethodError, success } from '../../../src/server/response';
-import { NewStationForm } from '../../../types/forms';
+import { NewStationForm } from '../../../types/data';
 import { validateForm } from '../../../src/utils/server';
 
 const stationsHandler: NextApiHandler = async (req, res) => {
@@ -18,7 +18,7 @@ const stationsHandler: NextApiHandler = async (req, res) => {
     const fields = await db.stations.describe();
 
     // spread für typescript index signature
-    const { values, errors } = await validateForm(fields, { ...form });
+    const { values, errors } = await validateForm(fields, form);
 
     console.log(form);
     console.log(values);

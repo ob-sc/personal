@@ -84,6 +84,21 @@ export const dbConfig: Databases = {
 // LDAP
 
 const baseDN = 'DC=starcar,DC=local';
+const searchAttributes = [
+  'cn',
+  'sn',
+  'l',
+  'postalCode',
+  'telephoneNumber',
+  'givenName',
+  'distinguishedName',
+  'displayName',
+  'streetAddress',
+  'sAMAccountName',
+  'userPrincipalName',
+  'userAccountControl',
+  'mail',
+];
 
 export const ldapConfig: LdapOptions = {
   url: env.ldap_url,
@@ -91,21 +106,7 @@ export const ldapConfig: LdapOptions = {
   bindCredentials: env.ldap_password,
   searchBase: `OU=User,OU=STARCAR,${baseDN}`,
   searchFilter: '(sAMAccountName={{username}})',
-  searchAttributes: [
-    'cn',
-    'sn',
-    'l',
-    'postalCode',
-    'telephoneNumber',
-    'givenName',
-    'distinguishedName',
-    'displayName',
-    'streetAddress',
-    'sAMAccountName',
-    'userPrincipalName',
-    'userAccountControl',
-    'mail',
-  ],
+  searchAttributes,
 };
 
 // SESSION

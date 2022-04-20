@@ -1,13 +1,6 @@
+import { RegionModel } from './data';
+
 export type UserAccess = 'idl' | 'sl' | 'rl' | 'admin';
-export type UserRegion =
-  | 'alle'
-  | 'hamburg'
-  | 'berlin'
-  | 'nord'
-  | 'süd'
-  | 'ost'
-  | 'west'
-  | 'mitte';
 export type UserStations = number[];
 
 export interface ParsedUser {
@@ -22,7 +15,7 @@ export interface ParsedUser {
   /** leer (0), idl (1), sl (2), rl (3), admin (4) */
   access: number;
   /** Region oder null */
-  region: UserRegion | null;
+  region: RegionModel | null;
   /** Array aus stationen, "*" oder null */
   stations: UserStations;
 }

@@ -1,6 +1,6 @@
-import { GridCol } from '../../../types';
+import { DataGridCol } from '../../../types';
 
-const userColumns: GridCol[] = [
+const stationColumns: DataGridCol[] = [
   { field: 'id', headerName: 'ID', width: 75, sm: true },
   { field: 'name', headerName: 'Name', width: 180, sm: true },
   { field: 'address', headerName: 'Anschrift', width: 180 },
@@ -12,4 +12,4 @@ const userColumns: GridCol[] = [
   { field: 'fax', headerName: 'Fax', width: 180 },
 ];
 
-export default userColumns;
+export default stationColumns;

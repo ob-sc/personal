@@ -1,7 +1,7 @@
-import { GridCol } from '../../../types';
+import { DataGridCol } from '../../../types';
 import { toLocalDate } from '../../utils/shared';
 
-const userColumns: GridCol[] = [
+const userColumns: DataGridCol[] = [
   { field: 'username', headerName: 'Benutzer', width: 200, sm: true },
   { field: 'domain', headerName: 'Domain', width: 150 },
   {

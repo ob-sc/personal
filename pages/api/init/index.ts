@@ -1,5 +1,5 @@
 import { NextApiHandler } from 'next';
-import { sequelize } from '../../../src/db';
+import { sequelize } from '../../../src/server/sequelize';
 import logger from '../../../src/lib/log';
 import { isDev, unresolved } from '../../../src/utils/shared';
 import { error, httpMethodError } from '../../../src/server/response';

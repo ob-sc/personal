@@ -48,6 +48,7 @@
 ## sequelize
 
 - ts: https://sequelize.org/master/manual/typescript.html
+- auch ts: https://github.com/RobinBuschmann/sequelize-typescript
 
 ## ldap
 
