@@ -45,3 +45,6 @@ export const redirectUrl = (url: string) => {
   }
   return url;
 };
+
+export const nullOnEmpty = (value: string | null | undefined) =>
+  value === '' || value === undefined ? null : value;

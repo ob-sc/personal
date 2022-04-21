@@ -1,8 +1,5 @@
 import { RegionModel } from './data';
 
-export type UserAccess = 'idl' | 'sl' | 'rl' | 'admin';
-export type UserStations = number[];
-
 export interface ParsedUser {
   /** username aus AD (sAMAccountName) */
   username: string;
@@ -17,7 +14,7 @@ export interface ParsedUser {
   /** Region oder null */
   region: RegionModel | null;
   /** Array aus stationen, "*" oder null */
-  stations: UserStations;
+  stations: number[];
 }
 
 // Active Directory / Domain STARCAR

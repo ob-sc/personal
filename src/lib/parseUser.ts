@@ -1,10 +1,5 @@
 import { UserModel } from '../../types/data';
-import {
-  DomainUser,
-  ParsedUser,
-  UserAccess,
-  UserStations,
-} from '../../types/user';
+import { DomainUser, ParsedUser, UserStations } from '../../types/user';
 
 type ParseUser = (dbUser: UserModel, domainUser: DomainUser) => ParsedUser;
 
@@ -37,29 +32,11 @@ export const parseOUStation = (dn: string) => {
 };
 
 const parseUser: ParseUser = (dbUser, domainUser) => {
-  const {
-    username,
-    access: accessString,
-    region: regionString,
-    stations: stationString,
-  } = dbUser;
+  const { username, access: a, region, stations: stationString } = dbUser;
   const { distinguishedName, mail, givenName, sn } = domainUser;
   const email = mail?.toLowerCase() ?? '';
 
-  const region =
-    typeof regionString === 'string'
-      ? (regionString.toLowerCase() as UserRegion)
-      : null;
-
-  const numericAccess = {
-    idl: 1,
-    sl: 2,
-    rl: 3,
-    admin: 4,
-  };
-
-  const accessIndex = accessString?.toLowerCase() ?? 'undefined';
-  const access = numericAccess[accessIndex as UserAccess] ?? 0;
+  const access = a ?? 0;
 
   const ouStation = parseOUStation(distinguishedName);
 

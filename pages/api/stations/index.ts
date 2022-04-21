@@ -1,10 +1,9 @@
 import type { NextApiHandler } from 'next';
 import db from '../../../src/server/sequelize';
-import { unresolved } from '../../../src/utils/shared';
+import { nullOnEmpty, unresolved } from '../../../src/utils/shared';
 import { withSessionApi } from '../../../src/lib/withSession';
 import { error, httpMethodError, success } from '../../../src/server/response';
 import { NewStationForm } from '../../../types/data';
-import { validateForm } from '../../../src/utils/server';
 
 const stationsHandler: NextApiHandler = async (req, res) => {
   const { method, body } = req;
@@ -15,19 +14,20 @@ const stationsHandler: NextApiHandler = async (req, res) => {
   };
 
   const newStation = async (form: NewStationForm) => {
-    const fields = await db.stations.describe();
+    const values = {
+      id: nullOnEmpty(form.id),
+      name: nullOnEmpty(form.name),
+      address: nullOnEmpty(form.address),
+      zip: nullOnEmpty(form.zip),
+      city: nullOnEmpty(form.city),
+      telephone: nullOnEmpty(form.telephone),
+      fax: nullOnEmpty(form.fax),
+      email: nullOnEmpty(form.email),
+      region: nullOnEmpty(form.region),
+    };
 
-    // spread für typescript index signature
-    const { values, errors } = await validateForm(fields, form);
-
-    console.log(form);
-    console.log(values);
-    console.log(errors);
-
-    if (errors.length === 0) {
-      await db.stations.create(values);
-      success(res);
-    }
+    await db.stations.create(values);
+    success(res);
   };
 
   try {

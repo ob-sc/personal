@@ -1,39 +1,51 @@
-import {
-  Column,
-  ForeignKey,
-  HasMany,
-  Model,
-  Table,
-} from 'sequelize-typescript';
+import { Column, HasOne, HasMany, Model, Table } from 'sequelize-typescript';
 import Region from './Region';
 import Station from './Station';
 
 @Table
 class User extends Model {
   @Column({
+    type: 'INT',
     primaryKey: true,
-    unique: true,
-    autoIncrement: true,
-    allowNull: false,
   })
   id!: number;
 
   @Column({
-    unique: true,
+    type: 'VARCHAR(255)',
     allowNull: false,
+    unique: true,
   })
   username!: string;
 
-  @Column
+  @Column({
+    type: 'INT',
+  })
   access!: number;
 
-  @ForeignKey(() => Region)
-  @Column
-  region!: Region;
+  @HasOne(() => Region)
+  @Column({
+    type: 'INT',
+  })
+  region_id!: number;
+
+  @Column({
+    type: 'INT',
+    allowNull: false,
+  })
+  station_id!: number;
 
   @HasMany(() => Station)
-  @Column
-  stations!: Station[];
+  @Column({
+    type: 'JSONTYPE',
+  })
+  allowed_stations!: string;
+
+  @Column({
+    type: 'TINYINT',
+    allowNull: false,
+    defaultValue: 1,
+  })
+  active!: boolean;
 }
 
 export default User;

@@ -1,43 +1,60 @@
-import { Column, HasMany, Model, Table } from 'sequelize-typescript';
+import {
+  BelongsTo,
+  Column,
+  ForeignKey,
+  Model,
+  Table,
+} from 'sequelize-typescript';
 import Region from './Region';
 
 @Table
 class Station extends Model {
   @Column({
-    primaryKey: true,
-    unique: true,
-    autoIncrement: true,
+    type: 'INT',
     allowNull: false,
+    unique: true,
+    primaryKey: true,
   })
   id!: number;
 
   @Column({
+    type: 'VARCHAR(255)',
     unique: true,
     allowNull: false,
   })
   name!: string;
 
-  @Column
+  @Column({ type: 'VARCHAR(255)' })
   address!: string;
 
-  @Column
+  @Column({ type: 'VARCHAR(255)' })
   city!: string;
 
-  @Column
+  @Column({ type: 'INT' })
   zip!: number;
 
-  @Column
+  @Column({ type: 'VARCHAR(255)' })
   telephone!: string;
 
-  @Column
+  @Column({ type: 'VARCHAR(255)' })
   fax!: string;
 
-  @Column
+  @Column({ type: 'VARCHAR(255)' })
   email!: string;
 
-  @HasMany(() => Region)
-  @Column({ allowNull: false })
-  regions!: Region[];
+  @ForeignKey(() => Region)
+  @Column({ type: 'INT', allowNull: false })
+  region_id!: number;
+
+  @BelongsTo(() => Region, 'region_id')
+  region!: Region;
+
+  @ForeignKey(() => Region)
+  @Column({ type: 'INT' })
+  subregion_id!: number;
+
+  @BelongsTo(() => Region, 'subregion_id')
+  subregion!: Region;
 }
 
 export default Station;
