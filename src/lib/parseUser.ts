@@ -1,5 +1,5 @@
 import { UserModel } from '../../types/data';
-import { DomainUser, ParsedUser, UserStations } from '../../types/user';
+import { DomainUser, ParsedUser } from '../../types/user';
 
 type ParseUser = (dbUser: UserModel, domainUser: DomainUser) => ParsedUser;
 
@@ -32,7 +32,7 @@ export const parseOUStation = (dn: string) => {
 };
 
 const parseUser: ParseUser = (dbUser, domainUser) => {
-  const { username, access: a, region, stations: stationString } = dbUser;
+  const { username, access: a, region, stations: stationsArray } = dbUser;
   const { distinguishedName, mail, givenName, sn } = domainUser;
   const email = mail?.toLowerCase() ?? '';
 
@@ -40,8 +40,10 @@ const parseUser: ParseUser = (dbUser, domainUser) => {
 
   const ouStation = parseOUStation(distinguishedName);
 
+  console.log(dbUser);
+
   // 0 bei keiner OU Station
-  const extraStations = parseStations(stationString);
+  const extraStations = parseStations(stationsArray);
 
   const stations = [ouStation, ...extraStations];
 

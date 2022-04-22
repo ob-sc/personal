@@ -1,9 +1,5 @@
 # Datenbank
 
-## Tabellen
-
-Siehe `src/db/`, jede Tabelle eine Datei.
-
 ## Installation
 
 MySQL installieren und einrichten
@@ -43,27 +39,9 @@ FLUSH PRIVILEGES;
 ```sql
 CREATE DATABASE development;
 
-INSERT INTO development.users (`domain`,`username`,`access`,`stations`,`createdAt`,`updatedAt`) VALUES ("starcar","bergen","admin","12,18","2021-12-01 13:20:42","2021-12-01 13:20:42");
+INSERT INTO development.users (`username`,`access`) VALUES ("bergen",4);
 ```
 
-### Troubleshoot
+## Troubleshoot
 
 Schauen ob der Service läuft mit `systemctl status mysql.service`, sonst starten. Schauen ob user und Passwort klappen mit `sudo mysqladmin -p -u starcar version`, im prompt Passwort eingeben. Wenns nicht klappt dann gibt es noch `sudo mysql -u root` , sonst DB importieren.
-
-## Sicherung
-
-todo
-
-## Extrafelder der Mitarbeiter
-
-- Status: `idl | sl | rl | admin`
-
-  - wenn leer: Disponent (minimale Berechtigungen)
-
-- Extrastation: Stationen durch Komma getrennt oder "\*" für alle Stationen
-
-  - wenn leer: Keine Extrastation
-
-- Region: `alle | hamburg | berlin | nord | süd | ost | west | mitte`
-
-  - wenn leer: Keine Region

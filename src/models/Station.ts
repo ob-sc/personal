@@ -1,60 +1,63 @@
 import {
   BelongsTo,
   Column,
+  DataType,
   ForeignKey,
+  IsEmail,
   Model,
   Table,
 } from 'sequelize-typescript';
 import Region from './Region';
 
-@Table
+@Table({ tableName: 'stations', timestamps: false })
 class Station extends Model {
   @Column({
-    type: 'INT',
+    type: DataType.INTEGER,
     allowNull: false,
     unique: true,
     primaryKey: true,
   })
-  id!: number;
+  declare id: number;
 
   @Column({
-    type: 'VARCHAR(255)',
+    type: DataType.STRING,
     unique: true,
     allowNull: false,
   })
-  name!: string;
+  declare name: string;
 
-  @Column({ type: 'VARCHAR(255)' })
-  address!: string;
+  @Column({ type: DataType.STRING })
+  declare address: string;
 
-  @Column({ type: 'VARCHAR(255)' })
-  city!: string;
+  @Column({ type: DataType.STRING })
+  declare city: string;
 
-  @Column({ type: 'INT' })
-  zip!: number;
+  @Column({ type: DataType.INTEGER })
+  declare zip: number;
 
-  @Column({ type: 'VARCHAR(255)' })
-  telephone!: string;
+  @Column({ type: DataType.STRING })
+  declare telephone: string;
 
-  @Column({ type: 'VARCHAR(255)' })
-  fax!: string;
+  @Column({ type: DataType.STRING })
+  declare fax: string;
 
-  @Column({ type: 'VARCHAR(255)' })
-  email!: string;
+  @IsEmail
+  @Column({ type: DataType.STRING })
+  declare email: string;
 
   @ForeignKey(() => Region)
-  @Column({ type: 'INT', allowNull: false })
-  region_id!: number;
+  @Column({ type: DataType.INTEGER, allowNull: false })
+  declare region_id: number;
 
   @BelongsTo(() => Region, 'region_id')
-  region!: Region;
+  declare region: Region;
 
   @ForeignKey(() => Region)
-  @Column({ type: 'INT' })
-  subregion_id!: number;
+  @Column({ type: DataType.INTEGER })
+  declare subregion_id: number;
 
   @BelongsTo(() => Region, 'subregion_id')
-  subregion!: Region;
+  declare subregion: Region;
 }
 
 export default Station;

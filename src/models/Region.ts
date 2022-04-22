@@ -1,20 +1,20 @@
-import { Column, Model, Table } from 'sequelize-typescript';
+import { Column, DataType, Model, Table } from 'sequelize-typescript';
 
-@Table
+@Table({ tableName: 'regions', timestamps: false })
 class Region extends Model {
   @Column({
-    type: 'INT',
+    type: DataType.INTEGER,
     autoIncrement: true,
     primaryKey: true,
   })
-  id!: number;
+  declare id: number;
 
   @Column({
-    type: 'VARCHAR(255)',
+    type: DataType.STRING,
     unique: true,
     allowNull: false,
   })
-  name!: string;
+  declare name: string;
 }
 
 export default Region;

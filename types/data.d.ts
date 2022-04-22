@@ -28,21 +28,24 @@ export interface RegionModel {
 export interface StationModel {
   id: number;
   name: string;
-  address: string | null;
-  zip: number | null;
-  city: string | null;
-  telephone: string | null;
-  fax: string | null;
-  email: string | null;
-  region_id: number;
-  subregion_id: number | null;
+  address?: string | null;
+  zip?: number | null;
+  city?: string | null;
+  telephone?: string | null;
+  fax?: string | null;
+  email?: string | null;
+  region_id?: number;
+  subregion_id?: number | null;
+  region: RegionModel;
+  subregion?: RegionModel;
 }
 
 export interface UserModel {
   id: number;
   username: string;
-  access: number;
-  region: number;
+  access?: number;
+  region?: RegionModel;
+  stations?: StationModel[];
 }
 
 export interface AllowedStationsModel {

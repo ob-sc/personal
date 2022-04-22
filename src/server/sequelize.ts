@@ -5,6 +5,7 @@ import logger from '../lib/log';
 import User from '../models/User';
 import Station from '../models/Station';
 import Region from '../models/Region';
+import AllowedStation from '../models/AllowedStation';
 
 const NODE_ENV = process.env.NODE_ENV ?? 'development';
 const config = dbConfig[NODE_ENV];
@@ -25,8 +26,13 @@ if (!hasOptions) {
 
 export const sequelize = new Sequelize(database, username, password, options);
 
-sequelize.addModels([User, Station, Region]);
+sequelize.addModels([User, Station, Region, AllowedStation]);
 
-const db = { users: User, stations: Station, regions: Region };
+const db = {
+  users: User,
+  stations: Station,
+  regions: Region,
+  allowedStations: AllowedStation,
+};
 
 export default db;
