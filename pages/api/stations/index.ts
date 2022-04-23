@@ -10,6 +10,7 @@ const stationsHandler: NextApiHandler = async (req, res) => {
 
   const allStations = async () => {
     const data = await db.stations.findAll();
+    console.log(data);
     success(res, data);
   };
 

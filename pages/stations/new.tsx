@@ -18,16 +18,15 @@ const fields: FormField[] = [
     name: 'address',
     label: 'Straße & Hausnummer',
     type: 'text',
-    required: true,
   },
-  { name: 'zip', label: 'Postleitzahl', type: 'text', required: true },
-  { name: 'city', label: 'Stadt', type: 'text', required: true },
+  { name: 'zip', label: 'Postleitzahl', type: 'text' },
+  { name: 'city', label: 'Stadt', type: 'text' },
   { name: 'telephone', label: 'Telefon', type: 'text' },
   { name: 'fax', label: 'Fax', type: 'text' },
-  { name: 'email', label: 'Email', type: 'text', required: true },
+  { name: 'email', label: 'Email', type: 'text' },
   { name: 'h2', label: 'Region', type: 'header' },
-  { name: 'region', label: 'Region', type: 'text', required: true },
-  { name: 'subregion', label: 'Region 2', type: 'text' },
+  { name: 'region_id', label: 'Region', type: 'text', required: true },
+  { name: 'subregion_id', label: 'Region 2', type: 'text' },
 ];
 
 // Home: NextPage

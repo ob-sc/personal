@@ -34,12 +34,16 @@ GRANT ALL PRIVILEGES ON *.* TO 'starcar'@'localhost' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 ```
 
-### DB & User
+### DEV DB & User
 
 ```sql
-CREATE DATABASE development;
+DROP DATABASE development; CREATE DATABASE development; USE development;
 
-INSERT INTO development.users (`username`,`access`) VALUES ("bergen",4);
+/* sync */
+
+INSERT INTO users (`username`,`access`) VALUES ("bergen",4);
+
+INSERT INTO stations (`id`,`name`,`region_id`) VALUES (1,"test",1); INSERT INTO regions (`name`) VALUES ("ttteeeeesst");
 ```
 
 ## Troubleshoot

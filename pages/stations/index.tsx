@@ -22,6 +22,8 @@ const AllStationsPage = ({
     router.push(`/stations/${id}`);
   };
 
+  console.log(data);
+
   return (
     <Layout session={user}>
       <DataGrid

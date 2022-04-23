@@ -3,7 +3,6 @@ import {
   Column,
   DataType,
   ForeignKey,
-  IsEmail,
   Model,
   Table,
 } from 'sequelize-typescript';
@@ -29,11 +28,11 @@ class Station extends Model {
   @Column({ type: DataType.STRING })
   declare address: string;
 
-  @Column({ type: DataType.STRING })
-  declare city: string;
-
   @Column({ type: DataType.INTEGER })
   declare zip: number;
+
+  @Column({ type: DataType.STRING })
+  declare city: string;
 
   @Column({ type: DataType.STRING })
   declare telephone: string;
@@ -41,8 +40,7 @@ class Station extends Model {
   @Column({ type: DataType.STRING })
   declare fax: string;
 
-  @IsEmail
-  @Column({ type: DataType.STRING })
+  @Column({ type: DataType.STRING, validate: { isEmail: true } })
   declare email: string;
 
   @ForeignKey(() => Region)

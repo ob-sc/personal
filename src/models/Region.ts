@@ -1,4 +1,5 @@
-import { Column, DataType, Model, Table } from 'sequelize-typescript';
+import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
+import Station from './Station';
 
 @Table({ tableName: 'regions', timestamps: false })
 class Region extends Model {
@@ -15,6 +16,12 @@ class Region extends Model {
     allowNull: false,
   })
   declare name: string;
+
+  @HasMany(() => Station, 'region_id')
+  declare mainRegionStations: Station[];
+
+  @HasMany(() => Station, 'subregion_id')
+  declare subregionStations: Station[];
 }
 
 export default Region;
