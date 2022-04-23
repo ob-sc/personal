@@ -6,7 +6,8 @@ import parseUser from '../../../src/lib/parseUser';
 import { error, httpMethodError, success } from '../../../src/server/response';
 import logger from '../../../src/lib/log';
 import { isDev, unresolved } from '../../../src/utils/shared';
-import db from '../../../src/server/sequelize';
+import db from '../../../src/server/database';
+import User from '../../../src/entities/User';
 
 // todo mit ldapjs in das modul
 const parseLdapError = (
@@ -69,13 +70,22 @@ const sessionHandler: NextApiHandler = async (req, res) => {
           return;
         }
 
-        let dbUser = await db.users.findOne({ where: { username } });
+        const userRepository = db.getRepository(User);
+
+        console.log(userRepository);
+
+        let dbUser = await userRepository.findOne({
+          where: { username },
+          relations: { region: true, allowedStations: true },
+        });
+
+        console.log(dbUser);
 
         if (dbUser === null) {
-          dbUser = await db.users.create({
-            domain: 'starcar',
-            username,
-          });
+          const newUser = new User();
+          newUser.username = username;
+
+          dbUser = await userRepository.save(newUser);
         }
 
         const parsed = parseUser(dbUser, user);

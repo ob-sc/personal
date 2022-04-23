@@ -1,40 +1,25 @@
-import { DataGridCol } from '../../../types';
-import { toLocalDate } from '../../utils/shared';
+import { DataGridCol } from '../../../types/client';
+import { translateAccess } from '../../utils/shared';
 
 const userColumns: DataGridCol[] = [
-  { field: 'username', headerName: 'Benutzer', width: 200, sm: true },
-  { field: 'domain', headerName: 'Domain', width: 150 },
+  { field: 'username', headerName: 'Benutzer', width: 300, sm: true },
   {
     field: 'access',
     headerName: 'Berechtigung',
-    width: 150,
-    valueFormatter: (params) => (params.value === null ? '-' : params.value),
+    width: 250,
+    valueFormatter: (params) => translateAccess(params.value) ?? '-',
   },
   {
     field: 'region',
     headerName: 'Region',
-    width: 150,
+    width: 250,
     valueFormatter: (params) => (params.value === null ? '-' : params.value),
   },
   {
     field: 'stations',
     headerName: 'Stationen',
-    width: 150,
+    width: 250,
     valueFormatter: (params) => (params.value === null ? '-' : params.value),
-  },
-  {
-    field: 'createdAt',
-    headerName: 'Erstellt',
-    width: 150,
-    type: 'date',
-    valueFormatter: (params) => toLocalDate(params.value as string),
-  },
-  {
-    field: 'updatedAt',
-    headerName: 'Update',
-    width: 150,
-    type: 'date',
-    valueFormatter: (params) => toLocalDate(params.value as string),
   },
 ];
 

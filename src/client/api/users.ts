@@ -1,12 +1,12 @@
+import User from '../../entities/User';
 import useRequest from '../hooks/useRequest';
-import { UserModel } from '../../../types/data';
 
 const route = '/api/users';
 
 export const useGetUser = (id: number) =>
-  useRequest<UserModel>({
+  useRequest<User>({
     url: `${route}/${id}`,
     // method: 'get',
   });
 
-export const useGetUsers = () => useRequest<UserModel[]>({ url: route });
+export const useGetUsers = () => useRequest<User[]>({ url: route });

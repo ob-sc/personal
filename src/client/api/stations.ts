@@ -1,14 +1,14 @@
 import axios from 'axios';
-import { StationModel } from '../../../types/data';
+import Station from '../../entities/Station';
 import useRequest from '../hooks/useRequest';
 
 const route = '/api/stations';
 
 export const useGetStation = (id: number) =>
-  useRequest<StationModel>({
+  useRequest<Station>({
     url: `${route}/${id}`,
   });
 
-export const useGetStations = () => useRequest<StationModel[]>({ url: route });
+export const useGetStations = () => useRequest<Station[]>({ url: route });
 
 export const postStation = (values: unknown) => axios.post(route, values);

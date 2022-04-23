@@ -8,7 +8,7 @@ import SyncIcon from '@mui/icons-material/Sync';
 import { isDev } from '../../src/utils/shared';
 import { postInit } from '../../src/client/api/init';
 import Form from '../../src/client/components/common/Form';
-import { FormField } from '../../types';
+import { FormField } from '../../types/client';
 import theme from '../../config/theme';
 
 const fields: FormField[] = [

@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { withSessionSsr } from '../../src/lib/withSession';
 import Layout from '../../src/client/components/layout/Layout';
 import DataGrid from '../../src/client/components/common/DataGrid';
-import { RowClickHandler } from '../../types';
+import { RowClickHandler } from '../../types/client';
 import stationColumns from '../../src/client/tables/stations';
 import { useGetStations } from '../../src/client/api/stations';
 
@@ -21,8 +21,6 @@ const AllStationsPage = ({
     // window.location.href = `/users/${id}`;
     router.push(`/stations/${id}`);
   };
-
-  console.log(data);
 
   return (
     <Layout session={user}>

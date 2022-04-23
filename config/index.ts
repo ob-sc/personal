@@ -1,7 +1,7 @@
-import { Dialect, Options as SequelizeOptions } from 'sequelize';
 import { IronSessionOptions } from 'iron-session';
 import logger from '../src/lib/log';
 import { Options as LdapOptions } from 'ldapauth-fork';
+import { DataSourceOptions } from 'typeorm';
 
 const validateEnv = (
   envName: string,
@@ -47,19 +47,17 @@ const env = {
 // DB
 
 type Databases = {
-  development: SequelizeOptions;
-  test: SequelizeOptions;
-  production: SequelizeOptions;
+  development: DataSourceOptions;
+  test: DataSourceOptions;
+  production: DataSourceOptions;
 };
 
-const host = '127.0.0.1';
-const dialect = 'mysql' as Dialect;
-
-const baseDbConfig: Partial<SequelizeOptions> = {
+const baseDbConfig: DataSourceOptions = {
+  type: 'mysql',
   username: env.db_user,
   password: env.db_password,
-  host,
-  dialect,
+  host: 'localhost',
+  synchronize: false,
   logging: false,
 };
 
@@ -67,7 +65,8 @@ export const dbConfig: Databases = {
   development: {
     ...baseDbConfig,
     database: 'development',
-    logging: (msg: unknown) => logger.debug(msg),
+    synchronize: true,
+    logging: true,
   },
 
   test: {

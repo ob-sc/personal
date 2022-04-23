@@ -1,14 +1,17 @@
 import type { NextApiHandler } from 'next';
-import db from '../../../src/server/sequelize';
+import db from '../../../src/server/database';
 import { unresolved } from '../../../src/utils/shared';
 import { withSessionApi } from '../../../src/lib/withSession';
 import { error, httpMethodError, success } from '../../../src/server/response';
+import User from '../../../src/entities/User';
 
 const usersHandler: NextApiHandler = async (req, res) => {
   const { method } = req;
 
+  const userRepository = db.getRepository(User);
+
   const allUsers = async () => {
-    const data = await db.users.findAll();
+    const data = await userRepository.find();
     success(res, data);
   };
 

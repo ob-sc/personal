@@ -5,7 +5,7 @@ import {
   NextApiHandler,
 } from 'next';
 import { sessionConfig } from '../../config';
-import { ParsedUser } from '../../types/user';
+import { ParsedUser } from '../../types/server';
 import { error } from '../server/response';
 import { redirectUrl } from '../utils/shared';
 

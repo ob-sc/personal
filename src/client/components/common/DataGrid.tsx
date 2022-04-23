@@ -13,7 +13,7 @@ import {
   MouseEventHandler,
   ReactNode,
   RowClickHandler,
-} from '../../../../types';
+} from '../../../../types/client';
 import { searchFilter } from '../../../utils/client';
 import DataGridFooter from './DataGridFooter';
 import useMobileContext from '../../context/MobileContext';

@@ -43,7 +43,7 @@ DROP DATABASE development; CREATE DATABASE development; USE development;
 
 INSERT INTO users (`username`,`access`) VALUES ("bergen",4);
 
-INSERT INTO stations (`id`,`name`,`region_id`) VALUES (1,"test",1); INSERT INTO regions (`name`) VALUES ("ttteeeeesst");
+INSERT INTO stations (`id`,`name`,`region_id`) VALUES (1,"test",3);
 ```
 
 ## Troubleshoot

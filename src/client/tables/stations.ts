@@ -1,4 +1,4 @@
-import { DataGridCol } from '../../../types';
+import { DataGridCol } from '../../../types/client';
 
 const stationColumns: DataGridCol[] = [
   { field: 'id', headerName: 'ID', width: 75, sm: true },

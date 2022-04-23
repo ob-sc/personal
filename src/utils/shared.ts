@@ -1,14 +1,28 @@
 export const isDev = process.env.NODE_ENV !== 'production';
 
+export function translateAccess(access: number) {
+  return access === 1
+    ? 'IDL'
+    : access === 2
+    ? 'SL'
+    : access === 3
+    ? 'GBL'
+    : access === 4
+    ? 'Admin'
+    : null;
+}
+
 export const unresolved = {
   api: {
     externalResolver: true,
   },
 };
 
-export const prepend0 = (num: number) => (num < 10 ? `0${num}` : num);
+export function prepend0(num: number) {
+  return num < 10 ? `0${num}` : num;
+}
 
-export const toLocalDate = (date: string | undefined | null) => {
+export function toLocalDate(date: string | undefined | null) {
   if (typeof date !== 'string') return '';
 
   const dateInstance = new Date(date);
@@ -21,9 +35,9 @@ export const toLocalDate = (date: string | undefined | null) => {
 
   // monat ist zero-indexed
   return `${prepend0(d)}.${prepend0(m + 1)}.${y}`;
-};
+}
 
-export const redirectUrl = (url: string) => {
+export function redirectUrl(url: string) {
   if (url.includes('_next')) {
     const parts = url.split('/');
 
@@ -44,7 +58,24 @@ export const redirectUrl = (url: string) => {
     return [...slice, ressource !== 'index' ? ressource : undefined].join('/');
   }
   return url;
-};
+}
 
-export const nullOnEmpty = (value: string | null | undefined) =>
-  value === '' || value === undefined ? null : value;
+export function isEmpty(val: string | null | undefined) {
+  return val === null || val === undefined || val.length === 0;
+}
+
+export function nullOnEmpty(value: string | null | undefined) {
+  return value === null || value === undefined || value.length === 0
+    ? null
+    : value;
+}
+
+export function nullOnEmptyNum(val: string | null | undefined) {
+  if (val === null || val === undefined) return null;
+
+  const num = Number(val);
+
+  if (Number.isNaN(num)) return null;
+
+  return num;
+}

@@ -1,29 +1,5 @@
-import { UserModel } from '../../types/data';
-import { DomainUser, ParsedUser } from '../../types/user';
-
-type ParseUser = (dbUser: UserModel, domainUser: DomainUser) => ParsedUser;
-
-// string aus db (stations in users), mit komma getrennte stationsnummern
-export const parseStations = (
-  stations: string | null | undefined
-): UserStations => {
-  const numStations: UserStations = [];
-
-  if (!stations) return numStations;
-
-  // leerstellen entfernen
-  const stationsString = stations.replace(/\s+/g, '');
-  const extraStations = stationsString.split(',');
-  for (const station of extraStations) {
-    const numStation = Number(station);
-    if (Number.isNaN(numStation)) {
-      throw new Error(`Ungültige Station in stations: ${stationsString}`);
-    }
-    numStations.push(numStation);
-  }
-
-  return numStations;
-};
+import { DomainUser, ParsedUser } from '../../types/server';
+import User from '../entities/User';
 
 export const parseOUStation = (dn: string) => {
   const dnParts = dn.split('=');
@@ -31,8 +7,8 @@ export const parseOUStation = (dn: string) => {
   return Number.isNaN(station) ? 0 : station;
 };
 
-const parseUser: ParseUser = (dbUser, domainUser) => {
-  const { username, access: a, region, stations: stationsArray } = dbUser;
+const parseUser = (dbUser: User, domainUser: DomainUser) => {
+  const { username, access: a, region, allowedStations } = dbUser;
   const { distinguishedName, mail, givenName, sn } = domainUser;
   const email = mail?.toLowerCase() ?? '';
 
@@ -40,12 +16,9 @@ const parseUser: ParseUser = (dbUser, domainUser) => {
 
   const ouStation = parseOUStation(distinguishedName);
 
-  console.log(dbUser);
+  const allowedIds = allowedStations.map((stat) => stat.id);
 
-  // 0 bei keiner OU Station
-  const extraStations = parseStations(stationsArray);
-
-  const stations = [ouStation, ...extraStations];
+  const stations: number[] = [ouStation, ...allowedIds];
 
   const user: ParsedUser = {
     username,

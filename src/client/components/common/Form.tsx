@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AxiosError } from 'axios';
 import { Box, Typography } from '@mui/material';
-import { CProps, FormField } from '../../../../types';
+import { CProps, FormField } from '../../../../types/client';
 import SubmitButton from './SubmitButton';
 import Input from './Input';
 import useMobileContext from '../../context/MobileContext';

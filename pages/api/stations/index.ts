@@ -1,33 +1,43 @@
 import type { NextApiHandler } from 'next';
-import db from '../../../src/server/sequelize';
-import { nullOnEmpty, unresolved } from '../../../src/utils/shared';
+import db from '../../../src/server/database';
+import {
+  nullOnEmpty,
+  nullOnEmptyNum,
+  unresolved,
+} from '../../../src/utils/shared';
 import { withSessionApi } from '../../../src/lib/withSession';
 import { error, httpMethodError, success } from '../../../src/server/response';
 import { NewStationForm } from '../../../types/data';
+import Station from '../../../src/entities/Station';
+import { requiredField } from '../../../src/utils/server';
 
 const stationsHandler: NextApiHandler = async (req, res) => {
   const { method, body } = req;
 
+  const stationRepository = db.getRepository(Station);
+
   const allStations = async () => {
-    const data = await db.stations.findAll();
-    console.log(data);
+    const data = await stationRepository.find();
     success(res, data);
   };
 
   const newStation = async (form: NewStationForm) => {
-    const values = {
-      id: nullOnEmpty(form.id),
-      name: nullOnEmpty(form.name),
-      address: nullOnEmpty(form.address),
-      zip: nullOnEmpty(form.zip),
-      city: nullOnEmpty(form.city),
-      telephone: nullOnEmpty(form.telephone),
-      fax: nullOnEmpty(form.fax),
-      email: nullOnEmpty(form.email),
-      region: nullOnEmpty(form.region),
-    };
+    requiredField(form.id, form.name, form.region_id);
 
-    await db.stations.create(values);
+    const station = new Station();
+
+    station.id = Number(form.id);
+    station.name = form.name;
+    station.address = nullOnEmpty(form.address);
+    station.zip = nullOnEmptyNum(form.zip);
+    station.city = nullOnEmpty(form.city);
+    station.telephone = nullOnEmpty(form.telephone);
+    station.fax = nullOnEmpty(form.fax);
+    station.email = nullOnEmpty(form.email);
+    station.region_id = Number(form.region_id);
+    station.subregion_id = nullOnEmptyNum(form.subregion_id);
+
+    await stationRepository.save(station);
     success(res);
   };
 

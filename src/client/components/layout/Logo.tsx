@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import { MouseEventHandler } from '../../../../types';
+import { MouseEventHandler } from '../../../../types/client';
 
 interface Props {
   clickHandler: MouseEventHandler;

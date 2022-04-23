@@ -4,7 +4,7 @@ import { withSessionSsr } from '../../src/lib/withSession';
 import Layout from '../../src/client/components/layout/Layout';
 import { postStation } from '../../src/client/api/stations';
 import Form from '../../src/client/components/common/Form';
-import { FormField } from '../../types';
+import { FormField } from '../../types/client';
 import { Typography } from '@mui/material';
 
 export const getServerSideProps = withSessionSsr();

@@ -1,5 +1,5 @@
 import { Container } from '@mui/material';
-import { CProps } from '../../../../types';
+import { CProps } from '../../../../types/client';
 import { ParsedUser } from '../../../../types/user';
 import CenteredSpinner from '../common/CenteredSpinner';
 import Navbar from './Navbar';
