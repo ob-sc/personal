@@ -7,9 +7,9 @@ import {
 } from '../../../src/utils/shared';
 import { withSessionApi } from '../../../src/lib/withSession';
 import { error, httpMethodError, success } from '../../../src/server/response';
-import { NewStationForm } from '../../../types/data';
-import Station from '../../../src/entities/Station';
+import { Station } from '../../../src/entities/Station';
 import { requiredField } from '../../../src/utils/server';
+import { NewStationForm } from '../../stations/new';
 
 const stationsHandler: NextApiHandler = async (req, res) => {
   const { method, body } = req;

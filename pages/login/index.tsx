@@ -3,10 +3,6 @@ import { useRouter } from 'next/router';
 import { Box, Typography } from '@mui/material';
 import { postSession } from '../../src/client/api/sessions';
 
-import { IconButton } from '@mui/material';
-import SyncIcon from '@mui/icons-material/Sync';
-import { isDev } from '../../src/utils/shared';
-import { postInit } from '../../src/client/api/init';
 import Form from '../../src/client/components/common/Form';
 import { FormField } from '../../types/client';
 import theme from '../../config/theme';
@@ -68,19 +64,6 @@ const LoginPage = () => {
           <Form submit={handleSubmit} fields={fields} size="sm" />
         </Box>
       </Box>
-      {
-        // zum initialisieren von sequelize, wenn nicht prod
-        !isDev ? undefined : (
-          <IconButton
-            size="large"
-            color="inherit"
-            onClick={postInit}
-            sx={{ position: 'absolute', top: 10, right: 10 }}
-          >
-            <SyncIcon />
-          </IconButton>
-        )
-      }
     </>
   );
 };

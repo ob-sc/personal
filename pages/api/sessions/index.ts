@@ -7,7 +7,7 @@ import { error, httpMethodError, success } from '../../../src/server/response';
 import logger from '../../../src/lib/log';
 import { isDev, unresolved } from '../../../src/utils/shared';
 import db from '../../../src/server/database';
-import User from '../../../src/entities/User';
+import { User } from '../../../src/entities/User';
 
 // todo mit ldapjs in das modul
 const parseLdapError = (
@@ -72,14 +72,10 @@ const sessionHandler: NextApiHandler = async (req, res) => {
 
         const userRepository = db.getRepository(User);
 
-        console.log(userRepository);
-
         let dbUser = await userRepository.findOne({
           where: { username },
           relations: { region: true, allowedStations: true },
         });
-
-        console.log(dbUser);
 
         if (dbUser === null) {
           const newUser = new User();
@@ -89,6 +85,8 @@ const sessionHandler: NextApiHandler = async (req, res) => {
         }
 
         const parsed = parseUser(dbUser, user);
+
+        console.log(parsed);
 
         session.user = parsed;
         await session.save();

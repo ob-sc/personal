@@ -8,8 +8,12 @@ export const requiredField = (...args: (string | null | undefined)[]) => {
   }
 };
 
-export const NULL = { nullable: true, default: null };
+export const NULL = {
+  nullable: true,
+  // default: null,
+};
 
-export const NOT_NULL = { nullable: false };
+// automatisch not null
+// export const NOT_NULL = { nullable: false };
 
 export const UNIQUE = { unique: true };

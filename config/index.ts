@@ -58,7 +58,7 @@ const baseDbConfig: DataSourceOptions = {
   password: env.db_password,
   host: 'localhost',
   synchronize: false,
-  logging: false,
+  logging: ['error'],
 };
 
 export const dbConfig: Databases = {
@@ -66,7 +66,7 @@ export const dbConfig: Databases = {
     ...baseDbConfig,
     database: 'development',
     synchronize: true,
-    logging: true,
+    logging: ['schema', 'error', 'warn', 'info', 'log', 'migration'],
   },
 
   test: {

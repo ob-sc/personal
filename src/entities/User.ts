@@ -1,43 +1,45 @@
 import {
   Column,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
   Relation,
 } from 'typeorm';
-import { NOT_NULL, NULL, UNIQUE } from '../utils/server';
-import Region from './Region';
-import Station from './Station';
+import { NULL, UNIQUE } from '../utils/server';
+import { Region } from './Region';
+import { Station } from './Station';
 
-// @Table({ tableName: 'users', timestamps: false })
-@Entity()
-class User {
+@Entity({ name: 'users' })
+export class User {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column('string', { ...UNIQUE, ...NOT_NULL })
+  @Column('varchar', { ...UNIQUE })
   username!: string;
 
-  @Column('string', { ...NULL })
+  @Column('int', { ...NULL })
   access!: number;
 
-  // @ForeignKey(() => Region)
   @Column('int', { ...NULL })
-  region_id!: number;
+  region_id!: number | null;
 
-  @Column('tinyint', { ...NOT_NULL, default: 1 })
+  @Column('tinyint', { default: 1 })
   active!: boolean;
 
   // ---
 
   @ManyToOne(() => Region, (region) => region.users)
+  @JoinColumn({ name: 'region_id' })
   region!: Relation<Region>;
 
   @ManyToMany(() => Station, (station) => station.users)
-  @JoinTable()
+  @JoinTable({
+    name: 'allowed_stations',
+    joinColumn: { name: 'user_id' },
+    inverseJoinColumn: { name: 'station_id' },
+  })
   allowedStations!: Relation<Station[]>;
 }
-
-export default User;

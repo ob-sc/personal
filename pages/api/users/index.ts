@@ -3,7 +3,7 @@ import db from '../../../src/server/database';
 import { unresolved } from '../../../src/utils/shared';
 import { withSessionApi } from '../../../src/lib/withSession';
 import { error, httpMethodError, success } from '../../../src/server/response';
-import User from '../../../src/entities/User';
+import { User } from '../../../src/entities/User';
 
 const usersHandler: NextApiHandler = async (req, res) => {
   const { method } = req;

@@ -1,4 +1,4 @@
-import User from '../../entities/User';
+import { User } from '../../entities/User';
 import useRequest from '../hooks/useRequest';
 
 const route = '/api/users';

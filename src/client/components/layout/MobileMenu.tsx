@@ -1,8 +1,8 @@
 import { MouseEvent, useState } from 'react';
 import { IconButton, Menu, MenuItem } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { ParsedUser } from '../../../../types/user';
 import NavLink from '../common/NavLink';
+import { ParsedUser } from '../../../../types/server';
 
 interface Props {
   mobile: boolean;

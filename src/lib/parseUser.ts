@@ -1,5 +1,5 @@
 import { DomainUser, ParsedUser } from '../../types/server';
-import User from '../entities/User';
+import { User } from '../entities/User';
 
 export const parseOUStation = (dn: string) => {
   const dnParts = dn.split('=');
@@ -16,7 +16,7 @@ const parseUser = (dbUser: User, domainUser: DomainUser) => {
 
   const ouStation = parseOUStation(distinguishedName);
 
-  const allowedIds = allowedStations.map((stat) => stat.id);
+  const allowedIds = allowedStations?.map((stat) => stat.id) ?? [];
 
   const stations: number[] = [ouStation, ...allowedIds];
 

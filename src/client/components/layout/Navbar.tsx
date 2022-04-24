@@ -1,12 +1,12 @@
 import { AppBar, Box, IconButton, Toolbar } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useRouter } from 'next/router';
-import { ParsedUser } from '../../../../types/user';
 import NavLink from '../common/NavLink';
 import Logo from './Logo';
 import MobileMenu from './MobileMenu';
 import { deleteSession } from '../../api/sessions';
 import useMobileContext from '../../context/MobileContext';
+import { ParsedUser } from '../../../../types/server';
 
 interface Props {
   session?: ParsedUser;

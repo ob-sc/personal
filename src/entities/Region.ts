@@ -5,24 +5,28 @@ import {
   PrimaryGeneratedColumn,
   Relation,
 } from 'typeorm';
-import { NOT_NULL, UNIQUE } from '../utils/server';
-import User from './User';
+import { UNIQUE } from '../utils/server';
+import { Station } from './Station';
+import { User } from './User';
 
-// todo was ist wenn ich region lösche aber user id noch hat? cascade?
+// todo was ist wenn ich region lösche aber user id noch hat? cascade? testen ob das überhaupt passiert
 
-// @Table({ tableName: 'regions', timestamps: false })
-@Entity()
-class Region {
+@Entity({ name: 'regions' })
+export class Region {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column('string', { ...UNIQUE, ...NOT_NULL })
+  @Column('varchar', { ...UNIQUE })
   name!: string;
 
   // ---
 
-  @OneToMany(() => User, (user) => user.id)
+  @OneToMany(() => User, (user) => user.region)
   users!: Relation<User[]>;
-}
 
-export default Region;
+  @OneToMany(() => Station, (station) => station.region)
+  stations!: Relation<Station[]>;
+
+  @OneToMany(() => Station, (station) => station.subregion)
+  subStations!: Relation<Station[]>;
+}
