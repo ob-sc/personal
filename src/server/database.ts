@@ -4,7 +4,6 @@ import { dbConfig } from '../../config';
 import { Region } from '../entities/Region';
 import { Station } from '../entities/Station';
 import { User } from '../entities/User';
-import logger from '../lib/log';
 
 const NODE_ENV = process.env.NODE_ENV ?? 'development';
 const cfg = dbConfig[NODE_ENV];
@@ -14,12 +13,17 @@ const db = new DataSource({
   entities: [User, Station, Region],
 });
 
-(async function () {
-  try {
-    await db.initialize();
-  } catch (err) {
-    logger.error(err);
-  }
-})();
+// (async function () {
+//   console.log('hi');
+//   try {
+//     await db.initialize();
+//   } catch (err) {
+//     logger.error(err);
+//   }
+// })();
 
-export default db;
+async function initConnection() {
+  return db.initialize();
+}
+
+export default await initConnection();

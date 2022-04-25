@@ -7,5 +7,6 @@ module.exports = {
   // für Docker
   experimental: {
     outputStandalone: true,
+    topLevelAwait: true,
   },
 };
