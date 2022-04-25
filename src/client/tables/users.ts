@@ -1,4 +1,5 @@
 import { DataGridCol } from '../../../types/client';
+import { gridEmptyVal } from '../../utils/client';
 import { translateAccess } from '../../utils/shared';
 
 const userColumns: DataGridCol[] = [
@@ -7,19 +8,19 @@ const userColumns: DataGridCol[] = [
     field: 'access',
     headerName: 'Berechtigung',
     width: 250,
-    valueFormatter: (params) => translateAccess(params.value) ?? '-',
+    valueFormatter: (param) => translateAccess(param.value) ?? '-',
   },
   {
     field: 'region',
     headerName: 'Region',
     width: 250,
-    valueFormatter: (params) => (params.value === null ? '-' : params.value),
+    valueFormatter: gridEmptyVal,
   },
   {
     field: 'stations',
     headerName: 'Stationen',
     width: 250,
-    valueFormatter: (params) => (params.value === null ? '-' : params.value),
+    valueFormatter: gridEmptyVal,
   },
 ];
 

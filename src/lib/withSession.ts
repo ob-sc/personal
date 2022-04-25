@@ -1,7 +1,11 @@
 import { withIronSessionApiRoute, withIronSessionSsr } from 'iron-session/next';
-import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
+import {
+  GetServerSidePropsContext,
+  GetServerSidePropsResult,
+  NextApiHandler,
+} from 'next';
 import { sessionConfig } from '../../config';
-import { NextApiHandlerWithDB, ParsedUser } from '../../types/server';
+import { ParsedUser } from '../../types/server';
 import { error } from '../server/response';
 import { redirectUrl } from '../utils/shared';
 
@@ -55,11 +59,8 @@ export const withSessionSsr = () =>
  * const routeHandler: NextApiHandler = async (req, res) => { const { session } = req; ... };
  * export default withSessionApi(routeHandler);
  */
-export const withSessionApi = (
-  handler: NextApiHandlerWithDB,
-  noAuth?: boolean
-) => {
-  const authHandler: NextApiHandlerWithDB = async (req, res) => {
+export const withSessionApi = (handler: NextApiHandler, noAuth?: boolean) => {
+  const authHandler: NextApiHandler = async (req, res) => {
     if (!noAuth) {
       const { session } = req;
       // nicht authentifiziert

@@ -1,8 +1,6 @@
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
-import { NextApiHandlerWithDB } from '../../types/server';
 import { dbConfig } from '../../config';
-import { withSessionApi } from '../lib/withSession';
 import { Region } from '../entities/Region';
 import { Station } from '../entities/Station';
 import { User } from '../entities/User';
@@ -16,28 +14,16 @@ const db = new DataSource({
   entities: [User, Station, Region],
 });
 
-/**
- * Middleware mit `withSessionApi()` und Datenbank init
- */
-export const withSessionORM = (
-  handler: NextApiHandlerWithDB,
-  noAuth: boolean
-) => {
-  const withDbHandler: NextApiHandlerWithDB = async (req, res) => {
-    if (res.dbInit !== true) {
-      try {
-        await db.initialize();
-        res.dbInit = true;
-        logger.debug('ORM Initialisierung okay');
-      } catch (err) {
-        logger.error(err);
-      }
+async function ormInit() {
+  if (db.isInitialized !== true) {
+    try {
+      await db.initialize();
+    } catch (err) {
+      logger.error(err);
     }
+  }
 
-    handler(req, res);
-  };
+  return db;
+}
 
-  return withSessionApi(withDbHandler, noAuth);
-};
-
-export default db;
+export default await ormInit();

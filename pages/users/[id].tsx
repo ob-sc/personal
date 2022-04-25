@@ -15,6 +15,7 @@ const SingleUserPage = ({
   const router = useRouter();
   const { id } = router.query;
   const { data, isValidating } = useGetUser(Number(id));
+
   console.log(data);
 
   const {

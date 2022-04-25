@@ -1,5 +1,5 @@
 import LdapAuth from 'ldapauth-fork';
-import { NextApiHandlerWithDB } from '../../../types/server';
+import { NextApiHandler } from 'next';
 import { ldapConfig } from '../../../config';
 import { withSessionApi } from '../../../src/lib/withSession';
 import parseUser from '../../../src/lib/parseUser';
@@ -14,11 +14,6 @@ const parseLdapError = (
   err: unknown
 ): { error: Error; field: string | null } => {
   let e;
-  /**
-   * 1: allgemeiner Fehler
-   * 2: Benutzername falsch
-   * 3: Passwort falsch
-   */
   let field = null;
 
   if (!isDev) e = new Error('Fehler bei LDAP Authentifizierung');
@@ -39,7 +34,7 @@ const parseLdapError = (
   return { error: e, field };
 };
 
-const sessionHandler: NextApiHandlerWithDB = async (req, res) => {
+const sessionHandler: NextApiHandler = async (req, res) => {
   const {
     body: { username, password },
     session,
@@ -85,8 +80,6 @@ const sessionHandler: NextApiHandlerWithDB = async (req, res) => {
         }
 
         const parsed = parseUser(dbUser, user);
-
-        console.log(parsed);
 
         session.user = parsed;
         await session.save();

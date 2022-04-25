@@ -1,4 +1,5 @@
 import createCache from '@emotion/cache';
+import { GridValueFormatterParams } from '@mui/x-data-grid';
 
 export const createEmotionCache = () => createCache({ key: 'css' });
 
@@ -18,3 +19,7 @@ export const searchFilter = <T = { [key: string]: unknown }>(
         }
         return false;
       });
+
+export function gridEmptyVal(params: GridValueFormatterParams) {
+  return params.value ?? '-';
+}

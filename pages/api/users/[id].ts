@@ -1,11 +1,11 @@
-import { NextApiHandlerWithDB } from '../../../types/server';
+import { NextApiHandler } from 'next';
 import db from '../../../src/server/database';
 import { unresolved } from '../../../src/utils/shared';
 import { withSessionApi } from '../../../src/lib/withSession';
 import { error, httpMethodError, success } from '../../../src/server/response';
 import { User } from '../../../src/entities/User';
 
-const userIdHandler: NextApiHandlerWithDB = async (req, res) => {
+const userIdHandler: NextApiHandler = async (req, res) => {
   const {
     query: { id },
     method,
