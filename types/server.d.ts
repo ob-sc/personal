@@ -1,3 +1,5 @@
+import { NextApiRequest, NextApiResponse } from 'next';
+import { DataSource } from 'typeorm';
 import Region from '../src/entities/Region';
 
 export interface ParsedUser {
@@ -48,3 +50,15 @@ export type ErrorResponse = {
   message: string;
   field?: string;
 };
+
+// in withSession.ts middleware, db wird dort mitgegeben
+
+export type NextApiResponseWithDB = NextApiResponse & {
+  db?: DataSource;
+  dbInit?: boolean;
+};
+
+export type NextApiHandlerWithDB = (
+  req: NextApiRequest,
+  res: NextApiResponseWithDB
+) => void | Promise<void>;

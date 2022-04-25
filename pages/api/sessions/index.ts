@@ -1,5 +1,5 @@
-import { NextApiHandler } from 'next';
 import LdapAuth from 'ldapauth-fork';
+import { NextApiHandlerWithDB } from '../../../types/server';
 import { ldapConfig } from '../../../config';
 import { withSessionApi } from '../../../src/lib/withSession';
 import parseUser from '../../../src/lib/parseUser';
@@ -39,7 +39,7 @@ const parseLdapError = (
   return { error: e, field };
 };
 
-const sessionHandler: NextApiHandler = async (req, res) => {
+const sessionHandler: NextApiHandlerWithDB = async (req, res) => {
   const {
     body: { username, password },
     session,

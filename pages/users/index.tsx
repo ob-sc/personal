@@ -22,6 +22,8 @@ const AllUsersPage = ({
     router.push(`/users/${id}`);
   };
 
+  console.log(data);
+
   return (
     <Layout session={user}>
       <DataGrid

@@ -1,4 +1,4 @@
-import type { NextApiHandler } from 'next';
+import { NextApiHandlerWithDB } from '../../../types/server';
 import db from '../../../src/server/database';
 import {
   nullOnEmpty,
@@ -11,7 +11,7 @@ import { Station } from '../../../src/entities/Station';
 import { requiredField } from '../../../src/utils/server';
 import { NewStationForm } from '../../stations/new';
 
-const stationsHandler: NextApiHandler = async (req, res) => {
+const stationsHandler: NextApiHandlerWithDB = async (req, res) => {
   const { method, body } = req;
 
   const stationRepository = db.getRepository(Station);

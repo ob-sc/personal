@@ -1,11 +1,7 @@
 import { withIronSessionApiRoute, withIronSessionSsr } from 'iron-session/next';
-import {
-  GetServerSidePropsContext,
-  GetServerSidePropsResult,
-  NextApiHandler,
-} from 'next';
+import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import { sessionConfig } from '../../config';
-import { ParsedUser } from '../../types/server';
+import { NextApiHandlerWithDB, ParsedUser } from '../../types/server';
 import { error } from '../server/response';
 import { redirectUrl } from '../utils/shared';
 
@@ -54,25 +50,30 @@ export const withSessionSsr = () =>
  * Middleware die auf login prüft (session existiert).
  * Gibt `req` auch das Session-Objekt.
  * Bei Erfolg wird session erneuert.
+ * Außerdem wird die DB in `res.db` mitgegeben und ggf initialisiert.
  * @example
  * const routeHandler: NextApiHandler = async (req, res) => { const { session } = req; ... };
  * export default withSessionApi(routeHandler);
  */
-export const withSessionApi = (handler: NextApiHandler, noAuth?: boolean) => {
-  const authHandler: NextApiHandler = async (req, res) => {
-    const { session } = req;
-    // nicht authentifiziert
-    if (session.user === undefined) {
-      error(res, 'Authentifizierung erforderlich', 403);
-      return;
+export const withSessionApi = (
+  handler: NextApiHandlerWithDB,
+  noAuth?: boolean
+) => {
+  const authHandler: NextApiHandlerWithDB = async (req, res) => {
+    if (!noAuth) {
+      const { session } = req;
+      // nicht authentifiziert
+      if (session.user === undefined) {
+        error(res, 'Authentifizierung erforderlich', 403);
+        return;
+      }
+
+      // wenn authentifiziert, Session erneuern
+      await session.save();
     }
-
-    // wenn authentifiziert, Session erneuern
-    await session.save();
-
     // weiter wie next()
     handler(req, res);
   };
 
-  return withIronSessionApiRoute(noAuth ? handler : authHandler, sessionConfig);
+  return withIronSessionApiRoute(authHandler, sessionConfig);
 };
