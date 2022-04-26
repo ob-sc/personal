@@ -1,7 +1,7 @@
-import { DataGridCol } from '../../../types/client';
+import { DGColFn } from '../../../types/client';
 import { gridEmptyVal } from '../../utils/client';
 
-const stationColumns: DataGridCol[] = [
+const stationColumns: DGColFn = () => [
   {
     field: 'id',
     headerName: 'ID',
@@ -14,18 +14,6 @@ const stationColumns: DataGridCol[] = [
     headerName: 'Name',
     width: 180,
     sm: true,
-  },
-  {
-    field: 'address',
-    headerName: 'Anschrift',
-    width: 180,
-    valueFormatter: gridEmptyVal,
-  },
-  {
-    field: 'city',
-    headerName: 'Stadt',
-    width: 180,
-    valueFormatter: gridEmptyVal,
   },
   {
     field: 'region',
@@ -42,6 +30,24 @@ const stationColumns: DataGridCol[] = [
   {
     field: 'email',
     headerName: 'E-Mail',
+    width: 180,
+    valueFormatter: gridEmptyVal,
+  },
+  {
+    field: 'address',
+    headerName: 'Anschrift',
+    width: 180,
+    valueFormatter: gridEmptyVal,
+  },
+  {
+    field: 'zip',
+    headerName: 'Postleitzahl',
+    width: 180,
+    valueFormatter: gridEmptyVal,
+  },
+  {
+    field: 'city',
+    headerName: 'Stadt',
     width: 180,
     valueFormatter: gridEmptyVal,
   },

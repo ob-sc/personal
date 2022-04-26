@@ -22,10 +22,12 @@ const AllUsersPage = ({
     router.push(`/users/${id}`);
   };
 
+  const cols = userColumns();
+
   return (
     <Layout session={user}>
       <DataGrid
-        columns={userColumns}
+        columns={cols}
         rows={data ?? []}
         error={error !== undefined}
         loading={!data && !error}

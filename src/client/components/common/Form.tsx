@@ -33,6 +33,7 @@ const Form = ({ submit, fields, submitName, size = 'md', cols = 1 }: Props) => {
     lg: 400,
   };
 
+  // spaltenanzahl sm = 1, md = 2, sonst mehrere
   const columns = sm ? 1 : md && cols >= 2 ? 2 : cols;
 
   const colWidth = size &&
@@ -91,7 +92,12 @@ const Form = ({ submit, fields, submitName, size = 'md', cols = 1 }: Props) => {
               >
                 <Typography variant="h5">{field.label}</Typography>
               </Box>
-            ) : (
+            ) : field.type === "select" ? 
+            
+            (
+              
+            )
+            :  (
               <Input
                 key={field.name}
                 name={field.name}

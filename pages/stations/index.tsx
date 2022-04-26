@@ -22,10 +22,12 @@ const AllStationsPage = ({
     router.push(`/stations/${id}`);
   };
 
+  const cols = stationColumns();
+
   return (
     <Layout session={user}>
       <DataGrid
-        columns={stationColumns}
+        columns={cols}
         rows={data ?? []}
         error={error !== undefined}
         loading={!data && !error}

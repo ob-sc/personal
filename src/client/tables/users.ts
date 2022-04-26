@@ -1,8 +1,8 @@
-import { DataGridCol } from '../../../types/client';
+import { DGColFn } from '../../../types/client';
 import { gridEmptyVal } from '../../utils/client';
 import { translateAccess } from '../../utils/shared';
 
-const userColumns: DataGridCol[] = [
+const userColumns: DGColFn = () => [
   { field: 'username', headerName: 'Benutzer', width: 300, sm: true },
   {
     field: 'access',

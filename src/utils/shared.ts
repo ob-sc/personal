@@ -71,7 +71,7 @@ export function nullOnEmpty(value: string | null | undefined) {
 }
 
 export function nullOnEmptyNum(val: string | null | undefined) {
-  if (val === null || val === undefined) return null;
+  if (val === null || val === undefined || val.length === 0) return null;
 
   const num = Number(val);
 

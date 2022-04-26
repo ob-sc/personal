@@ -37,7 +37,7 @@ const stationsHandler: NextApiHandler = async (req, res) => {
     station.region_id = Number(form.region_id);
     station.subregion_id = nullOnEmptyNum(form.subregion_id);
 
-    await stationRepository.save(station);
+    await stationRepository.insert(station);
     success(res);
   };
 

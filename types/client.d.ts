@@ -31,7 +31,14 @@ export interface CProps {
 export interface FormField {
   name: string;
   label: string;
-  type: 'text' | 'number' | 'password' | 'date' | 'header';
+  type:
+    | 'text'
+    | 'number'
+    | 'password'
+    | 'date'
+    | 'select'
+    | 'multiselect'
+    | 'header';
   required?: boolean;
 }
 
@@ -40,6 +47,8 @@ export interface FormField {
 export interface DataGridCol extends GridColDef {
   sm?: boolean;
 }
+
+export type DGColFn = () => DataGridCol[];
 
 export type RowClickHandler = (
   params: GridRowParams<{
