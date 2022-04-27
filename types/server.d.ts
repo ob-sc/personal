@@ -1,5 +1,13 @@
 import Region from '../src/entities/Region';
 
+export type Route =
+  | 'sessions'
+  | 'temps'
+  | 'employees'
+  | 'regions'
+  | 'stations'
+  | 'users';
+
 export interface ParsedUser {
   /** aus AD */
   username: string;
@@ -46,5 +54,5 @@ export type SuccessResponse =
 
 export type ErrorResponse = {
   message: string;
-  field?: string;
+  fields?: string[];
 };

@@ -1,15 +1,10 @@
 import { useState } from 'react';
 import { Box } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import {
-  GridColDef,
-  GridRowsProp,
-  DataGrid as MuiDataGrid,
-  deDE,
-} from '@mui/x-data-grid';
+import { GridRowsProp, DataGrid as MuiDataGrid, deDE } from '@mui/x-data-grid';
 import {
   CellClickHandler,
-  GridCol,
+  DataGridCol,
   MouseEventHandler,
   ReactNode,
   RowClickHandler,
@@ -19,7 +14,7 @@ import DataGridFooter from './DataGridFooter';
 import useMobileContext from '../../context/MobileContext';
 
 interface Props {
-  columns: GridCol[];
+  columns: DataGridCol[];
   rows: GridRowsProp;
   error: boolean;
   loading: boolean;
@@ -30,7 +25,7 @@ interface Props {
   actionIcon?: ReactNode;
 }
 
-const DataGrid = ({
+function DataGrid({
   columns,
   rows,
   error,
@@ -40,17 +35,18 @@ const DataGrid = ({
   add,
   actionHandler,
   actionIcon,
-}: Props) => {
+}: Props) {
   const mobile = useMobileContext();
   const [search, setSearch] = useState('');
 
   // MUI bug: bei error === false trotzdem error state, undefined nicht
   const err = error ? true : undefined;
 
+  // "suchen" input
   const filteredRows = searchFilter(search, rows);
 
-  const cols: GridColDef[] = [];
-
+  // mit moobile sm werden nur spalten mit `sm: true` angezeigt
+  const cols: DataGridCol[] = [];
   if (mobile.sm) {
     for (const obj of columns) {
       for (const [k, v] of Object.entries(obj)) {
@@ -101,6 +97,6 @@ const DataGrid = ({
       />
     </Box>
   );
-};
+}
 
 export default DataGrid;

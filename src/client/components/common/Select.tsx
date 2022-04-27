@@ -6,6 +6,7 @@ import {
 } from '@mui/material';
 import { Control, Controller, FieldErrors } from 'react-hook-form';
 import { SelectOption } from '../../../../types/client';
+import CenteredSpinner from './CenteredSpinner';
 
 interface Props {
   name: string;
@@ -14,9 +15,18 @@ interface Props {
   control: Control;
   errors: FieldErrors;
   required?: boolean;
+  cn?: string;
 }
 
-function Select({ name, label, options, required, control, errors }: Props) {
+function Select({
+  name,
+  label,
+  options,
+  required,
+  control,
+  errors,
+  cn,
+}: Props) {
   return (
     <Controller
       name={name}
@@ -25,23 +35,28 @@ function Select({ name, label, options, required, control, errors }: Props) {
       rules={{ required }}
       render={({ field }) => (
         <FormControl
+          className={cn}
           variant="outlined"
           error={!!errors[name]}
           fullWidth={true}
           size="small"
         >
-          <InputLabel id={`${name}-label`}>Age</InputLabel>
+          <InputLabel id={`${name}-label`}>{label}</InputLabel>
           <MuiSelect
             labelId={`${name}-label`}
             id={name}
             label={label}
             {...field}
           >
-            {options.map(({ optval, optlabel }) => (
-              <MenuItem key={optval} value={optval}>
-                {optlabel}
-              </MenuItem>
-            ))}
+            {options.length === 0 ? (
+              <CenteredSpinner size={25} />
+            ) : (
+              options.map(({ optval, optlabel }) => (
+                <MenuItem key={optval} value={optval}>
+                  {optlabel}
+                </MenuItem>
+              ))
+            )}
           </MuiSelect>
         </FormControl>
       )}

@@ -18,9 +18,10 @@ interface Props {
   control: Control;
   errors: FieldErrors;
   required?: boolean;
+  cn?: string;
 }
 
-// todo https://mui.com/components/selects/#MultipleSelectCheckmarks.tsx
+// https://mui.com/components/selects/#MultipleSelectCheckmarks.tsx
 
 /**
  * options ist Array mit Objekten, die optval und optlabel enthalten
@@ -35,6 +36,7 @@ function MultiSelect({
   required,
   control,
   errors,
+  cn,
 }: Props) {
   return (
     <Controller
@@ -44,6 +46,7 @@ function MultiSelect({
       rules={{ required }}
       render={({ field }) => (
         <FormControl
+          className={cn}
           variant="outlined"
           error={!!errors[name]}
           fullWidth={true}

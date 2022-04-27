@@ -48,7 +48,7 @@ export default function useRequest<Data = unknown, Error = unknown>(
   );
 
   // wenn session abgelaufen (sonst würde frontend das schon abfangen)
-  if (error?.response?.status === 403) location.href = '/login';
+  if (error?.response?.status === 401) location.href = '/login';
 
   return {
     data: response && response.data,

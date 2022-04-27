@@ -1,6 +1,6 @@
+import { accessConstants } from '../../../config/constants';
 import { DGColFn } from '../../../types/client';
 import { gridEmptyVal } from '../../utils/client';
-import { translateAccess } from '../../utils/shared';
 
 const userColumns: DGColFn = () => [
   { field: 'username', headerName: 'Benutzer', width: 300, sm: true },
@@ -8,7 +8,8 @@ const userColumns: DGColFn = () => [
     field: 'access',
     headerName: 'Berechtigung',
     width: 250,
-    valueFormatter: (param) => translateAccess(param.value) ?? '-',
+    valueFormatter: (param) =>
+      accessConstants(param.value ?? 0).translate() ?? '-',
   },
   {
     field: 'region',

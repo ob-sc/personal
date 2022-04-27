@@ -7,11 +7,6 @@ import Form from '../../src/client/components/common/Form';
 import { FormField } from '../../types/client';
 import theme from '../../config/theme';
 
-const fields: FormField[] = [
-  { name: 'username', label: 'Benutzer', type: 'text' },
-  { name: 'password', label: 'Passwort', type: 'password' },
-];
-
 const LoginPage = () => {
   const router = useRouter();
 
@@ -27,12 +22,17 @@ const LoginPage = () => {
   const handleSubmit = async (values: unknown) => {
     await postSession(values);
     // wenn ok: speichern um zu sehen ob user schon eingeloggt war
-    // dann kommt bei 403 "session abgelaufen"
+    // dann kommt bei 401 "session abgelaufen"
     window.sessionStorage.setItem('session', 'true');
 
     router.push(typeof redirect === 'string' ? redirect : '/');
     // window.location.href = typeof redirect === 'string' ? redirect : '/';
   };
+
+  const fields: FormField[] = [
+    { name: 'username', label: 'Benutzer', type: 'text' },
+    { name: 'password', label: 'Passwort', type: 'password' },
+  ];
 
   return (
     <>

@@ -1,12 +1,12 @@
 import { isEmpty } from './shared';
 
-export const requiredField = (...args: (string | null | undefined)[]) => {
+export function requiredField(...args: (string | null | undefined)[]) {
   for (const arg of args) {
     if (isEmpty(arg)) {
       throw new Error(`Argument ${arg} fehlt`);
     }
   }
-};
+}
 
 export const NULL = {
   nullable: true,

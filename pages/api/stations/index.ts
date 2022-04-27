@@ -10,14 +10,17 @@ import { error, httpMethodError, success } from '../../../src/server/response';
 import { Station } from '../../../src/entities/Station';
 import { requiredField } from '../../../src/utils/server';
 import { NewStationForm } from '../../stations/new';
+import { validate } from 'class-validator';
 
-const stationsHandler: NextApiHandler = async (req, res) => {
+const stationHandler: NextApiHandler = async (req, res) => {
   const { method, body } = req;
 
   const stationRepository = db.getRepository(Station);
 
   const allStations = async () => {
-    const data = await stationRepository.find({ relations: { region: true } });
+    const data = await stationRepository.find({
+      relations: { region: true, subregion: true },
+    });
     success(res, data);
   };
 
@@ -37,8 +40,13 @@ const stationsHandler: NextApiHandler = async (req, res) => {
     station.region_id = Number(form.region_id);
     station.subregion_id = nullOnEmptyNum(form.subregion_id);
 
-    await stationRepository.insert(station);
-    success(res);
+    const errors = await validate(station);
+    if (errors.length > 0) {
+      error(res, new Error(JSON.stringify(errors)));
+    } else {
+      await stationRepository.insert(station);
+      success(res);
+    }
   };
 
   try {
@@ -57,6 +65,6 @@ const stationsHandler: NextApiHandler = async (req, res) => {
   }
 };
 
-export default withSessionApi(stationsHandler);
+export default withSessionApi(stationHandler, 'stations');
 
 export const config = unresolved;

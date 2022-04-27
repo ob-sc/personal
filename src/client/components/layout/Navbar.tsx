@@ -7,16 +7,35 @@ import MobileMenu from './MobileMenu';
 import { deleteSession } from '../../api/sessions';
 import useMobileContext from '../../context/MobileContext';
 import { ParsedUser } from '../../../../types/server';
+import { accessConstants } from '../../../../config/constants';
 
 interface Props {
   session?: ParsedUser;
 }
 
+const access = accessConstants();
+
 const menuItems = [
-  { access: 0, route: '/temps', label: 'Aushilfen' },
-  { access: 2, route: '/employees', label: 'Mitarbeiter' },
-  { access: 4, route: '/users', label: 'Benutzer' },
-  { access: 4, route: '/stations', label: 'Stationen' },
+  {
+    access: access.routes.temps,
+    route: '/temps',
+    label: 'Aushilfen',
+  },
+  {
+    access: access.routes.employees,
+    route: '/employees',
+    label: 'Mitarbeiter',
+  },
+  {
+    access: access.routes.users,
+    route: '/users',
+    label: 'Benutzer',
+  },
+  {
+    access: access.routes.stations,
+    route: '/stations',
+    label: 'Stationen',
+  },
 ];
 
 const Navbar = ({ session }: Props) => {

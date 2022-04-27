@@ -46,7 +46,7 @@ const sessionHandler: NextApiHandler = async (req, res) => {
       const isUndefined = username === undefined || password === undefined;
 
       if (isUndefined) {
-        error(res, 'Benutzername und Passwort müssen angegeben werden', 403);
+        error(res, 'Benutzername und Passwort müssen angegeben werden', 401);
       }
 
       const ldap = new LdapAuth(ldapConfig);
@@ -60,8 +60,8 @@ const sessionHandler: NextApiHandler = async (req, res) => {
 
         if (err) {
           const ldapError = parseLdapError(err);
-          const field = ldapError.field ? { field: ldapError.field } : null;
-          error(res, ldapError.error, field, 403);
+          const field = ldapError.field ? [ldapError.field] : null;
+          error(res, ldapError.error, field, 401);
           return;
         }
 
@@ -112,6 +112,6 @@ const sessionHandler: NextApiHandler = async (req, res) => {
   }
 };
 
-export default withSessionApi(sessionHandler, true);
+export default withSessionApi(sessionHandler, 'sessions');
 
 export const config = unresolved;

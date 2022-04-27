@@ -12,10 +12,10 @@ interface Props {
   disabled?: boolean;
   errorHelper?: boolean;
   required?: boolean;
-  grid?: boolean;
+  cn?: string;
 }
 
-const Input = (props: Props) => {
+function Input(props: Props) {
   const {
     name,
     label,
@@ -25,7 +25,7 @@ const Input = (props: Props) => {
     disabled = false,
     errorHelper = false,
     required = false,
-    grid = false,
+    cn,
   } = props;
 
   const err = errors[name];
@@ -42,7 +42,7 @@ const Input = (props: Props) => {
       rules={{ required: !!required }}
       render={({ field }) => (
         <TextField
-          className={grid ? 'gridItem' : undefined}
+          className={cn}
           variant="outlined"
           color="primary"
           size="small"
@@ -64,6 +64,6 @@ const Input = (props: Props) => {
       )}
     />
   );
-};
+}
 
 export default Input;

@@ -7,12 +7,14 @@ import {
   PrimaryColumn,
   Relation,
 } from 'typeorm';
+import { Max, Min } from 'class-validator';
 import { NULL, UNIQUE } from '../utils/server';
 import { Region } from './Region';
 import { User } from './User';
 
 @Entity({ name: 'stations' })
 export class Station {
+  @Min(0)
   @PrimaryColumn({ ...UNIQUE })
   id!: number;
 
@@ -22,6 +24,8 @@ export class Station {
   @Column('varchar', { ...NULL })
   address!: string | null;
 
+  @Min(10_000)
+  @Max(99_999)
   @Column('int', { ...NULL })
   zip!: number | null;
 

@@ -6,6 +6,8 @@ import { CProps, FormField } from '../../../../types/client';
 import SubmitButton from './SubmitButton';
 import Input from './Input';
 import useMobileContext from '../../context/MobileContext';
+import Select from './Select';
+import MultiSelect from './MultiSelect';
 
 interface Props extends CProps {
   fields: FormField[];
@@ -15,7 +17,7 @@ interface Props extends CProps {
   cols?: number;
 }
 
-const Form = ({ submit, fields, submitName, size = 'md', cols = 1 }: Props) => {
+function Form({ submit, fields, submitName, size = 'md', cols = 1 }: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<AxiosError | null>(null);
   const {
@@ -83,33 +85,35 @@ const Form = ({ submit, fields, submitName, size = 'md', cols = 1 }: Props) => {
             },
           ]}
         >
-          {fields.map((field) =>
-            field.type === 'header' ? (
+          {fields.map((field) => {
+            const { type, name, label, required, options } = field;
+
+            const param = {
+              name,
+              label,
+              control,
+              errors,
+              required,
+              key: name,
+              cn: 'gridItem',
+            };
+
+            return type === 'header' ? (
               <Box
                 className="gridHeader"
                 sx={{ width: '100%', minHeight: 10 }}
-                key={field.name}
+                key={name}
               >
-                <Typography variant="h5">{field.label}</Typography>
+                <Typography variant="h5">{label}</Typography>
               </Box>
-            ) : field.type === "select" ? 
-            
-            (
-              
-            )
-            :  (
-              <Input
-                key={field.name}
-                name={field.name}
-                label={field.label}
-                type={field.type}
-                control={control}
-                errors={errors}
-                required={field.required ?? false}
-                grid
-              />
-            )
-          )}
+            ) : type === 'select' ? (
+              <Select {...param} options={options ?? []} />
+            ) : type === 'multiselect' ? (
+              <MultiSelect {...param} options={options ?? []} />
+            ) : (
+              <Input {...param} type={type} />
+            );
+          })}
         </Box>
 
         <SubmitButton text={submitName ?? 'OK'} loading={submitting} />
@@ -122,6 +126,6 @@ const Form = ({ submit, fields, submitName, size = 'md', cols = 1 }: Props) => {
       </Box>
     </form>
   );
-};
+}
 
 export default Form;

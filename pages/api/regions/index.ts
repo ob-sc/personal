@@ -5,7 +5,7 @@ import { unresolved } from '../../../src/utils/shared';
 import { withSessionApi } from '../../../src/lib/withSession';
 import { error, httpMethodError, success } from '../../../src/server/response';
 
-const regionsHandler: NextApiHandler = async (req, res) => {
+const regionHandler: NextApiHandler = async (req, res) => {
   const { method } = req;
 
   const regionRepository = db.getRepository(Region);
@@ -28,6 +28,6 @@ const regionsHandler: NextApiHandler = async (req, res) => {
   }
 };
 
-export default withSessionApi(regionsHandler);
+export default withSessionApi(regionHandler, 'regions');
 
 export const config = unresolved;

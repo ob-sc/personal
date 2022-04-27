@@ -4,8 +4,8 @@ import { gridEmptyVal } from '../../utils/client';
 const stationColumns: DGColFn = () => [
   {
     field: 'id',
-    headerName: 'ID',
-    width: 75,
+    headerName: 'Nr',
+    width: 90,
     sm: true,
     valueFormatter: gridEmptyVal,
   },

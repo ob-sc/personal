@@ -5,7 +5,7 @@ import { withSessionApi } from '../../../src/lib/withSession';
 import { error, httpMethodError, success } from '../../../src/server/response';
 import { User } from '../../../src/entities/User';
 
-const usersHandler: NextApiHandler = async (req, res) => {
+const userHandler: NextApiHandler = async (req, res) => {
   const { method } = req;
 
   const userRepository = db.getRepository(User);
@@ -28,6 +28,6 @@ const usersHandler: NextApiHandler = async (req, res) => {
   }
 };
 
-export default withSessionApi(usersHandler);
+export default withSessionApi(userHandler, 'users');
 
 export const config = unresolved;

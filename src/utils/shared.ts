@@ -1,16 +1,6 @@
-export const isDev = process.env.NODE_ENV !== 'production';
+import { ParsedUser } from '../../types/server';
 
-export function translateAccess(access: number) {
-  return access === 1
-    ? 'IDL'
-    : access === 2
-    ? 'SL'
-    : access === 3
-    ? 'GBL'
-    : access === 4
-    ? 'Admin'
-    : null;
-}
+export const isDev = process.env.NODE_ENV !== 'production';
 
 export const unresolved = {
   api: {
@@ -78,4 +68,13 @@ export function nullOnEmptyNum(val: string | null | undefined) {
   if (Number.isNaN(num)) return null;
 
   return num;
+}
+
+export function fullName(user: ParsedUser | null) {
+  if (!user) return null;
+  return `${user.firstName} ${user.lastName}`;
+}
+
+export function getRandomInt(max: number) {
+  return Math.floor(Math.random() * max);
 }

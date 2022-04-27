@@ -33,6 +33,6 @@ const userIdHandler: NextApiHandler = async (req, res) => {
   }
 };
 
-export default withSessionApi(userIdHandler);
+export default withSessionApi(userIdHandler, 'users');
 
 export const config = unresolved;

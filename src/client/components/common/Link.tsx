@@ -25,11 +25,11 @@ export const NextLinkComposed = forwardRef<
   // kann hier keine anonyme funtion passen
   // eslint-disable-next-line prefer-arrow-callback
   function NextLinkComposed(props, ref) {
-    // muss href rausnehmen für Anchor
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const {
       to,
       linkAs,
+      // muss href rausnehmen für Anchor
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       href,
       replace,
       scroll,

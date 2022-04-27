@@ -15,13 +15,13 @@ interface Props {
   actionIcon?: ReactNode;
 }
 
-const DataGridFooter = ({
+function DataGridFooter({
   mobile,
   search,
   setSearch,
   actionHandler,
   actionIcon,
-}: Props) => {
+}: Props) {
   const [searching, setSearching] = useState(false);
   const apiRef = useGridApiContext();
   const { state } = apiRef.current;
@@ -85,6 +85,6 @@ const DataGridFooter = ({
       )}
     </Box>
   );
-};
+}
 
 export default DataGridFooter;

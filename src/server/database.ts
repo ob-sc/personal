@@ -9,9 +9,11 @@ import logger from '../lib/log';
 const NODE_ENV = process.env.NODE_ENV ?? 'development';
 const cfg = dbConfig[NODE_ENV];
 
+const entities = [User, Station, Region];
+
 const db = new DataSource({
   ...cfg,
-  entities: [User, Station, Region],
+  entities,
 });
 
 async function ormInit() {

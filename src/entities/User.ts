@@ -1,3 +1,4 @@
+import { IsEmail } from 'class-validator';
 import {
   Column,
   Entity,
@@ -19,6 +20,16 @@ export class User {
 
   @Column('varchar', { ...UNIQUE })
   username!: string;
+
+  @Column('varchar')
+  firstName!: string;
+
+  @Column('varchar')
+  lastName!: string;
+
+  @IsEmail()
+  @Column('varchar')
+  email!: string;
 
   @Column('int', { ...NULL })
   access!: number;

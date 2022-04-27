@@ -13,12 +13,11 @@ export const getServerSideProps = withSessionSsr();
 const AllUsersPage = ({
   user,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const { data, error } = useGetUsers();
+  const users = useGetUsers();
   const router = useRouter();
 
   const rowClickHandler: RowClickHandler = async (e) => {
     const { id } = e;
-    // window.location.href = `/users/${id}`;
     router.push(`/users/${id}`);
   };
 
@@ -28,9 +27,9 @@ const AllUsersPage = ({
     <Layout session={user}>
       <DataGrid
         columns={cols}
-        rows={data ?? []}
-        error={error !== undefined}
-        loading={!data && !error}
+        rows={users.data ?? []}
+        error={users.error !== undefined}
+        loading={!users.data && !users.error}
         rowClickHandler={rowClickHandler}
       />
     </Layout>

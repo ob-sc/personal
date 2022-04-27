@@ -6,7 +6,7 @@ interface Props extends CProps {
   href: string;
 }
 
-const NavLink = ({ href, children }: Props) => {
+function NavLink({ href, children }: Props) {
   const router = useRouter();
 
   const current = router.pathname.indexOf(href);
@@ -25,6 +25,6 @@ const NavLink = ({ href, children }: Props) => {
       {children}
     </Link>
   );
-};
+}
 
 export default NavLink;

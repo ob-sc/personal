@@ -26,7 +26,8 @@ export interface CProps {
   children?: ReactNode;
 }
 
-// Formular
+// Select & MultiSelect Optionen
+export type SelectOption = { optval: number | string; optlabel: string };
 
 export interface FormField {
   name: string;
@@ -40,6 +41,7 @@ export interface FormField {
     | 'multiselect'
     | 'header';
   required?: boolean;
+  options?: SelectOption[];
 }
 
 // DataGrid
@@ -63,7 +65,3 @@ export type CellClickHandler = (
   event: MuiEvent<MouseEvent<Element, globalThis.MouseEvent>>,
   details: GridCallbackDetails
 ) => void;
-
-// MultiSelect Optionen
-
-export type SelectOption = { optval: number | string; optlabel: string };
