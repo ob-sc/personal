@@ -6,7 +6,7 @@ import { useGetUser } from '../../src/client/api/users';
 import StationsContainer from '../../src/client/components/stations/StationsContainer';
 import { useGetStations } from '../../src/client/api/stations';
 import { Typography } from '@mui/material';
-import { fullName } from '../../src/utils/shared';
+import { accessConstants } from '../../config/constants';
 
 export const getServerSideProps = withSessionSsr();
 
@@ -19,14 +19,20 @@ const SingleUserPage = ({
 
   const stations = useGetStations();
 
-  const name = fullName(user);
+  const name = user.fullName;
 
-  return data !== undefined ? (
-    <Layout loading={isValidating} session={user}>
+  const { hasAccess } = accessConstants(user.access, 'users');
+
+  return (
+    <Layout loading={isValidating} session={user} blockAccess={!hasAccess}>
       <Typography variant="h2">{name}</Typography>
-      <StationsContainer stations={stations.data ?? []} user={data} />
+      {data !== undefined ? (
+        <StationsContainer stations={stations.data ?? []} user={data} />
+      ) : (
+        <Typography>Fehler</Typography>
+      )}
     </Layout>
-  ) : null;
+  );
 };
 
 export default SingleUserPage;

@@ -6,6 +6,7 @@ import DataGrid from '../../src/client/components/common/DataGrid';
 import { RowClickHandler } from '../../types/client';
 import { useGetUsers } from '../../src/client/api/users';
 import userColumns from '../../src/client/tables/users';
+import { accessConstants } from '../../config/constants';
 
 export const getServerSideProps = withSessionSsr();
 
@@ -23,8 +24,10 @@ const AllUsersPage = ({
 
   const cols = userColumns();
 
+  const { hasAccess } = accessConstants(user.access, 'users');
+
   return (
-    <Layout session={user}>
+    <Layout session={user} blockAccess={!hasAccess}>
       <DataGrid
         columns={cols}
         rows={users.data ?? []}

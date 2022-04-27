@@ -35,7 +35,7 @@ export const error = (
   ...params: (ErrorResponseParam | unknown)[]
 ) => {
   let status = 500;
-  let message = '';
+  let message: string | undefined;
   let err: Error | undefined;
   let fields: string[] = [];
 
@@ -47,19 +47,16 @@ export const error = (
     if (Array.isArray(arg)) fields = arg;
   }
 
-  if (message === undefined) message = err?.message ?? 'Unbekannter Fehler';
+  if (message === undefined) {
+    message =
+      err?.message ??
+      (status === 401
+        ? 'Authentifizierung erforderlich'
+        : 'Unbekannter Fehler');
+  }
   logger.error(message);
 
-  if (status === 401) {
-    res
-      .status(status)
-      .json({ message: message ?? 'Authentifizierung erforderlich' });
-    return;
-  }
-
-  const body: ErrorResponse = { message };
-
-  if (fields) body.fields = fields;
+  const body: ErrorResponse = { message, fields };
 
   res.status(status).json(body);
 };

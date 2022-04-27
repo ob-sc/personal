@@ -22,14 +22,17 @@ export class User {
   username!: string;
 
   @Column('varchar')
-  firstName!: string;
+  first_name!: string;
 
   @Column('varchar')
-  lastName!: string;
+  last_name!: string;
 
   @IsEmail()
   @Column('varchar')
   email!: string;
+
+  @Column('varchar')
+  dn!: string;
 
   @Column('int', { ...NULL })
   access!: number;

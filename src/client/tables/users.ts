@@ -9,7 +9,7 @@ const userColumns: DGColFn = () => [
     headerName: 'Berechtigung',
     width: 250,
     valueFormatter: (param) =>
-      accessConstants(param.value ?? 0).translate() ?? '-',
+      accessConstants(param.value ?? 0).translated ?? '-',
   },
   {
     field: 'region',

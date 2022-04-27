@@ -6,12 +6,15 @@ import NoStation from '../src/client/components/home/NoStation';
 export const getServerSideProps = withSessionSsr();
 
 // Home: NextPage
-const Home = ({
+function Home({
   user,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => (
-  <Layout session={user}>
-    <NoStation />
-  </Layout>
-);
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  // const noHome = user.stations[0] === 0 && user.access < 1;
+  return (
+    <Layout session={user}>
+      <NoStation />
+    </Layout>
+  );
+}
 
 export default Home;

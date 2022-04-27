@@ -8,6 +8,7 @@ import { FormField } from '../../types/client';
 import { Typography } from '@mui/material';
 import { useGetRegions } from '../../src/client/api/regions';
 import { selectOptionMapper, withEmptyOption } from '../../src/utils/client';
+import { accessConstants } from '../../config/constants';
 
 export interface NewStationForm {
   id: string;
@@ -72,8 +73,10 @@ const NewStationPage = ({
     },
   ];
 
+  const { hasAccess } = accessConstants(user.access, 'stations/new');
+
   return (
-    <Layout session={user}>
+    <Layout session={user} blockAccess={!hasAccess}>
       <Typography variant="h2" gutterBottom>
         Neue Station
       </Typography>

@@ -7,7 +7,7 @@ import {
   PrimaryColumn,
   Relation,
 } from 'typeorm';
-import { Max, Min } from 'class-validator';
+import { Min } from 'class-validator';
 import { NULL, UNIQUE } from '../utils/server';
 import { Region } from './Region';
 import { User } from './User';
@@ -24,8 +24,6 @@ export class Station {
   @Column('varchar', { ...NULL })
   address!: string | null;
 
-  @Min(10_000)
-  @Max(99_999)
   @Column('int', { ...NULL })
   zip!: number | null;
 
@@ -41,11 +39,9 @@ export class Station {
   @Column('varchar', { ...NULL })
   email!: string | null;
 
-  // @ForeignKey(() => Region)
   @Column('int')
   region_id!: number;
 
-  // @ForeignKey(() => Region)
   @Column('int', { ...NULL })
   subregion_id!: number | null;
 

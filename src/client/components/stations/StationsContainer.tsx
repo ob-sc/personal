@@ -1,18 +1,51 @@
+import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
+import { useState } from 'react';
 import { ParsedUser } from '../../../../types/server';
 import { Station } from '../../../entities/Station';
+import { postAllowedStation } from '../../api/users';
 
 interface Props {
   stations: Station[];
   user: ParsedUser;
 }
 
+const SCCheckbox = ({
+  station,
+  user,
+}: {
+  station: Station;
+  user: ParsedUser;
+}) => {
+  const initialChecked = user.stations.includes(station.id);
+  const [checked, setChecked] = useState(initialChecked);
+
+  return (
+    <FormGroup key={station.id}>
+      <FormControlLabel
+        control={
+          <Checkbox
+            checked={checked}
+            onChange={(e) => {
+              if (checked) {
+                postAllowedStation(user.id, station.id);
+              }
+
+              setChecked(e.target.checked);
+            }}
+            inputProps={{ 'aria-label': 'controlled' }}
+          />
+        }
+        label={`${station.id} - ${station.name}`}
+      />
+    </FormGroup>
+  );
+};
+
 function StationsContainer({ stations, user }: Props) {
   return (
     <>
       {stations.map((station) => (
-        <div key={station.name}>
-          <div>{station.name}</div>
-        </div>
+        <SCCheckbox station={station} user={user} key={station.id} />
       ))}
     </>
   );

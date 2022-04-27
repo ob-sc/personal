@@ -53,7 +53,7 @@ export const withSessionSsr = () =>
 
 /**
  * Middleware die Authentifizierung und Berechtigung prüft.
- * Gibt `req` auch das Session-Objekt.
+ * Gibt `req` das Session-Objekt.
  * Bei Erfolg wird die Session erneuert.
  * @example
  * const routeHandler: NextApiHandler = async (req, res) => { const { session } = req; ... };
@@ -73,7 +73,7 @@ export const withSessionApi = (handler: NextApiHandler, page: Route) => {
       await session.save();
 
       // Berechtigung prüfen
-      const hasAccess = accessConstants(session.user.access, page).check();
+      const { hasAccess } = accessConstants(session.user.access, page);
 
       if (!hasAccess) {
         error(res, 'Keine Berechtigung', 403);

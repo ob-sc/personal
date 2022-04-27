@@ -6,20 +6,17 @@ export type Route =
   | 'employees'
   | 'regions'
   | 'stations'
+  | 'stations/new'
   | 'users';
 
 export interface ParsedUser {
-  /** aus AD */
+  id: number;
   username: string;
-  /** aus AD */
   email: string;
-  /** aus AD */
   firstName: string;
-  /** aus AD */
   lastName: string;
-  /** aus DB */
+  fullName: string;
   access: number;
-  /** aus DB */
   region: Region | null;
   /** IDs, erste Station ist OU-Station, 0 wenn es keine gibt. Rest aus DB. */
   stations: number[];
@@ -54,5 +51,5 @@ export type SuccessResponse =
 
 export type ErrorResponse = {
   message: string;
-  fields?: string[];
+  fields: string[];
 };

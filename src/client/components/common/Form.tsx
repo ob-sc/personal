@@ -8,6 +8,7 @@ import Input from './Input';
 import useMobileContext from '../../context/MobileContext';
 import Select from './Select';
 import MultiSelect from './MultiSelect';
+import { ErrorResponse } from '../../../../types/server';
 
 interface Props extends CProps {
   fields: FormField[];
@@ -43,12 +44,14 @@ function Form({ submit, fields, submitName, size = 'md', cols = 1 }: Props) {
     !(columns > 1) && { width: width[size] ?? width.md };
 
   useEffect(() => {
-    const errData = error?.response?.data ?? {};
+    const errData: ErrorResponse | undefined = error?.response?.data;
 
-    if (errData.field) {
-      setFormError(errData.field, {
-        message: errData.message,
-      });
+    if (errData?.fields) {
+      for (const f of errData.fields) {
+        setFormError(f, {
+          message: errData.message,
+        });
+      }
     }
   }, [error?.response?.data, setFormError]);
 

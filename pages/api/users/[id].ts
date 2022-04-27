@@ -4,6 +4,7 @@ import { unresolved } from '../../../src/utils/shared';
 import { withSessionApi } from '../../../src/lib/withSession';
 import { error, httpMethodError, success } from '../../../src/server/response';
 import { User } from '../../../src/entities/User';
+import parseUser from '../../../src/lib/parseUser';
 
 const userIdHandler: NextApiHandler = async (req, res) => {
   const {
@@ -14,10 +15,20 @@ const userIdHandler: NextApiHandler = async (req, res) => {
   const userRepository = db.getRepository(User);
 
   const singleUser = async () => {
-    const user = await userRepository.findOneBy({
-      id: parseInt(Array.isArray(id) ? id[0] : id, 10),
+    const user = await userRepository.findOne({
+      where: {
+        id: parseInt(Array.isArray(id) ? id[0] : id, 10),
+      },
+      relations: { region: true, allowedStations: true },
     });
-    success(res, user);
+
+    if (user === null) {
+      error(res, 'Benutzer nicht gefunden');
+      return;
+    }
+
+    const parsed = parseUser(user);
+    success(res, parsed);
   };
 
   try {

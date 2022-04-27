@@ -4,7 +4,6 @@ import { ldapConfig } from '../../../config';
 import { withSessionApi } from '../../../src/lib/withSession';
 import parseUser from '../../../src/lib/parseUser';
 import { error, httpMethodError, success } from '../../../src/server/response';
-import logger from '../../../src/lib/log';
 import { isDev, unresolved } from '../../../src/utils/shared';
 import db from '../../../src/server/database';
 import { User } from '../../../src/entities/User';
@@ -51,9 +50,9 @@ const sessionHandler: NextApiHandler = async (req, res) => {
 
       const ldap = new LdapAuth(ldapConfig);
 
-      ldap.on('error', (err) => {
-        logger.error(err);
-      });
+      // ldap.on('error', (err) => {
+      //   logger.error(err);
+      // });
 
       ldap.authenticate(username, password, async (err, user) => {
         ldap.close();
@@ -73,13 +72,18 @@ const sessionHandler: NextApiHandler = async (req, res) => {
         });
 
         if (dbUser === null) {
-          const newUser = new User();
-          newUser.username = username;
-
-          dbUser = await userRepository.save(newUser);
+          dbUser = new User();
+          dbUser.username = username;
         }
 
-        const parsed = parseUser(dbUser, user);
+        dbUser.first_name = user.givenName;
+        dbUser.last_name = user.sn;
+        dbUser.email = user.mail;
+        dbUser.dn = user.distinguishedName;
+
+        dbUser = await userRepository.save(dbUser);
+
+        const parsed = parseUser(dbUser);
 
         session.user = parsed;
         await session.save();

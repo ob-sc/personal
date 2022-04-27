@@ -6,6 +6,7 @@ import DataGrid from '../../src/client/components/common/DataGrid';
 import { RowClickHandler } from '../../types/client';
 import stationColumns from '../../src/client/tables/stations';
 import { useGetStations } from '../../src/client/api/stations';
+import { accessConstants } from '../../config/constants';
 
 export const getServerSideProps = withSessionSsr();
 
@@ -24,15 +25,17 @@ const AllStationsPage = ({
 
   const cols = stationColumns();
 
+  const { hasAccess, routes } = accessConstants(user.access, 'stations');
+
   return (
-    <Layout session={user}>
+    <Layout session={user} blockAccess={!hasAccess}>
       <DataGrid
         columns={cols}
         rows={data ?? []}
         error={error !== undefined}
         loading={!data && !error}
         rowClickHandler={rowClickHandler}
-        add
+        add={user.access >= routes['stations/new']}
         actionHandler={() => {
           router.push('/stations/new');
         }}

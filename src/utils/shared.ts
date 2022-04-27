@@ -1,5 +1,3 @@
-import { ParsedUser } from '../../types/server';
-
 export const isDev = process.env.NODE_ENV !== 'production';
 
 export const unresolved = {
@@ -68,11 +66,6 @@ export function nullOnEmptyNum(val: string | null | undefined) {
   if (Number.isNaN(num)) return null;
 
   return num;
-}
-
-export function fullName(user: ParsedUser | null) {
-  if (!user) return null;
-  return `${user.firstName} ${user.lastName}`;
 }
 
 export function getRandomInt(max: number) {

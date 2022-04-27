@@ -19,13 +19,13 @@ const stationColumns: DGColFn = () => [
     field: 'region',
     headerName: 'Region',
     width: 180,
-    valueFormatter: (param) => param.value.name,
+    valueFormatter: (param) => param.value,
   },
   {
     field: 'subregion',
     headerName: 'Region 2',
     width: 180,
-    valueFormatter: (param) => param.value?.name ?? '-',
+    valueFormatter: (param) => param.value ?? '-',
   },
   {
     field: 'email',

@@ -9,3 +9,4 @@
 | LDAP_URL         | AD IP                     |
 | SESSION_NAME     | Session Cookie Name       |
 | SESSION_PASSWORD | Session-internes Passwort |
+| ONB_PASSWORD     | Default Domain Passwort   |

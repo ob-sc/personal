@@ -1,22 +1,30 @@
 import { Route } from '../types/server';
 
-/** `.check()` nur mit beiden Parametern, sonst false */
+type RouteObject = { [key in Route]: number };
+
+/** Definiert die Berechtigungen. Für `hasAccess` werden beide Parameter benötigt, für translate nur `access` und für `routes` keiner. */
 export function accessConstants(
   access?: number,
   route?: Route
 ): {
-  translate: () => string;
-  routes: { [key in Route]: number };
-  check: () => boolean;
+  routes: RouteObject;
+  hasAccess: boolean;
+  translated: string;
 } {
-  const routes = {
+  const routes: RouteObject = {
     sessions: 0,
     temps: 1,
     employees: 2,
-    regions: 4,
-    stations: 4,
+    regions: 0,
+    stations: 0,
+    'stations/new': 4,
     users: 9,
   };
+
+  const hasAccess =
+    route !== undefined && access !== undefined
+      ? routes[route] <= access
+      : false;
 
   const translate = () =>
     access === 9
@@ -31,11 +39,9 @@ export function accessConstants(
       ? 'IDL'
       : 'Dispo';
 
-  const check = () => (route && access ? routes[route] <= access : false);
-
   return {
     routes,
-    translate,
-    check,
+    hasAccess,
+    translated: translate(),
   };
 }

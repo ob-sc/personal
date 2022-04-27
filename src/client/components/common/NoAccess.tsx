@@ -2,7 +2,17 @@ import { useEffect, useState } from 'react';
 import { Typography } from '@mui/material';
 import { getRandomInt } from '../../../utils/shared';
 
-const words = ['Oh!', 'Whoops!', 'Hm...', ':/', ':(', 'Öh...', 'Oh Nein!'];
+const words = [
+  'Oh!',
+  'Whoops!',
+  'Hm...',
+  ':/',
+  ':(',
+  'Öh...',
+  'Oh Nein!',
+  'Sorry',
+  'Uff...',
+];
 
 function NoAccess() {
   const [word, setWord] = useState('');
@@ -17,12 +27,16 @@ function NoAccess() {
         {word}
       </Typography>
       <Typography>
-        Du scheinst keine Station und keine Berechtigungen zu haben. Ist das ein
-        Fehler? Schreib uns unter{' '}
-        <a href="mailto:edv@starcar.de">edv@starcar.de</a>
+        Dafür scheinen deine Berechtigungen nicht zu reichen. Ist das ein Fehler
+        oder benötigst du diese? Dann{' '}
+        <a href="mailto:personalabteilungœ@starcar.de">
+          schreib uns eine Mail.
+        </a>
       </Typography>
     </>
   );
 }
 
 export default NoAccess;
+
+// todo mail klären simge, verwaltung von perso?
