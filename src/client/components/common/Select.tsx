@@ -1,5 +1,11 @@
-import { FormControl, Select as MuiSelect, InputLabel } from "@mui/material";
-import { Controller } from "react-hook-form";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select as MuiSelect,
+} from '@mui/material';
+import { Control, Controller, FieldErrors } from 'react-hook-form';
+import { SelectOption } from '../../../../types/client';
 
 interface Props {
   name: string;
@@ -10,12 +16,7 @@ interface Props {
   required?: boolean;
 }
 
-const Select = ({name,
-  label,
-  options,
-  required,
-  control,
-  errors,}: Props) => {
+function Select({ name, label, options, required, control, errors }: Props) {
   return (
     <Controller
       name={name}
@@ -23,23 +24,29 @@ const Select = ({name,
       defaultValue=""
       rules={{ required }}
       render={({ field }) => (
-        <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Age</InputLabel>
+        <FormControl
+          variant="outlined"
+          error={!!errors[name]}
+          fullWidth={true}
+          size="small"
+        >
+          <InputLabel id={`${name}-label`}>Age</InputLabel>
           <MuiSelect
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={age}
-            label="Age"
-            onChange={handleChange}
+            labelId={`${name}-label`}
+            id={name}
+            label={label}
+            {...field}
           >
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
-          </Select>
+            {options.map(({ optval, optlabel }) => (
+              <MenuItem key={optval} value={optval}>
+                {optlabel}
+              </MenuItem>
+            ))}
+          </MuiSelect>
         </FormControl>
       )}
     />
   );
-};
+}
 
 export default Select;
