@@ -1,17 +1,15 @@
 import { Route } from '../types/server';
 
 type RouteObject = { [key in Route]: number };
-
-/** Definiert die Berechtigungen. Für `hasAccess` werden beide Parameter benötigt, für translate nur `access` und für `routes` keiner. */
-export function accessConstants(
-  access?: number,
-  route?: Route
-): {
+interface Access {
   routes: RouteObject;
   hasAccess: boolean;
   translated: string;
-} {
-  const routes: RouteObject = {
+}
+
+/** Definiert die Berechtigungen. Für `hasAccess` werden beide Parameter benötigt, für translate nur `access` und für `routes` keiner. */
+export function accessConstants(access?: number, route?: Route): Access {
+  const routes = {
     sessions: 0,
     temps: 1,
     employees: 2,
@@ -19,6 +17,7 @@ export function accessConstants(
     stations: 0,
     'stations/new': 4,
     users: 9,
+    'users/allowed-stations': 9,
   };
 
   const hasAccess =

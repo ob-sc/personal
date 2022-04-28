@@ -40,4 +40,8 @@ _nochaml schön iwo dokuemntieren dann löschen_
 
 ---
 
-- javascript ldapjs server zum testen?
+- ldapjs server zum testen?
+
+- ldapjs client, für jeden import auch einen destroy? jetzt gefixed?
+
+- database dann auch so machen?

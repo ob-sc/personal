@@ -52,6 +52,10 @@ export function isEmpty(val: string | null | undefined) {
   return val === null || val === undefined || val.length === 0;
 }
 
+export function isNumber(val: string | number | null | undefined) {
+  return val && !Number.isNaN(Number(val));
+}
+
 export function nullOnEmpty(value: string | null | undefined) {
   return value === null || value === undefined || value.length === 0
     ? null
@@ -63,7 +67,7 @@ export function nullOnEmptyNum(val: string | null | undefined) {
 
   const num = Number(val);
 
-  if (Number.isNaN(num)) return null;
+  if (!isNumber(num)) return null;
 
   return num;
 }

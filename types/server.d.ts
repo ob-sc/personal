@@ -7,7 +7,8 @@ export type Route =
   | 'regions'
   | 'stations'
   | 'stations/new'
-  | 'users';
+  | 'users'
+  | 'users/allowed-stations';
 
 export interface ParsedUser {
   id: number;
