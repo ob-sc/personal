@@ -5,7 +5,6 @@ import { withSessionApi } from '../../../src/lib/withSession';
 import parseUser from '../../../src/lib/parseUser';
 import { error, httpMethodError, success } from '../../../src/server/response';
 import { isDev, unresolved } from '../../../src/utils/shared';
-import db from '../../../src/server/database';
 import { User } from '../../../src/entities/User';
 
 // todo mit ldapjs in das modul

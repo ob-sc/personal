@@ -1,4 +1,13 @@
+import { NextApiRequest, NextApiResponse } from 'next';
+import { dataSource } from '../server/database';
 import { isEmpty } from './shared';
+
+type NextApiRequestWithDB = NextApiRequest & { req: { db: typeof dataSource } };
+
+export type NextApiHandlerWithDB = (
+  req: NextApiRequestWithDB,
+  res: NextApiResponse
+) => Promise<void>;
 
 export function requiredField(...args: (string | null | undefined)[]) {
   for (const arg of args) {

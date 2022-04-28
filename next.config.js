@@ -9,11 +9,4 @@ module.exports = {
   experimental: {
     outputStandalone: true,
   },
-  webpack: (config, options) => {
-    config.experiments = {
-      topLevelAwait: true,
-      layers: true,
-    };
-    return config;
-  },
 };

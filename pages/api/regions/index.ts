@@ -1,5 +1,4 @@
 import { NextApiHandler } from 'next';
-import db from '../../../src/server/database';
 import { Region } from '../../../src/entities/Region';
 import { unresolved } from '../../../src/utils/shared';
 import { withSessionApi } from '../../../src/lib/withSession';

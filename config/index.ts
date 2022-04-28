@@ -42,7 +42,6 @@ const env = {
   session_name: parseEnv.toString('SESSION_NAME', 'scps'),
   session_password: parseEnv.toString('SESSION_PASSWORD'),
   session_ttl: parseEnv.toNumber('SESSION_TTL', 20 * 60),
-  onb_password: parseEnv.toString('ONB_PASSWORD'),
 };
 
 // DB
@@ -108,10 +107,6 @@ export const ldapConfig: LdapOptions = {
   searchFilter: '(sAMAccountName={{username}})',
   searchAttributes,
 };
-
-// Domain
-
-export const domainPassword = env.onb_password;
 
 // SESSION
 

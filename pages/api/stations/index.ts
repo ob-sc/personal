@@ -1,5 +1,4 @@
 import { NextApiHandler } from 'next';
-import db from '../../../src/server/database';
 import {
   nullOnEmpty,
   nullOnEmptyNum,
