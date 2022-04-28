@@ -1,35 +1,36 @@
-import { NextApiHandler } from 'next';
+import { NextApiHandlerWithDB } from '../../../src/utils/server';
 import { unresolved } from '../../../src/utils/shared';
 import { withSessionApi } from '../../../src/lib/withSession';
 import { error, httpMethodError, success } from '../../../src/server/response';
 import { User } from '../../../src/entities/User';
 import parseUser from '../../../src/lib/parseUser';
 
-const allowedStationHandler: NextApiHandler = async (req, res) => {
-  const { body, method } = req;
-
-  const userRepository = db.getRepository(User);
-
-  const postAllowedStation = async () => {
-    const user = await userRepository.findOne({
-      where: {
-        id: Number(body.id),
-      },
-      relations: { region: true, allowedStations: true },
-    });
-
-    if (user === null) {
-      error(res, 'Benutzer nicht gefunden');
-      return;
-    }
-
-    // todo save mit neuen allowed
-
-    const parsed = parseUser(user);
-    success(res, parsed);
-  };
-
+const handler: NextApiHandlerWithDB = async (req, res) => {
   try {
+    const { body, method, db } = req;
+    if (!db) throw new Error('Datenbank nicht verfügbar');
+
+    const userRepository = db.getRepository(User);
+
+    const postAllowedStation = async () => {
+      const user = await userRepository.findOne({
+        where: {
+          id: Number(body.id),
+        },
+        relations: { region: true, allowedStations: true },
+      });
+
+      if (user === null) {
+        error(res, 'Benutzer nicht gefunden');
+        return;
+      }
+
+      // todo save mit neuen allowed
+
+      const parsed = parseUser(user);
+      success(res, parsed);
+    };
+
     switch (method?.toUpperCase()) {
       case 'POST':
         await postAllowedStation();
@@ -42,6 +43,6 @@ const allowedStationHandler: NextApiHandler = async (req, res) => {
   }
 };
 
-export default withSessionApi(allowedStationHandler, 'users');
+export default withSessionApi(handler, 'users');
 
 export const config = unresolved;

@@ -1,5 +1,5 @@
 import LdapAuth from 'ldapauth-fork';
-import { NextApiHandler } from 'next';
+import { NextApiHandlerWithDB } from '../../../src/utils/server';
 import { ldapConfig } from '../../../config';
 import { withSessionApi } from '../../../src/lib/withSession';
 import parseUser from '../../../src/lib/parseUser';
@@ -32,15 +32,17 @@ const parseLdapError = (
   return { error: e, field };
 };
 
-const sessionHandler: NextApiHandler = async (req, res) => {
-  const {
-    body: { username, password },
-    session,
-    method,
-  } = req;
+const handler: NextApiHandlerWithDB = async (req, res) => {
+  try {
+    const {
+      body: { username, password },
+      session,
+      method,
+      db,
+    } = req;
+    if (!db) throw new Error('Datenbank nicht verfügbar');
 
-  const handleLogin = async () => {
-    try {
+    const login = async () => {
       const isUndefined = username === undefined || password === undefined;
 
       if (isUndefined) {
@@ -53,6 +55,9 @@ const sessionHandler: NextApiHandler = async (req, res) => {
       //   logger.error(err);
       // });
 
+      // todo auf diesen callback wird iwie nicht gewartet mit await und .then
+      // todo db verbindung schließt sich dann schon vorher
+
       ldap.authenticate(username, password, async (err, user) => {
         ldap.close();
 
@@ -64,6 +69,7 @@ const sessionHandler: NextApiHandler = async (req, res) => {
         }
 
         const userRepository = db.getRepository(User);
+        console.log(2);
 
         let dbUser = await userRepository.findOne({
           where: { username },
@@ -89,32 +95,28 @@ const sessionHandler: NextApiHandler = async (req, res) => {
 
         success(res, 'Login erfolgreich');
       });
-    } catch (err) {
-      error(res, err);
-    }
-  };
+    };
 
-  const handleLogout = () => {
-    try {
+    const logout = () => {
       req.session.destroy();
       success(res, 'Session entfernt');
-    } catch (err) {
-      error(res, err);
-    }
-  };
+    };
 
-  switch (method?.toUpperCase()) {
-    case 'POST':
-      await handleLogin();
-      break;
-    case 'DELETE':
-      handleLogout();
-      break;
-    default:
-      httpMethodError(res, method, ['POST', 'DELETE']);
+    switch (method?.toUpperCase()) {
+      case 'POST':
+        await login();
+        break;
+      case 'DELETE':
+        logout();
+        break;
+      default:
+        httpMethodError(res, method, ['POST', 'DELETE']);
+    }
+  } catch (err) {
+    error(res, err);
   }
 };
 
-export default withSessionApi(sessionHandler, 'sessions');
+export default withSessionApi(handler, 'sessions');
 
 export const config = unresolved;

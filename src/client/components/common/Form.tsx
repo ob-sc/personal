@@ -20,7 +20,7 @@ interface Props extends CProps {
 
 function Form({ submit, fields, submitName, size = 'md', cols = 1 }: Props) {
   const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState<AxiosError | null>(null);
+  const [error, setError] = useState<AxiosError<ErrorResponse> | null>(null);
   const {
     handleSubmit,
     control,
@@ -44,22 +44,22 @@ function Form({ submit, fields, submitName, size = 'md', cols = 1 }: Props) {
     !(columns > 1) && { width: width[size] ?? width.md };
 
   useEffect(() => {
-    const errData: ErrorResponse | undefined = error?.response?.data;
+    const e = error?.response?.data;
 
-    if (errData?.fields) {
-      for (const f of errData.fields) {
+    if (e?.fields) {
+      for (const f of e.fields) {
         setFormError(f, {
-          message: errData.message,
+          message: e.message,
         });
       }
     }
-  }, [error?.response?.data, setFormError]);
+  }, [error?.response, setFormError]);
 
   const onSubmit = (values: unknown) => {
     setSubmitting(true);
     submit(values)
       .catch((err) => {
-        setError(err as AxiosError);
+        setError(err as AxiosError<ErrorResponse>);
       })
       .finally(() => {
         setSubmitting(false);
@@ -121,7 +121,7 @@ function Form({ submit, fields, submitName, size = 'md', cols = 1 }: Props) {
 
         <SubmitButton text={submitName ?? 'OK'} loading={submitting} />
 
-        {error?.response ? (
+        {error?.response?.data?.message ? (
           <Typography color="error">
             {error.response.data.message ?? 'Unbekannter Fehler'}
           </Typography>

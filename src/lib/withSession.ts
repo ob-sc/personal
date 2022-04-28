@@ -1,14 +1,12 @@
 import { withIronSessionApiRoute, withIronSessionSsr } from 'iron-session/next';
-import {
-  GetServerSidePropsContext,
-  GetServerSidePropsResult,
-  NextApiHandler,
-} from 'next';
+import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import { sessionConfig } from '../../config';
 import { accessConstants } from '../../config/constants';
 import { ParsedUser, Route } from '../../types/server';
 import getDatabaseConnection from '../server/database';
+import ldapClient from '../server/ldap';
 import { error } from '../server/response';
+import { NextApiHandlerWithDB } from '../utils/server';
 import { redirectUrl } from '../utils/shared';
 
 declare module 'iron-session' {
@@ -57,17 +55,16 @@ export const withSessionSsr = () =>
  * Gibt `req` Session und ORM.
  * Bei Erfolg wird die Session erneuert.
  * @example
- * const routeHandler: NextApiHandler = async (req, res) => { const { session } = req; ... };
+ * const routeHandler: NextApiHandler = async (req, res) => { const { session, db } = req; ... };
  * export default withSessionApi(routeHandler);
  */
-export const withSessionApi = (handler: NextApiHandler, page: Route) => {
-  const authHandler: NextApiHandler = async (req, res) => {
+export const withSessionApi = (handler: NextApiHandlerWithDB, page: Route) => {
+  const authHandler: NextApiHandlerWithDB = async (req, res) => {
     if (page !== 'sessions') {
       const { session } = req;
       // nicht authentifiziert
       if (session.user === undefined) {
-        error(res, 'Authentifizierung erforderlich', 401);
-        return;
+        return error(res, 'Authentifizierung erforderlich', 401);
       }
 
       // wenn authentifiziert, Session erneuern
@@ -81,12 +78,21 @@ export const withSessionApi = (handler: NextApiHandler, page: Route) => {
 
     const db = await getDatabaseConnection();
 
+    if (db === null || db === undefined) {
+      return error(res, 'Datenbank nicht verfügbar', 500);
+    }
+
+    const ldap = ldapClient;
+
+    console.log(ldap);
+
     req.db = db;
 
     // fortfahren
-    handler(req, res);
-
-    req.db.destroy();
+    console.log(1);
+    await handler(req, res);
+    // todo req.db?.destroy();
+    console.log('stop');
   };
 
   return withIronSessionApiRoute(authHandler, sessionConfig);
