@@ -1,9 +1,9 @@
 import { Container } from '@mui/material';
-import { CProps } from '../../../../types/client';
-import { ParsedUser } from '../../../../types/server';
-import CenteredSpinner from '../common/CenteredSpinner';
-import NoAccess from '../common/NoAccess';
-import Navbar from './Navbar';
+import { CProps } from 'types/client';
+import { ParsedUser } from 'types/server';
+import CenteredSpinner from 'src/client/components/common/CenteredSpinner';
+import NoAccess from 'src/client/components/common/NoAccess';
+import Navbar from 'src/client/components/layout/Navbar';
 
 interface Props extends CProps {
   session?: ParsedUser;

@@ -1,11 +1,11 @@
-import { NextApiHandlerWithDB } from '../../../src/utils/server';
-import { unresolved } from '../../../src/utils/shared';
-import { withSessionApi } from '../../../src/lib/withSession';
-import { error, httpMethodError, success } from '../../../src/server/response';
-import { User } from '../../../src/entities/User';
-import parseUser from '../../../src/lib/parseUser';
+import { NextApiHandlerWithConnections } from 'types/server';
+import { User } from 'src/entities/User';
+import parseUser from 'src/lib/parseUser';
+import { withSessionApi } from 'src/lib/withSession';
+import { error, httpMethodError, success } from 'src/server/response';
+import { unresolved } from 'src/utils/server';
 
-const handler: NextApiHandlerWithDB = async (req, res) => {
+const handler: NextApiHandlerWithConnections = async (req, res) => {
   try {
     const { body, method, db } = req;
     if (!db) throw new Error('Datenbank nicht verfügbar');

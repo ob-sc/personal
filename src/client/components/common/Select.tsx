@@ -5,8 +5,8 @@ import {
   Select as MuiSelect,
 } from '@mui/material';
 import { Control, Controller, FieldErrors } from 'react-hook-form';
-import { SelectOption } from '../../../../types/client';
-import CenteredSpinner from './CenteredSpinner';
+import CenteredSpinner from 'src/client/components/common/CenteredSpinner';
+import { SelectOption } from 'types/client';
 
 interface Props {
   name: string;

@@ -8,9 +8,9 @@ import {
   Relation,
 } from 'typeorm';
 import { Min } from 'class-validator';
-import { NULL, UNIQUE } from '../utils/server';
-import { Region } from './Region';
-import { User } from './User';
+import { NULL, UNIQUE } from 'src/utils/server';
+import { Region } from 'src/entities/Region';
+import { User } from 'src/entities/User';
 
 @Entity({ name: 'stations' })
 export class Station {

@@ -1,45 +1,20 @@
-import LdapAuth from 'ldapauth-fork';
-import { NextApiHandlerWithDB } from '../../../src/utils/server';
-import { ldapConfig } from '../../../config';
-import { withSessionApi } from '../../../src/lib/withSession';
-import parseUser from '../../../src/lib/parseUser';
-import { error, httpMethodError, success } from '../../../src/server/response';
-import { isDev, unresolved } from '../../../src/utils/shared';
-import { User } from '../../../src/entities/User';
+import { User } from 'src/entities/User';
+import parseUser from 'src/lib/parseUser';
+import { withSessionApi } from 'src/lib/withSession';
+import { error, httpMethodError, success } from 'src/server/response';
+import { unresolved } from 'src/utils/server';
+import { NextApiHandlerWithConnections } from 'types/server';
 
-// todo mit ldapjs in das modul
-const parseLdapError = (
-  err: unknown
-): { error: Error; field: string | null } => {
-  let e;
-  let field = null;
-
-  if (!isDev) e = new Error('Fehler bei LDAP Authentifizierung');
-  else e = new Error(String(err));
-
-  // pw falsch, vermutlich Instanz von LDAPError
-  if (err instanceof Error && err.message.includes('data 52e')) {
-    e = new Error('Passwort falsch');
-    field = 'password';
-  }
-
-  // user nicht gefunden, komischerweise nur string
-  if (typeof err === 'string' && err.includes('no such user')) {
-    e = new Error('Benutzer nicht gefunden');
-    field = 'username';
-  }
-
-  return { error: e, field };
-};
-
-const handler: NextApiHandlerWithDB = async (req, res) => {
+const handler: NextApiHandlerWithConnections = async (req, res) => {
   try {
     const {
       body: { username, password },
       session,
       method,
       db,
+      ldap,
     } = req;
+    if (!ldap) throw new Error('AD nicht verfügbar');
     if (!db) throw new Error('Datenbank nicht verfügbar');
 
     const login = async () => {
@@ -48,8 +23,6 @@ const handler: NextApiHandlerWithDB = async (req, res) => {
       if (isUndefined) {
         error(res, 'Benutzername und Passwort müssen angegeben werden', 401);
       }
-
-      const ldap = new LdapAuth(ldapConfig);
 
       // ldap.on('error', (err) => {
       //   logger.error(err);

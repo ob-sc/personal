@@ -1,4 +1,4 @@
-import { Route } from '../types/server';
+import { Route } from 'types/server';
 
 type RouteObject = { [key in Route]: number };
 interface Access {
@@ -44,3 +44,5 @@ export function accessConstants(access?: number, route?: Route): Access {
     translated: translate(),
   };
 }
+
+// todo alles niedrigen access und innerhalb der seite nach station / berechtigung freigeben?

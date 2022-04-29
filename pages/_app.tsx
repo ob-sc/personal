@@ -1,13 +1,13 @@
 // import "../styles/globals.css";
 import Head from 'next/head';
 import type { AppProps } from 'next/app';
+import { EmotionCache } from '@emotion/cache';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider } from '@emotion/react';
-import theme from '../config/theme';
-import { createEmotionCache } from '../src/utils/client';
-import { EmotionCache } from '@emotion/cache';
-import { MobileContextProvider } from '../src/client/context/MobileContext';
+import theme from 'config/theme';
+import { MobileContextProvider } from 'src/client/context/MobileContext';
+import { createEmotionCache } from 'src/utils/client';
 
 const clientSideEmotionCache = createEmotionCache();
 

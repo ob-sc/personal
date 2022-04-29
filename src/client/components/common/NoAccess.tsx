@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Typography } from '@mui/material';
-import { getRandomInt } from '../../../utils/shared';
+import { getRandomInt } from 'src/utils/shared';
 
 const words = [
   'Oh!',

@@ -1,16 +1,13 @@
-import { NextApiHandlerWithDB, requiredField } from '../../../src/utils/server';
-import {
-  nullOnEmpty,
-  nullOnEmptyNum,
-  unresolved,
-} from '../../../src/utils/shared';
-import { withSessionApi } from '../../../src/lib/withSession';
-import { error, httpMethodError, success } from '../../../src/server/response';
-import { Station } from '../../../src/entities/Station';
-import { NewStationForm } from '../../stations/new';
 import { validate } from 'class-validator';
+import { NextApiHandlerWithConnections } from 'types/server';
+import { NewStationForm } from 'pages/stations/new';
+import { Station } from 'src/entities/Station';
+import { withSessionApi } from 'src/lib/withSession';
+import { error, httpMethodError, success } from 'src/server/response';
+import { requiredField, unresolved } from 'src/utils/server';
+import { nullOnEmpty, nullOnEmptyNum } from 'src/utils/shared';
 
-const handler: NextApiHandlerWithDB = async (req, res) => {
+const handler: NextApiHandlerWithConnections = async (req, res) => {
   try {
     const { method, body, db } = req;
     if (!db) throw new Error('Datenbank nicht verfügbar');

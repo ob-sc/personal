@@ -1,5 +1,5 @@
-import { ParsedUser } from '../../types/server';
-import { User } from '../entities/User';
+import { ParsedUser } from 'types/server';
+import { User } from 'src/entities/User';
 
 const parseUser = (user: User): ParsedUser => {
   const {

@@ -1,7 +1,7 @@
 import { IronSessionOptions } from 'iron-session';
-import logger from '../src/lib/log';
-import { Options as LdapOptions } from 'ldapauth-fork';
+import { ClientOptions as LdapOptions } from 'ldapjs';
 import { DataSourceOptions } from 'typeorm';
+import logger from 'src/lib/log';
 
 const validateEnv = (
   envName: string,
@@ -83,29 +83,11 @@ export const dbConfig: Databases = {
 // LDAP
 
 const baseDN = 'DC=starcar,DC=local';
-const searchAttributes = [
-  'cn',
-  'sn',
-  'l',
-  'postalCode',
-  'telephoneNumber',
-  'givenName',
-  'distinguishedName',
-  'displayName',
-  'streetAddress',
-  'sAMAccountName',
-  'userPrincipalName',
-  'userAccountControl',
-  'mail',
-];
 
 export const ldapConfig: LdapOptions = {
   url: env.ldap_url,
   bindDN: `CN=${env.ldap_user},CN=Users,${baseDN}`,
   bindCredentials: env.ldap_password,
-  searchBase: `OU=User,OU=STARCAR,${baseDN}`,
-  searchFilter: '(sAMAccountName={{username}})',
-  searchAttributes,
 };
 
 // SESSION

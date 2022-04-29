@@ -4,8 +4,8 @@ import CheckIcon from '@mui/icons-material/Check';
 import SearchIcon from '@mui/icons-material/Search';
 import SearchOffIcon from '@mui/icons-material/SearchOff';
 import { useGridApiContext } from '@mui/x-data-grid';
-import { MouseEventHandler, ReactNode } from '../../../../types/client';
-import { Mobile } from '../../hooks/useMobileScreen';
+import { MouseEventHandler, ReactNode } from 'types/client';
+import { Mobile } from 'src/client/hooks/useMobileScreen';
 
 interface Props {
   mobile: Mobile;

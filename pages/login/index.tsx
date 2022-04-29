@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
 import { Box, Typography } from '@mui/material';
-import { postSession } from '../../src/client/api/sessions';
-
-import Form from '../../src/client/components/common/Form';
-import { FormField } from '../../types/client';
-import theme from '../../config/theme';
+import { useRouter } from 'next/router';
+import { FormField } from 'types/client';
+import theme from 'config/theme';
+import { postSession } from 'src/client/api/sessions';
+import Form from 'src/client/components/common/Form';
 
 const LoginPage = () => {
   const router = useRouter();

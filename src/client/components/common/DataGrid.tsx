@@ -8,10 +8,10 @@ import {
   MouseEventHandler,
   ReactNode,
   RowClickHandler,
-} from '../../../../types/client';
-import { searchFilter } from '../../../utils/client';
-import DataGridFooter from './DataGridFooter';
-import useMobileContext from '../../context/MobileContext';
+} from 'types/client';
+import { searchFilter } from 'src/utils/client';
+import useMobileContext from 'src/client/context/MobileContext';
+import DataGridFooter from 'src/client/components/common/DataGridFooter';
 
 interface Props {
   columns: DataGridCol[];

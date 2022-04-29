@@ -5,9 +5,9 @@ import {
   PrimaryGeneratedColumn,
   Relation,
 } from 'typeorm';
-import { UNIQUE } from '../utils/server';
-import { Station } from './Station';
-import { User } from './User';
+import { Station } from 'src/entities/Station';
+import { User } from 'src/entities/User';
+import { UNIQUE } from 'src/utils/server';
 
 // todo was ist wenn ich region lösche aber user id noch hat? cascade? testen ob das überhaupt passiert
 

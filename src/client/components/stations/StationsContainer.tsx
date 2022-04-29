@@ -1,8 +1,8 @@
 import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 import { useState } from 'react';
-import { ParsedUser } from '../../../../types/server';
-import { Station } from '../../../entities/Station';
-import { postAllowedStation } from '../../api/users';
+import { ParsedUser } from 'types/server';
+import { postAllowedStation } from 'src/client/api/users';
+import { Station } from 'src/entities/Station';
 
 interface Props {
   stations: Station[];

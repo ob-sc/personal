@@ -1,5 +1,9 @@
-import Region from '../src/entities/Region';
+import { NextApiRequest, NextApiResponse } from 'next';
+import { Region } from 'src/entities/Region';
+import { dataSource } from 'src/server/database';
+import ldapClient from 'src/server/ldap';
 
+/** Für Freigaben */
 export type Route =
   | 'sessions'
   | 'temps'
@@ -9,6 +13,22 @@ export type Route =
   | 'stations/new'
   | 'users'
   | 'users/allowed-stations';
+
+/** Session, DB ORM und ldapjs Client in `req` */
+type NextApiRequestWithConnections = NextApiRequest & {
+  db?: typeof dataSource;
+  ldap?: typeof ldapClient;
+};
+
+/**
+ * Mit Session, DB ORM und ldapjs Client
+ * @example
+ * const routeHandler: NextApiHandlerWithConnections = async (req, res) => { const { session, db, ldap } = req; ... };
+ */
+export type NextApiHandlerWithConnections = (
+  req: NextApiRequestWithConnections,
+  res: NextApiResponse
+) => Promise<void>;
 
 export interface ParsedUser {
   id: number;

@@ -1,10 +1,10 @@
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
-import { dbConfig } from '../../config';
-import { Region } from '../entities/Region';
-import { Station } from '../entities/Station';
-import { User } from '../entities/User';
-import logger from '../lib/log';
+import { dbConfig } from 'config';
+import { User } from 'src/entities/User';
+import { Station } from 'src/entities/Station';
+import { Region } from 'src/entities/Region';
+import logger from 'src/lib/log';
 
 const NODE_ENV = process.env.NODE_ENV ?? 'development';
 const cfg = dbConfig[NODE_ENV];

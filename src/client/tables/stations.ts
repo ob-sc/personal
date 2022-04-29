@@ -1,5 +1,5 @@
-import { DGColFn } from '../../../types/client';
-import { gridEmptyVal } from '../../utils/client';
+import { DGColFn } from 'types/client';
+import { gridEmptyVal } from 'src/utils/client';
 
 const stationColumns: DGColFn = () => [
   {

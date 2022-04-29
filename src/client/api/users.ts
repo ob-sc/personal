@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { ParsedUser } from '../../../types/server';
-import useRequest from '../hooks/useRequest';
+import { ParsedUser } from 'types/server';
+import useRequest from 'src/client/hooks/useRequest';
 
 const route = '/api/users';
 

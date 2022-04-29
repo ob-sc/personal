@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
-import { CProps } from '../../../../types/client';
-import Link from './Link';
+import { CProps } from 'types/client';
+import Link from 'src/client/components/common/Link';
 
 interface Props extends CProps {
   href: string;

@@ -1,11 +1,5 @@
 export const isDev = process.env.NODE_ENV !== 'production';
 
-export const unresolved = {
-  api: {
-    externalResolver: true,
-  },
-};
-
 export function prepend0(num: number) {
   return num < 10 ? `0${num}` : num;
 }

@@ -1,5 +1,5 @@
-import { Region } from '../../entities/Region';
-import useRequest from '../hooks/useRequest';
+import useRequest from 'src/client/hooks/useRequest';
+import { Region } from 'src/entities/Region';
 
 const route = '/api/regions';
 

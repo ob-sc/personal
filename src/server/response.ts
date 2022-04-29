@@ -1,6 +1,6 @@
 import { NextApiResponse } from 'next';
-import { ErrorResponse, SuccessResponse } from '../../types/server';
-import logger from '../lib/log';
+import { ErrorResponse, SuccessResponse } from 'types/server';
+import logger from 'src/lib/log';
 
 /**
  * Antwort mit Code 200 (bzw 204)

@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { Station } from '../../entities/Station';
-import useRequest from '../hooks/useRequest';
+import { Station } from 'src/entities/Station';
+import useRequest from 'src/client/hooks/useRequest';
 
 const route = '/api/stations';
 

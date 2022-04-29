@@ -1,6 +1,6 @@
 import createCache from '@emotion/cache';
 import { GridValueFormatterParams } from '@mui/x-data-grid';
-import { SelectOption } from '../../types/client';
+import { SelectOption } from 'types/client';
 
 export function createEmotionCache() {
   return createCache({ key: 'css' });

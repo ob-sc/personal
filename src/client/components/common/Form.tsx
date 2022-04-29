@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AxiosError } from 'axios';
 import { Box, Typography } from '@mui/material';
-import { CProps, FormField } from '../../../../types/client';
-import SubmitButton from './SubmitButton';
-import Input from './Input';
-import useMobileContext from '../../context/MobileContext';
-import Select from './Select';
-import MultiSelect from './MultiSelect';
-import { ErrorResponse } from '../../../../types/server';
+import { CProps, FormField } from 'types/client';
+import { ErrorResponse } from 'types/server';
+import useMobileContext from 'src/client/context/MobileContext';
+import Select from 'src/client/components/common/Select';
+import MultiSelect from 'src/client/components/common/MultiSelect';
+import Input from 'src/client/components/common/Input';
+import SubmitButton from 'src/client/components/common/SubmitButton';
 
 interface Props extends CProps {
   fields: FormField[];

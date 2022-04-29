@@ -1,14 +1,14 @@
 import { InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
-import { withSessionSsr } from '../../src/lib/withSession';
-import Layout from '../../src/client/components/layout/Layout';
-import { postStation } from '../../src/client/api/stations';
-import Form from '../../src/client/components/common/Form';
-import { FormField } from '../../types/client';
 import { Typography } from '@mui/material';
-import { useGetRegions } from '../../src/client/api/regions';
-import { selectOptionMapper, withEmptyOption } from '../../src/utils/client';
-import { accessConstants } from '../../config/constants';
+import { accessConstants } from 'config/constants';
+import { FormField } from 'types/client';
+import { withSessionSsr } from 'src/lib/withSession';
+import { postStation } from 'src/client/api/stations';
+import { useGetRegions } from 'src/client/api/regions';
+import { selectOptionMapper, withEmptyOption } from 'src/utils/client';
+import Layout from 'src/client/components/layout/Layout';
+import Form from 'src/client/components/common/Form';
 
 export interface NewStationForm {
   id: string;

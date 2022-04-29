@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
-import { CProps } from '../../../types/client';
-import useMobileScreen from '../hooks/useMobileScreen';
+import { CProps } from 'types/client';
+import useMobileScreen from 'src/client/hooks/useMobileScreen';
 
 const context = createContext({ md: false, sm: false, mobile: false });
 const useMobileContext = () => useContext(context);

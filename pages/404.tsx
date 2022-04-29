@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import { Container } from '@mui/material';
-import Layout from '../src/client/components/layout/Layout';
+import Layout from 'src/client/components/layout/Layout';
 
 // Cedarville soll nur hier für 404 geladen werden
 

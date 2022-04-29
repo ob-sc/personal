@@ -8,8 +8,8 @@ import {
   OutlinedInput,
   Select,
 } from '@mui/material';
-import CenteredSpinner from './CenteredSpinner';
-import { SelectOption } from '../../../../types/client';
+import { SelectOption } from 'types/client';
+import CenteredSpinner from 'src/client/components/common/CenteredSpinner';
 
 interface Props {
   name: string;

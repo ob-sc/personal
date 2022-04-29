@@ -1,6 +1,6 @@
-import { accessConstants } from '../../../config/constants';
-import { DGColFn } from '../../../types/client';
-import { gridEmptyVal } from '../../utils/client';
+import { DGColFn } from 'types/client';
+import { accessConstants } from 'config/constants';
+import { gridEmptyVal } from 'src/utils/client';
 
 const userColumns: DGColFn = () => [
   { field: 'username', headerName: 'Benutzer', width: 300, sm: true },

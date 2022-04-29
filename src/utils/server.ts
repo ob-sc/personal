@@ -1,13 +1,10 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { dataSource } from '../server/database';
-import { isEmpty } from './shared';
+import { isEmpty } from 'src/utils/shared';
 
-type NextApiRequestWithDB = NextApiRequest & { db?: typeof dataSource };
-
-export type NextApiHandlerWithDB = (
-  req: NextApiRequestWithDB,
-  res: NextApiResponse
-) => Promise<void>;
+export const unresolved = {
+  api: {
+    externalResolver: true,
+  },
+};
 
 export function requiredField(...args: (string | null | undefined)[]) {
   for (const arg of args) {

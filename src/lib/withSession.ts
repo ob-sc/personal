@@ -1,13 +1,12 @@
 import { withIronSessionApiRoute, withIronSessionSsr } from 'iron-session/next';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
-import { sessionConfig } from '../../config';
-import { accessConstants } from '../../config/constants';
-import { ParsedUser, Route } from '../../types/server';
-import getDatabaseConnection from '../server/database';
-import ldapClient from '../server/ldap';
-import { error } from '../server/response';
-import { NextApiHandlerWithDB } from '../utils/server';
-import { redirectUrl } from '../utils/shared';
+import { NextApiHandlerWithConnections, ParsedUser, Route } from 'types/server';
+import { sessionConfig } from 'config';
+import { accessConstants } from 'config/constants';
+import { redirectUrl } from 'src/utils/shared';
+import { error } from 'src/server/response';
+import getDatabaseConnection from 'src/server/database';
+import ldapClient from 'src/server/ldap';
 
 declare module 'iron-session' {
   interface IronSessionData {
@@ -52,14 +51,18 @@ export const withSessionSsr = () =>
 
 /**
  * Middleware die Authentifizierung und Berechtigung prüft.
- * Gibt `req` Session und ORM.
+ * Gibt `req` Session, DB ORM und ldapjs Client.
  * Bei Erfolg wird die Session erneuert.
+ * Verbindungen werden hier aufgebaut und zerstört.
  * @example
- * const routeHandler: NextApiHandler = async (req, res) => { const { session, db } = req; ... };
+ * const routeHandler: NextApiHandler = async (req, res) => { const { session, db, ldap } = req; ... };
  * export default withSessionApi(routeHandler);
  */
-export const withSessionApi = (handler: NextApiHandlerWithDB, page: Route) => {
-  const authHandler: NextApiHandlerWithDB = async (req, res) => {
+export const withSessionApi = (
+  handler: NextApiHandlerWithConnections,
+  page: Route
+) => {
+  const authHandler: NextApiHandlerWithConnections = async (req, res) => {
     if (page !== 'sessions') {
       const { session } = req;
       // nicht authentifiziert

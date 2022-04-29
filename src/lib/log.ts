@@ -1,5 +1,5 @@
 import pino from 'pino';
-import { isDev } from '../utils/shared';
+import { isDev } from 'src/utils/shared';
 
 const options: pino.LoggerOptions = isDev
   ? {
