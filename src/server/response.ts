@@ -23,6 +23,7 @@ type ErrorResponseParam = number | string | Error | string[] | null;
 
 /**
  * `res` muss als Parameter gegeben werden, der Rest ist optional.
+ * Nur ein Parameter pro Typ.
  * Typen werden wie folgt ausgelesen:
  * - `number` als Status Code
  * - `string` als Nachricht

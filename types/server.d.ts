@@ -43,6 +43,9 @@ export interface ParsedUser {
   stations: number[];
 }
 
+// array aus input-Feldern aus dem Formular für Fehler
+export type Fields = string[];
+
 export type SuccessResponse =
   | { message: string }
   | object
@@ -52,10 +55,15 @@ export type SuccessResponse =
 
 export type ErrorResponse = {
   message: string;
-  fields: string[];
+  fields: Fields;
 };
 
 // Active Directory / Domain STARCAR
+
+export interface LdapError {
+  instance: Error;
+  fields: Fields;
+}
 
 export interface DomainUser {
   cn: string; // "SC - Bergen, Ole"

@@ -1,6 +1,10 @@
+import { ldapConfig } from 'config';
 import ldap from 'ldapjs';
 import logger from 'src/lib/log';
 import { isDev } from 'src/utils/shared';
+import { DomainAllAttributes, LdapError } from 'types/server';
+
+// todo objectclass von sven / lenny holen?
 
 const searchAttributes = [
   'cn',
@@ -17,41 +21,38 @@ const searchAttributes = [
   'userAccountControl',
   'mail',
 ];
+// baseDN: 'DC=starcar,DC=local'
 // searchBase: `OU=User,OU=STARCAR,${baseDN}`,
 // searchFilter: '(sAMAccountName={{username}})',
 
-// todo mit ldapjs in das modul
-const parseLdapError = (
-  err: unknown
-): { error: Error; field: string | null } => {
-  let e;
+const parseLdapError = (err: unknown): LdapError => {
+  let instance;
   let field = null;
 
-  if (!isDev) e = new Error('Fehler bei LDAP Authentifizierung');
-  else e = new Error(String(err));
+  if (!isDev) instance = new Error('Fehler bei LDAP Authentifizierung');
+  else instance = new Error(String(err));
 
   // pw falsch, vermutlich Instanz von LDAPError
   if (err instanceof Error && err.message.includes('data 52e')) {
-    e = new Error('Passwort falsch');
+    instance = new Error('Passwort falsch');
     field = 'password';
   }
 
   // user nicht gefunden, komischerweise nur string
   if (typeof err === 'string' && err.includes('no such user')) {
-    e = new Error('Benutzer nicht gefunden');
+    instance = new Error('Benutzer nicht gefunden');
     field = 'username';
   }
 
-  return { error: e, field };
+  const fields = field ? [field] : [];
+
+  return { instance, fields };
 };
 
-const ldapClient = ldap.createClient({
-  url: ['ldap://127.0.0.1:1389', 'ldap://127.0.0.2:1389'],
-  log: logger,
-});
+const ldapClient = ldap.createClient(ldapConfig);
 
 ldapClient.on('error', (err) => {
-  logger.error(err);
+  logger.error(parseLdapError(err));
 });
 
 ldapClient.once('connect', () => {
@@ -64,6 +65,21 @@ ldapClient.once('connect', () => {
 ldapClient.once('destroy', () => {
   console.log('ldap destroyed');
 });
+
+const authenticate = async (
+  username: string,
+  password: string
+): Promise<{ data: DomainAllAttributes; error: LdapError }> => {
+  return;
+};
+
+const ldapConnection = {
+  authenticate,
+  destroy: () => {
+    ldapClient.unbind();
+    // ldapClient.destroy();
+  },
+};
 /*
 tap.test('socket destroy', function (t) {
   const clt = ldap.createClient({
@@ -87,4 +103,4 @@ tap.test('socket destroy', function (t) {
 })
 */
 
-export default ldapClient;
+export default ldapConnection;

@@ -6,7 +6,7 @@ import { accessConstants } from 'config/constants';
 import { redirectUrl } from 'src/utils/shared';
 import { error } from 'src/server/response';
 import getDatabaseConnection from 'src/server/database';
-import ldapClient from 'src/server/ldap';
+import ldap from 'src/server/ldap';
 
 declare module 'iron-session' {
   interface IronSessionData {
@@ -53,7 +53,7 @@ export const withSessionSsr = () =>
  * Middleware die Authentifizierung und Berechtigung prüft.
  * Gibt `req` Session, DB ORM und ldapjs Client.
  * Bei Erfolg wird die Session erneuert.
- * Verbindungen werden hier aufgebaut und zerstört.
+ * Verbindungen werden in middleware aufgebaut und zerstört.
  * @example
  * const routeHandler: NextApiHandler = async (req, res) => { const { session, db, ldap } = req; ... };
  * export default withSessionApi(routeHandler);
@@ -85,16 +85,16 @@ export const withSessionApi = (
       return error(res, 'Datenbank nicht verfügbar', 500);
     }
 
-    const ldap = ldapClient;
-
     console.log(ldap);
 
     req.db = db;
+    req.ldap = ldap;
 
     // fortfahren
     console.log(1);
     await handler(req, res);
     // todo req.db?.destroy();
+    // todo ldap.destroy();
     console.log('stop');
   };
 

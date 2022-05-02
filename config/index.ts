@@ -88,6 +88,7 @@ export const ldapConfig: LdapOptions = {
   url: env.ldap_url,
   bindDN: `CN=${env.ldap_user},CN=Users,${baseDN}`,
   bindCredentials: env.ldap_password,
+  log: logger,
 };
 
 // SESSION

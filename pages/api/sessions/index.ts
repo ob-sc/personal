@@ -31,43 +31,41 @@ const handler: NextApiHandlerWithConnections = async (req, res) => {
       // todo auf diesen callback wird iwie nicht gewartet mit await und .then
       // todo db verbindung schließt sich dann schon vorher
 
-      ldap.authenticate(username, password, async (err, user) => {
-        ldap.close();
+      // ldap.destroy();
 
-        if (err) {
-          const ldapError = parseLdapError(err);
-          const field = ldapError.field ? [ldapError.field] : null;
-          error(res, ldapError.error, field, 401);
-          return;
-        }
+      const ldapUser = await ldap.authenticate(username, password);
 
-        const userRepository = db.getRepository(User);
-        console.log(2);
+      if (error) {
+        error(res, ldapUser.error.instance, ldapUser.error.fields, 401);
+        return;
+      }
 
-        let dbUser = await userRepository.findOne({
-          where: { username },
-          relations: { region: true, allowedStations: true },
-        });
+      const userRepository = db.getRepository(User);
+      console.log(2);
 
-        if (dbUser === null) {
-          dbUser = new User();
-          dbUser.username = username;
-        }
-
-        dbUser.first_name = user.givenName;
-        dbUser.last_name = user.sn;
-        dbUser.email = user.mail;
-        dbUser.dn = user.distinguishedName;
-
-        dbUser = await userRepository.save(dbUser);
-
-        const parsed = parseUser(dbUser);
-
-        session.user = parsed;
-        await session.save();
-
-        success(res, 'Login erfolgreich');
+      let dbUser = await userRepository.findOne({
+        where: { username },
+        relations: { region: true, allowedStations: true },
       });
+
+      if (dbUser === null) {
+        dbUser = new User();
+        dbUser.username = username;
+      }
+
+      dbUser.first_name = ldapUser.data.givenName;
+      dbUser.last_name = ldapUser.data.sn;
+      dbUser.email = ldapUser.data.mail;
+      dbUser.dn = ldapUser.data.distinguishedName;
+
+      dbUser = await userRepository.save(dbUser);
+
+      const parsed = parseUser(dbUser);
+
+      session.user = parsed;
+      await session.save();
+
+      success(res, 'Login erfolgreich');
     };
 
     const logout = () => {
