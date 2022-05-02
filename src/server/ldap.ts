@@ -49,7 +49,7 @@ const parseLdapError = (err: unknown): LdapError => {
   return { instance, fields };
 };
 
-const ldapClient = ldap.createClient(ldapConfig);
+const ldapClient = ldap.createClient(ldapConfig.options);
 
 ldapClient.on('error', (err) => {
   logger.error(parseLdapError(err));
@@ -66,12 +66,27 @@ ldapClient.once('destroy', () => {
   console.log('ldap destroyed');
 });
 
+const adminBind = () => {
+  return new Promise((resolve, reject) => {
+    ldapClient.bind(ldapConfig.bindDN, ldapConfig.bindCredentials, (err) => {
+      if (err) reject(parseLdapError(err));
+      resolve(true);
+    });
+  });
+}
+
 const authenticate = async (
   username: string,
   password: string
 ): Promise<{ data: DomainAllAttributes; error: LdapError }> => {
-  return;
-};
+await adminBind();
+
+
+  return new Promise((resolve, reject) => {
+    ldapClient.search('DC=starcar,DC=local', 
+    {scope: "sub",}
+    )))
+}
 
 const ldapConnection = {
   authenticate,

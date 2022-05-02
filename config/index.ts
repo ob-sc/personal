@@ -84,11 +84,17 @@ export const dbConfig: Databases = {
 
 const baseDN = 'DC=starcar,DC=local';
 
-export const ldapConfig: LdapOptions = {
-  url: env.ldap_url,
+export const ldapConfig: {
+  bindDN: string;
+  bindCredentials: string;
+  options: LdapOptions;
+} = {
   bindDN: `CN=${env.ldap_user},CN=Users,${baseDN}`,
   bindCredentials: env.ldap_password,
-  log: logger,
+  options: {
+    url: env.ldap_url,
+    log: logger,
+  },
 };
 
 // SESSION
