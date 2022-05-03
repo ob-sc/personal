@@ -1,109 +1,114 @@
 import { ldapConfig } from 'config';
-import ldap from 'ldapjs';
+import ldap, { Client } from 'ldapjs';
 import logger from 'src/lib/log';
 import { ApiError, parseLdapError } from 'src/utils/server';
 import { DomainUser } from 'types/server';
 
-// todo objectclass von sven / lenny holen?
+export interface LdapClient {
+  client: Client;
+  authenticate: (username: string, password: string) => Promise<DomainUser[]>;
+  search: () => Promise<DomainUser[]>;
+  destroy: () => void;
+}
 
-const baseDN = 'DC=starcar,DC=local';
-const searchBase = `OU=User,OU=STARCAR,${baseDN}`;
+function ldapConnection(): LdapClient {
+  // todo objectclass von sven / lenny holen?
 
-const ldapClient = ldap.createClient(ldapConfig.options);
+  const baseDN = 'DC=starcar,DC=local';
+  const searchBase = `OU=User,OU=STARCAR,${baseDN}`;
 
-// ldapClient.on('error', (err) => {
-//   logger.error(err);
-// });
+  const ldapClient = ldap.createClient(ldapConfig.options);
 
-ldapClient.on('connect', () => {
-  logger.debug('ldap connected');
-  ldapClient.on('close', () => {
-    logger.debug('ldap closed');
-  });
-});
+  // ldapClient.on('error', (err) => {
+  //   logger.error(err);
+  // });
 
-ldapClient.on('destroy', () => {
-  logger.debug('ldap destroyed');
-});
-
-const bind = (username: string, password: string) =>
-  new Promise<void>((resolve, reject) => {
-    logger.debug('bind'); // todo
-    ldapClient.bind(username, password, async (err) => {
-      if (err) {
-        reject(parseLdapError(err));
-        return;
-      }
-      resolve();
+  ldapClient.on('connect', () => {
+    logger.debug('ldap connected');
+    ldapClient.on('close', () => {
+      logger.debug('ldap closed');
     });
   });
 
-const ldapBind = async () => {
-  try {
-    await bind(ldapConfig.bindDN, ldapConfig.bindPW);
-  } catch (err) {
-    throw new Error('Fehler bei LDAP Bind');
-  }
-};
-
-const search = (user?: string) =>
-  new Promise<DomainUser[]>((resolve, reject) => {
-    // client.bind(ldapUserDN, ldapConfig.password, (err) => {
-    //   if (err) reject(createError(err));
-    // });
-    const filter = user
-      ? `(sAMAccountName=${user})`
-      : '(sAMAccountType=805306368)';
-    const options: ldap.SearchOptions = {
-      filter,
-      scope: 'sub',
-      attributes: [
-        'cn',
-        'sn',
-        'l',
-        'postalCode',
-        'telephoneNumber',
-        'givenName',
-        'distinguishedName',
-        'displayName',
-        'streetAddress',
-        'sAMAccountName',
-        'sAMAccountType',
-        'userPrincipalName',
-        'userAccountControl',
-        'objectClass',
-        'mail',
-      ],
-    };
-    ldapClient.search(searchBase, options, (err, res) => {
-      if (err) reject(parseLdapError(err));
-
-      const entries: DomainUser[] = [];
-
-      res.on('searchEntry', (entry) => {
-        const userEntry: unknown = entry.object;
-        entries.push(userEntry as DomainUser);
-      });
-
-      res.on('end', () => {
-        resolve(entries);
-      });
-    });
+  ldapClient.on('destroy', () => {
+    logger.debug('ldap destroyed');
   });
 
-const authenticate = async (
-  username: string,
-  password: string
-): Promise<DomainUser[]> => {
-  // bind für search
-  await ldapBind();
-  const [user] = await search(username);
-  if (!user) throw new ApiError('Benutzer nicht gefunden', ['username']);
-  // bind mit user und pw aus form
-  await bind(user.distinguishedName, password);
-  return [user];
-};
-/*
+  const bind = (username: string, password: string) =>
+    new Promise<void>((resolve, reject) => {
+      logger.debug('bind'); // todo
+      ldapClient.bind(username, password, async (err) => {
+        if (err) {
+          reject(parseLdapError(err));
+          return;
+        }
+        resolve();
+      });
+    });
+
+  const ldapBind = async () => {
+    try {
+      await bind(ldapConfig.bindDN, ldapConfig.bindPW);
+    } catch (err) {
+      throw new Error('Fehler bei LDAP Bind');
+    }
+  };
+
+  const search = (user?: string) =>
+    new Promise<DomainUser[]>((resolve, reject) => {
+      // client.bind(ldapUserDN, ldapConfig.password, (err) => {
+      //   if (err) reject(createError(err));
+      // });
+      const filter = user
+        ? `(sAMAccountName=${user})`
+        : '(sAMAccountType=805306368)';
+      const options: ldap.SearchOptions = {
+        filter,
+        scope: 'sub',
+        attributes: [
+          'cn',
+          'sn',
+          'l',
+          'postalCode',
+          'telephoneNumber',
+          'givenName',
+          'distinguishedName',
+          'displayName',
+          'streetAddress',
+          'sAMAccountName',
+          'sAMAccountType',
+          'userPrincipalName',
+          'userAccountControl',
+          'objectClass',
+          'mail',
+        ],
+      };
+      ldapClient.search(searchBase, options, (err, res) => {
+        if (err) reject(parseLdapError(err));
+
+        const entries: DomainUser[] = [];
+
+        res.on('searchEntry', (entry) => {
+          const userEntry: unknown = entry.object;
+          entries.push(userEntry as DomainUser);
+        });
+
+        res.on('end', () => {
+          resolve(entries);
+        });
+      });
+    });
+
+  const authenticate = async (username: string, password: string) => {
+    // bind für search
+    await ldapBind();
+    const [user] = await search(username);
+    if (!user) throw new ApiError('Benutzer nicht gefunden', ['username']);
+    // bind mit user und pw aus form
+    await bind(user.distinguishedName, password);
+    return [user];
+  };
+  /*
 const add = (client: Client, entry: Partial<DomainUser>, dn: string) =>
   new Promise((resolve, reject) => {
     client.bind(ldapUserDN, ldapConfig.password, (err) => {
@@ -139,10 +144,14 @@ const add = (client: Client, entry: Partial<DomainUser>, dn: string) =>
     });
     */
 
-const ldapConnection = {
-  authenticate,
-  client: ldapClient,
-  search,
-};
+  return {
+    client: ldapClient,
+    authenticate,
+    search,
+    destroy: () => {
+      ldapClient.destroy();
+    },
+  };
+}
 
 export default ldapConnection;

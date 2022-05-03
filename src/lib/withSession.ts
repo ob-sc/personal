@@ -6,8 +6,8 @@ import { accessConstants } from 'config/constants';
 import { redirectUrl } from 'src/utils/shared';
 import { error } from 'src/server/response';
 import getDatabaseConnection from 'src/server/database';
-import ldap from 'src/server/ldap';
 import logger from 'src/lib/log';
+import ldapConnection from 'src/server/ldap';
 
 declare module 'iron-session' {
   interface IronSessionData {
@@ -89,12 +89,14 @@ export const withSessionApi = (
 
     req.db = db;
     if (withLdap) {
+      const ldap = ldapConnection();
       req.ldap = ldap;
     }
 
     // fortfahren
     await handler(req, res);
     req.db.destroy();
+    if (withLdap) req.ldap?.destroy();
     logger.debug('Handler durch'); // todo
   };
 

@@ -8,7 +8,6 @@ import {
   PrimaryGeneratedColumn,
   Relation,
 } from 'typeorm';
-import { IsEmail } from 'class-validator';
 import { Region } from 'src/entities/Region';
 import { Station } from 'src/entities/Station';
 import { NULL, UNIQUE } from 'src/utils/server';
