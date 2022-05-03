@@ -24,24 +24,10 @@ const handler: NextApiHandlerWithConnections = async (req, res) => {
         error(res, 'Benutzername und Passwort müssen angegeben werden', 401);
       }
 
-      // ldap.on('error', (err) => {
-      //   logger.error(err);
-      // });
-
-      // todo auf diesen callback wird iwie nicht gewartet mit await und .then
-      // todo db verbindung schließt sich dann schon vorher
-
-      // ldap.destroy();
-
-      const ldapUser = await ldap.authenticate(username, password);
-
-      if (error) {
-        error(res, ldapUser.error.instance, ldapUser.error.fields, 401);
-        return;
-      }
+      const [ldapUser] = await ldap.authenticate(username, password);
+      console.log(ldapUser);
 
       const userRepository = db.getRepository(User);
-      console.log(2);
 
       let dbUser = await userRepository.findOne({
         where: { username },
@@ -53,10 +39,10 @@ const handler: NextApiHandlerWithConnections = async (req, res) => {
         dbUser.username = username;
       }
 
-      dbUser.first_name = ldapUser.data.givenName;
-      dbUser.last_name = ldapUser.data.sn;
-      dbUser.email = ldapUser.data.mail;
-      dbUser.dn = ldapUser.data.distinguishedName;
+      dbUser.first_name = ldapUser.givenName;
+      dbUser.last_name = ldapUser.sn;
+      dbUser.email = ldapUser.mail;
+      dbUser.dn = ldapUser.distinguishedName;
 
       dbUser = await userRepository.save(dbUser);
 
@@ -88,6 +74,6 @@ const handler: NextApiHandlerWithConnections = async (req, res) => {
   }
 };
 
-export default withSessionApi(handler, 'sessions');
+export default withSessionApi(handler, 'sessions', true);
 
 export const config = unresolved;

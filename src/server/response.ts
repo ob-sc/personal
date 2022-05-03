@@ -1,6 +1,7 @@
 import { NextApiResponse } from 'next';
 import { ErrorResponse, SuccessResponse } from 'types/server';
 import logger from 'src/lib/log';
+import { ApiError } from 'src/utils/server';
 
 /**
  * Antwort mit Code 200 (bzw 204)
@@ -27,8 +28,8 @@ type ErrorResponseParam = number | string | Error | string[] | null;
  * Typen werden wie folgt ausgelesen:
  * - `number` als Status Code
  * - `string` als Nachricht
- * - `Error` als Error-Objekt
  * - `Array` als fehlerhafte Formularfelder
+ * - `Error` als (Api-)Error-Objekt
  * @example error(res, 400, 'Fehler', new Error("Oops!"), ['username', ... ]);
  */
 export const error = (
@@ -37,15 +38,19 @@ export const error = (
 ) => {
   let status = 500;
   let message: string | undefined;
-  let err: Error | undefined;
+  let err: ApiError | Error | undefined;
   let fields: string[] = [];
 
   for (const arg of params) {
     if (arg === null) continue;
     if (typeof arg === 'number') status = arg;
     if (typeof arg === 'string') message = arg;
-    if (arg instanceof Error) err = arg;
     if (Array.isArray(arg)) fields = arg;
+    if (arg instanceof ApiError) {
+      // eslint-disable-next-line prefer-destructuring
+      fields = arg.fields;
+      err = arg;
+    } else if (arg instanceof Error) err = arg;
   }
 
   if (message === undefined) {

@@ -117,15 +117,15 @@ function Form({ submit, fields, submitName, size = 'md', cols = 1 }: Props) {
               <Input {...param} type={type} />
             );
           })}
+
+          {error?.response?.data?.message ? (
+            <Typography color="error">
+              {error.response.data.message ?? 'Unbekannter Fehler'}
+            </Typography>
+          ) : null}
         </Box>
 
         <SubmitButton text={submitName ?? 'OK'} loading={submitting} />
-
-        {error?.response?.data?.message ? (
-          <Typography color="error">
-            {error.response.data.message ?? 'Unbekannter Fehler'}
-          </Typography>
-        ) : null}
       </Box>
     </form>
   );

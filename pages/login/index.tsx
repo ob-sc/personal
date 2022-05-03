@@ -29,8 +29,8 @@ const LoginPage = () => {
   };
 
   const fields: FormField[] = [
-    { name: 'username', label: 'Benutzer', type: 'text' },
-    { name: 'password', label: 'Passwort', type: 'password' },
+    { name: 'username', label: 'Benutzer', type: 'text', required: true },
+    { name: 'password', label: 'Passwort', type: 'password', required: true },
   ];
 
   return (

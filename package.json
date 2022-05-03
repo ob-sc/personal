@@ -8,7 +8,7 @@
     "lint": "next lint",
     "postlint": "tsc --noEmit",
     "deploy": "./deploy.sh",
-    "pp": "next dev | pino-pretty -c",
+    "p": "next dev | pino-pretty -c",
     "debug": "NODE_OPTIONS='--trace-warnings' next dev"
   },
   "dependencies": {

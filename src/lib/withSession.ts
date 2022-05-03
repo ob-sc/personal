@@ -7,6 +7,7 @@ import { redirectUrl } from 'src/utils/shared';
 import { error } from 'src/server/response';
 import getDatabaseConnection from 'src/server/database';
 import ldap from 'src/server/ldap';
+import logger from 'src/lib/log';
 
 declare module 'iron-session' {
   interface IronSessionData {
@@ -55,12 +56,13 @@ export const withSessionSsr = () =>
  * Bei Erfolg wird die Session erneuert.
  * Verbindungen werden in middleware aufgebaut und zerstört.
  * @example
- * const routeHandler: NextApiHandler = async (req, res) => { const { session, db, ldap } = req; ... };
+ * const routeHandler: NextApiHandler = async (req, res) => { const { session, db } = req; ... };
  * export default withSessionApi(routeHandler);
  */
 export const withSessionApi = (
   handler: NextApiHandlerWithConnections,
-  page: Route
+  page: Route,
+  withLdap?: boolean
 ) => {
   const authHandler: NextApiHandlerWithConnections = async (req, res) => {
     if (page !== 'sessions') {
@@ -85,17 +87,15 @@ export const withSessionApi = (
       return error(res, 'Datenbank nicht verfügbar', 500);
     }
 
-    console.log(ldap);
-
     req.db = db;
-    req.ldap = ldap;
+    if (withLdap) {
+      req.ldap = ldap;
+    }
 
     // fortfahren
-    console.log(1);
     await handler(req, res);
-    // todo req.db?.destroy();
-    // todo ldap.destroy();
-    console.log('stop');
+    req.db.destroy();
+    logger.debug('Handler durch'); // todo
   };
 
   return withIronSessionApiRoute(authHandler, sessionConfig);

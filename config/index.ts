@@ -86,11 +86,13 @@ const baseDN = 'DC=starcar,DC=local';
 
 export const ldapConfig: {
   bindDN: string;
-  bindCredentials: string;
+  bindPW: string;
+  baseDN: string;
   options: LdapOptions;
 } = {
   bindDN: `CN=${env.ldap_user},CN=Users,${baseDN}`,
-  bindCredentials: env.ldap_password,
+  bindPW: env.ldap_password,
+  baseDN,
   options: {
     url: env.ldap_url,
     log: logger,

@@ -13,6 +13,7 @@ import { Region } from 'src/entities/Region';
 import { Station } from 'src/entities/Station';
 import { NULL, UNIQUE } from 'src/utils/server';
 
+// todo sollten firstname, lastname und email null sein dürfen?
 @Entity({ name: 'users' })
 export class User {
   @PrimaryGeneratedColumn()
@@ -21,15 +22,14 @@ export class User {
   @Column('varchar', { ...UNIQUE })
   username!: string;
 
-  @Column('varchar')
-  first_name!: string;
+  @Column('varchar', { ...NULL })
+  first_name!: string | null;
 
-  @Column('varchar')
-  last_name!: string;
+  @Column('varchar', { ...NULL })
+  last_name!: string | null;
 
-  @IsEmail()
-  @Column('varchar')
-  email!: string;
+  @Column('varchar', { ...NULL })
+  email!: string | null;
 
   @Column('varchar')
   dn!: string;
