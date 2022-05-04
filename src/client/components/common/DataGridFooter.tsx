@@ -1,5 +1,11 @@
 import { Dispatch, SetStateAction, useState } from 'react';
-import { Box, IconButton, Pagination, TextField } from '@mui/material';
+import {
+  Box,
+  IconButton,
+  Pagination,
+  PaginationItem,
+  TextField,
+} from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import SearchIcon from '@mui/icons-material/Search';
 import SearchOffIcon from '@mui/icons-material/SearchOff';
@@ -26,7 +32,7 @@ function DataGridFooter({
   const apiRef = useGridApiContext();
   const { state } = apiRef.current;
 
-  const { sm, md } = mobile;
+  const { sm, mobile: responsive } = mobile;
 
   return (
     <Box
@@ -75,9 +81,15 @@ function DataGridFooter({
           shape="rounded"
           size="large"
           boundaryCount={0}
-          siblingCount={md ? 0 : 2}
-          showFirstButton={md ? false : true}
-          showLastButton={md ? false : true}
+          // mobile nicht genug Platz, dann nur previous und next
+          renderItem={(item) =>
+            responsive &&
+            item.type !== 'previous' &&
+            item.type !== 'next' ? null : (
+              <PaginationItem {...item} />
+            )
+          }
+          siblingCount={2}
           count={state.pagination.pageCount}
           page={state.pagination.page + 1}
           onChange={(event, value) => apiRef.current.setPage(value - 1)}

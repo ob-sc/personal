@@ -45,11 +45,14 @@
 
 - https://github.com/vercel/next.js/blob/canary/examples/api-routes-rest/pages/index.js
 
-## sequelize
-
-- ts: https://sequelize.org/master/manual/typescript.html
-- auch ts: https://github.com/RobinBuschmann/sequelize-typescript
-
 ## ldap
 
+- ldapjs client api http://ldapjs.org/client.html#create-a-client
+
 - pw etc: https://lsc-project.org/documentation/tutorial/openldaptoactivedirectory
+
+- ldapauth https://github.com/trentm/node-ldapauth
+
+- adlad von dude bei ldapjs: https://github.com/jsumners/adldap
+
+- activedirectory auch von ihm https://github.com/jsumners/node-activedirectory

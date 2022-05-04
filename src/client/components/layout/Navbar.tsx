@@ -22,11 +22,6 @@ const menuItems = [
     label: 'Aushilfen',
   },
   {
-    access: access.routes.employees,
-    route: '/employees',
-    label: 'Mitarbeiter',
-  },
-  {
     access: access.routes.users,
     route: '/users',
     label: 'Benutzer',

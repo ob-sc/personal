@@ -18,3 +18,5 @@ function Home({
 }
 
 export default Home;
+
+// todo anderer komponent wtf ist nostation

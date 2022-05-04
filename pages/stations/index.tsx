@@ -27,6 +27,8 @@ const AllStationsPage = ({
 
   const { hasAccess, routes } = accessConstants(user.access, 'stations');
 
+  console.log(data);
+
   return (
     <Layout session={user} blockAccess={!hasAccess}>
       <DataGrid

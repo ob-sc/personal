@@ -3,17 +3,6 @@ import { Region } from 'src/entities/Region';
 import { dataSource } from 'src/server/database';
 import { LdapClient } from 'src/server/ldap';
 
-/** Für Freigaben */
-export type Route =
-  | 'sessions'
-  | 'temps'
-  | 'employees'
-  | 'regions'
-  | 'stations'
-  | 'stations/new'
-  | 'users'
-  | 'users/allowed-stations';
-
 /** Session, DB ORM und ldapjs Client in `req` */
 type NextApiRequestWithConnections = NextApiRequest & {
   db?: typeof dataSource;

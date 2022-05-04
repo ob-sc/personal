@@ -1,8 +1,8 @@
 import { withIronSessionApiRoute, withIronSessionSsr } from 'iron-session/next';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
-import { NextApiHandlerWithConnections, ParsedUser, Route } from 'types/server';
+import { NextApiHandlerWithConnections, ParsedUser } from 'types/server';
 import { sessionConfig } from 'config';
-import { accessConstants } from 'config/constants';
+import { Route, accessConstants } from 'config/constants';
 import { redirectUrl } from 'src/utils/shared';
 import { error } from 'src/server/response';
 import getDatabaseConnection from 'src/server/database';
@@ -102,3 +102,18 @@ export const withSessionApi = (
 
   return withIronSessionApiRoute(authHandler, sessionConfig);
 };
+
+/*
+todo neue instanz wie bei ldap, dann zerstören? gibt fehler bei zb users/id wenn mehrere handler durchlaufen werden:
+wait  - compiling /users/[id] (client and server)...
+wait  - compiling...
+event - compiled client and server successfully in 128 ms (1479 modules)
+[1651654297631] DEBUG (28554 on ole-mba.local): Handler durch
+[1651654297632] ERROR (28554 on ole-mba.local): Pool is closed.
+[1651654297632] DEBUG (28554 on ole-mba.local): Handler durch
+error - unhandledRejection: CannotExecuteNotConnectedError: Cannot execute operation on "default" connection because connection is not yet established.
+[1651654302701] DEBUG (28554 on ole-mba.local): Handler durch
+
+
+unhandled rejection vermutlich destroy in withSession
+*/

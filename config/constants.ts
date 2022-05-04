@@ -1,4 +1,11 @@
-import { Route } from 'types/server';
+export type Route =
+  | 'sessions'
+  | 'temps'
+  | 'regions'
+  | 'stations'
+  | 'stations/new'
+  | 'users'
+  | 'users/allowed-stations';
 
 type RouteObject = { [key in Route]: number };
 interface Access {
