@@ -19,24 +19,23 @@ function ldapConnection(): LdapClient {
 
   const ldapClient = ldap.createClient(ldapConfig.options);
 
-  // ldapClient.on('error', (err) => {
-  //   logger.error(err);
+  ldapClient.on('error', (err) => {
+    logger.error(err);
+  });
+
+  // ldapClient.on('connect', () => {
+  //   logger.debug('ldap connected');
+  //   ldapClient.on('close', () => {
+  //     logger.debug('ldap closed');
+  //   });
   // });
-
-  ldapClient.on('connect', () => {
-    logger.debug('ldap connected');
-    ldapClient.on('close', () => {
-      logger.debug('ldap closed');
-    });
-  });
-
-  ldapClient.on('destroy', () => {
-    logger.debug('ldap destroyed');
-  });
+  // ldapClient.on('destroy', () => {
+  //   logger.debug('ldap destroyed');
+  // });
 
   const bind = (username: string, password: string) =>
     new Promise<void>((resolve, reject) => {
-      logger.debug('bind'); // todo
+      // logger.debug('bind'); // todo
       ldapClient.bind(username, password, async (err) => {
         if (err) {
           reject(parseLdapError(err));
@@ -46,13 +45,7 @@ function ldapConnection(): LdapClient {
       });
     });
 
-  const ldapBind = async () => {
-    try {
-      await bind(ldapConfig.bindDN, ldapConfig.bindPW);
-    } catch (err) {
-      throw new Error('Fehler bei LDAP Bind');
-    }
-  };
+  const ldapBind = async () => bind(ldapConfig.bindDN, ldapConfig.bindPW);
 
   const search = (user?: string) =>
     new Promise<DomainUser[]>((resolve, reject) => {

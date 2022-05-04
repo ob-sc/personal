@@ -34,7 +34,7 @@ _nochaml schön iwo dokuemntieren dann löschen_
 
 ---
 
-- "mein account" mit access 0
+- "mein account" mit access 0? einfach wenn keine berechtigung habe unter benutzer nur ich selber?
 
 - klären agenturen? auch login?
 
