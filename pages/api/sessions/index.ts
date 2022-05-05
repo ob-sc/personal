@@ -25,7 +25,6 @@ const handler: NextApiHandlerWithConnections = async (req, res) => {
       }
 
       const [ldapUser] = await ldap.authenticate(username, password);
-      console.log(ldapUser);
 
       const userRepository = db.getRepository(User);
 

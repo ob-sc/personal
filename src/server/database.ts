@@ -6,21 +6,23 @@ import { Station } from 'src/entities/Station';
 import { Region } from 'src/entities/Region';
 import logger from 'src/lib/log';
 
-const NODE_ENV = process.env.NODE_ENV ?? 'development';
-const cfg = dbConfig[NODE_ENV];
-const errMsg = `Keine DB config gefunden für '${NODE_ENV}'`;
-if (!cfg) throw new Error(errMsg);
-
-const entities = [User, Station, Region];
-
-export const dataSource = new DataSource({
-  ...cfg,
-  entities,
-});
-
 async function getDatabaseConnection() {
+  const NODE_ENV = process.env.NODE_ENV ?? 'development';
+  const cfg = dbConfig[NODE_ENV];
+  const errMsg = `Keine DB config gefunden für '${NODE_ENV}'`;
+  if (!cfg) throw new Error(errMsg);
+
+  const entities = [User, Station, Region];
+
+  const dataSource = new DataSource({
+    ...cfg,
+    entities,
+  });
+
   try {
-    return dataSource.initialize();
+    return dataSource.isInitialized
+      ? dataSource
+      : await dataSource.initialize();
   } catch (err) {
     logger.error(err);
     return null;

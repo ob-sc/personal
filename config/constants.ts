@@ -1,9 +1,10 @@
 export type Route =
-  | 'sessions'
-  | 'temps'
+  | 'directory'
   | 'regions'
+  | 'sessions'
   | 'stations'
   | 'stations/new'
+  | 'temps'
   | 'users'
   | 'users/allowed-stations';
 
@@ -16,13 +17,13 @@ interface Access {
 
 /** Definiert die Berechtigungen. Für `hasAccess` werden beide Parameter benötigt, für translate nur `access` und für `routes` keiner. */
 export function accessConstants(access?: number, route?: Route): Access {
-  const routes = {
-    sessions: 0,
-    temps: 1,
-    employees: 2,
+  const routes: Record<Route, number> = {
+    directory: 9,
     regions: 0,
+    sessions: 0,
     stations: 0,
     'stations/new': 4,
+    temps: 1,
     users: 9,
     'users/allowed-stations': 9,
   };

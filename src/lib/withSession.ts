@@ -81,13 +81,16 @@ export const withSessionApi = (
       if (!hasAccess) return error(res, 'Keine Berechtigung', 403);
     }
 
-    const db = await getDatabaseConnection();
+    if (!req.db) {
+      const db = await getDatabaseConnection();
 
-    if (db === null || db === undefined) {
-      return error(res, 'Datenbank nicht verfügbar', 500);
+      if (db === null || db === undefined) {
+        return error(res, 'Datenbank nicht verfügbar', 500);
+      }
+
+      req.db = db;
     }
 
-    req.db = db;
     if (withLdap) {
       const ldap = ldapConnection();
       req.ldap = ldap;
@@ -96,6 +99,7 @@ export const withSessionApi = (
     // fortfahren
     await handler(req, res);
     req.db.destroy();
+    req.db = undefined;
     if (withLdap) req.ldap?.destroy();
     logger.debug('Handler durch'); // todo
   };

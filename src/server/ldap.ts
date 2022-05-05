@@ -6,14 +6,13 @@ import { DomainUser } from 'types/server';
 
 export interface LdapClient {
   client: Client;
+  connect: () => Promise<void>;
   authenticate: (username: string, password: string) => Promise<DomainUser[]>;
   search: () => Promise<DomainUser[]>;
   destroy: () => void;
 }
 
 function ldapConnection(): LdapClient {
-  // todo objectclass von sven / lenny holen?
-
   const baseDN = 'DC=starcar,DC=local';
   const searchBase = `OU=User,OU=STARCAR,${baseDN}`;
 
@@ -45,7 +44,7 @@ function ldapConnection(): LdapClient {
       });
     });
 
-  const ldapBind = async () => bind(ldapConfig.bindDN, ldapConfig.bindPW);
+  const connect = async () => bind(ldapConfig.bindDN, ldapConfig.bindPW);
 
   const search = (user?: string) =>
     new Promise<DomainUser[]>((resolve, reject) => {
@@ -94,7 +93,7 @@ function ldapConnection(): LdapClient {
 
   const authenticate = async (username: string, password: string) => {
     // bind für search
-    await ldapBind();
+    await connect();
     const [user] = await search(username);
     if (!user) throw new ApiError('Benutzer nicht gefunden', ['username']);
     // bind mit user und pw aus form
@@ -135,11 +134,35 @@ const add = (client: Client, entry: Partial<DomainUser>, dn: string) =>
       };
       ldap.add(client, entry, dn); // todo async? was ist return?
     });
+
+
+
+
+{
+  dn: 'CN=SC - Bergen\\, Ole,OU=_IT,OU=_Flotte,OU=Verwaltung,OU=User,OU=STARCAR,DC=starcar,DC=local',
+  controls: [],
+  objectClass: [ 'top', 'person', 'organizationalPerson', 'user' ],
+  cn: 'SC - Bergen, Ole',
+  sn: 'Bergen',
+  l: 'Hamburg',
+  postalCode: '20537',
+  givenName: 'Ole',
+  distinguishedName: 'CN=SC - Bergen\\, Ole,OU=_IT,OU=_Flotte,OU=Verwaltung,OU=User,OU=STARCAR,DC=starcar,DC=local',
+  displayName: 'STARCAR GmbH - Ole Bergen',
+  streetAddress: 'Süderstr. 282',
+  userAccountControl: '512',
+  sAMAccountName: 'bergen',
+  sAMAccountType: '805306368',
+  userPrincipalName: 'bergen@starcar.de',
+  mail: 'ole.bergen@starcar.de'
+
+
     */
 
   return {
     client: ldapClient,
     authenticate,
+    connect,
     search,
     destroy: () => {
       ldapClient.destroy();
