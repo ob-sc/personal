@@ -39,7 +39,7 @@ function DataGrid({
   const mobile = useMobileContext();
   const [search, setSearch] = useState('');
 
-  // MUI bug: bei error === false trotzdem error state, undefined nicht
+  // bug: bei error === false trotzdem error state, undefined nicht
   const err = error ? true : undefined;
 
   // "suchen" input

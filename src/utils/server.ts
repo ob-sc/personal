@@ -52,3 +52,7 @@ export const NULL = {
 // export const NOT_NULL = { nullable: false };
 
 export const UNIQUE = { unique: true };
+
+export function numFromParam(id: string | string[]): number {
+  return Number(Array.isArray(id) ? id[0] : id);
+}

@@ -6,7 +6,7 @@ import { withSessionSsr } from 'src/lib/withSession';
 import { useGetStations } from 'src/client/api/stations';
 import { useGetUser } from 'src/client/api/users';
 import Layout from 'src/client/components/layout/Layout';
-import StationsContainer from 'src/client/components/stations/StationsContainer';
+import StationsContainer from 'src/client/components/users/id/StationsContainer';
 
 export const getServerSideProps = withSessionSsr();
 

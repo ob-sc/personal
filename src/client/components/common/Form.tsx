@@ -12,13 +12,19 @@ import SubmitButton from 'src/client/components/common/SubmitButton';
 
 interface Props extends CProps {
   fields: FormField[];
-  submit: (values: unknown) => Promise<void>;
+  submitHandler: (values: unknown) => Promise<void>;
   submitName?: string;
   size?: 'sm' | 'md' | 'lg';
   cols?: number;
 }
 
-function Form({ submit, fields, submitName, size = 'md', cols = 1 }: Props) {
+function Form({
+  submitHandler,
+  fields,
+  submitName,
+  size = 'md',
+  cols = 1,
+}: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<AxiosError<ErrorResponse> | null>(null);
   const {
@@ -57,7 +63,7 @@ function Form({ submit, fields, submitName, size = 'md', cols = 1 }: Props) {
 
   const onSubmit = (values: unknown) => {
     setSubmitting(true);
-    submit(values)
+    submitHandler(values)
       .catch((err) => {
         setError(err as AxiosError<ErrorResponse>);
       })

@@ -80,7 +80,7 @@ const NewStationPage = ({
       <Typography variant="h2" gutterBottom>
         Neue Station
       </Typography>
-      <Form submit={submitHandler} fields={fields} cols={3} />
+      <Form submitHandler={submitHandler} fields={fields} cols={3} />
     </Layout>
   );
 };

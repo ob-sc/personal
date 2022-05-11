@@ -6,7 +6,6 @@ import { Route, accessConstants } from 'config/constants';
 import { redirectUrl } from 'src/utils/shared';
 import { error } from 'src/server/response';
 import getDatabaseConnection from 'src/server/database';
-import logger from 'src/lib/log';
 import ldapConnection from 'src/server/ldap';
 
 declare module 'iron-session' {
@@ -101,23 +100,7 @@ export const withSessionApi = (
     req.db.destroy();
     req.db = undefined;
     req.ldap?.destroy();
-    logger.debug('Handler durch'); // todo
   };
 
   return withIronSessionApiRoute(authHandler, sessionConfig);
 };
-
-/*
-todo neue instanz wie bei ldap, dann zerstören? gibt fehler bei zb users/id wenn mehrere handler durchlaufen werden:
-wait  - compiling /users/[id] (client and server)...
-wait  - compiling...
-event - compiled client and server successfully in 128 ms (1479 modules)
-[1651654297631] DEBUG (28554 on ole-mba.local): Handler durch
-[1651654297632] ERROR (28554 on ole-mba.local): Pool is closed.
-[1651654297632] DEBUG (28554 on ole-mba.local): Handler durch
-error - unhandledRejection: CannotExecuteNotConnectedError: Cannot execute operation on "default" connection because connection is not yet established.
-[1651654302701] DEBUG (28554 on ole-mba.local): Handler durch
-
-
-unhandled rejection vermutlich destroy in withSession
-*/

@@ -3,7 +3,7 @@ import { User } from 'src/entities/User';
 import parseUser from 'src/lib/parseUser';
 import { withSessionApi } from 'src/lib/withSession';
 import { error, httpMethodError, success } from 'src/server/response';
-import { unresolved } from 'src/utils/server';
+import { numFromParam, unresolved } from 'src/utils/server';
 
 const handler: NextApiHandlerWithConnections = async (req, res) => {
   try {
@@ -19,7 +19,7 @@ const handler: NextApiHandlerWithConnections = async (req, res) => {
     const singleUser = async () => {
       const user = await userRepository.findOne({
         where: {
-          id: Number(Array.isArray(id) ? id[0] : id),
+          id: numFromParam(id),
         },
         relations: { region: true, allowedStations: true },
       });

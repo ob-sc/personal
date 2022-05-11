@@ -5,6 +5,8 @@ import { withSessionApi } from 'src/lib/withSession';
 import { error, httpMethodError, success } from 'src/server/response';
 import { unresolved } from 'src/utils/server';
 
+// todo api/allowed-stations oder weiter api/users/allowed?
+
 const handler: NextApiHandlerWithConnections = async (req, res) => {
   try {
     const { body, method, db } = req;
@@ -25,7 +27,7 @@ const handler: NextApiHandlerWithConnections = async (req, res) => {
         return;
       }
 
-      // todo save mit neuen allowed
+      // todo save mit neuen allowed+
 
       const parsed = parseUser(user);
       success(res, parsed);
