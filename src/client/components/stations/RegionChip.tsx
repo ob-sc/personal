@@ -2,17 +2,30 @@ import { Chip } from '@mui/material';
 
 interface Props {
   label: string;
-  handleClick: () => void;
-  handleDelete: () => void;
+  deleteId: number;
 }
 
-function RegionChip({ label, handleClick, handleDelete }: Props) {
+// todo großen ACHTUNG MÖCHTEST DU WIRKLICH LÖSCHEN, Alle statoinen mit region verlieren region
+
+function RegionChip({
+  label,
+  //  handleClick,
+  deleteId,
+}: Props) {
   return (
     <Chip
       label={label}
       variant="outlined"
-      onClick={handleClick}
-      onDelete={handleDelete}
+      // onClick={handleClick}
+      onDelete={() => {
+        console.log('deleteId', deleteId);
+      }}
+      sx={{
+        minWidth: 100,
+        '&:hover': {
+          cursor: 'pointer',
+        },
+      }}
     />
   );
 }

@@ -1,11 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Region } from 'src/entities/Region';
-import { dataSource } from 'src/server/database';
 import { LdapClient } from 'src/server/ldap';
+import { DataSource } from 'typeorm';
 
 /** Session, DB ORM und ldapjs Client in `req` */
 type NextApiRequestWithConnections = NextApiRequest & {
-  db?: typeof dataSource;
+  db?: DataSource;
   ldap?: LdapClient;
 };
 

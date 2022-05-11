@@ -100,7 +100,7 @@ export const withSessionApi = (
     await handler(req, res);
     req.db.destroy();
     req.db = undefined;
-    if (withLdap) req.ldap?.destroy();
+    req.ldap?.destroy();
     logger.debug('Handler durch'); // todo
   };
 

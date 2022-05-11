@@ -16,12 +16,39 @@ const handler: NextApiHandlerWithConnections = async (req, res) => {
       success(res, data);
     };
 
+    const newRegion = async () => {
+      const { body } = req;
+      const region = new Region();
+      region.name = body.name;
+      const data = await regionRepository.save(region);
+      success(res, data);
+    };
+
+    const removeRegion = async () => {
+      const { body } = req;
+      const region = await regionRepository.findOne({
+        where: { id: Number(body.id) },
+      });
+      if (region === null) {
+        error(res, 'Region nicht gefunden');
+        return;
+      }
+      await regionRepository.remove(region);
+      success(res, 'Region gelöscht');
+    };
+
     switch (method?.toUpperCase()) {
       case 'GET':
         await allRegions();
         break;
+      case 'POST':
+        await newRegion();
+        break;
+      case 'DELETE':
+        await removeRegion();
+        break;
       default:
-        httpMethodError(res, method, ['GET']);
+        httpMethodError(res, method, ['GET', 'POST', 'DELETE']);
     }
   } catch (err) {
     error(res, err);
