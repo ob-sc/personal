@@ -1,23 +1,18 @@
 import { NextApiHandlerWithConnections } from 'types/server';
-import { Region } from 'entities/Region';
-import { unresolved } from 'utils/server';
 import { withSessionApi } from 'lib/withSession';
+import { unresolved } from 'utils/server';
 import { error, httpMethodError } from 'server/response';
 import { allRegions, createRegion } from 'server/handler/regions';
 
 const handler: NextApiHandlerWithConnections = async (req, res) => {
   try {
-    const { body, method, db } = req;
-    if (!db) throw new Error('Datenbank nicht verfügbar');
-
-    const regionRepository = db.getRepository(Region);
-
+    const { method } = req;
     switch (method?.toUpperCase()) {
       case 'GET':
-        await allRegions(res, regionRepository);
+        await allRegions(req, res);
         break;
       case 'POST':
-        await createRegion(res, regionRepository, { body });
+        await createRegion(req, res);
         break;
       default:
         httpMethodError(res, method, ['GET', 'POST']);

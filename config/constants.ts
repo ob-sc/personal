@@ -9,18 +9,13 @@ export type Route =
   | 'users/allowed-stations';
 
 type RouteObject = { [key in Route]: number };
-interface Access {
-  routes: RouteObject;
-  hasAccess: boolean;
-  translated: string;
-}
 
 // todo alles niedrigen access und innerhalb der seite nach station / berechtigung freigeben?
 // todo stationen haben immer ihre station berechtigt, inkl extrastationen und region. was ist mit verwaltung? immer alle aber keinen zugriff auf features ohne mindestens idl berechtigung?
 
 /** Definiert die Berechtigungen. Für `hasAccess` werden beide Parameter benötigt, für translate nur `access` und für `routes` keiner. */
-export function accessConstants(access?: number, route?: Route): Access {
-  const routes: Record<Route, number> = {
+export function accessConstants(access?: number, route?: Route) {
+  const routes: RouteObject = {
     directory: 9,
     regions: 0,
     sessions: 0,
@@ -49,13 +44,13 @@ export function accessConstants(access?: number, route?: Route): Access {
       ? 'IDL'
       : 'Dispo';
 
+  const translated = translate();
+
   return {
     routes,
     hasAccess,
-    translated: translate(),
+    translated,
   };
 }
 
 export const errorText = 'Es ist ein Fehler aufgetreten';
-
-export const incompleteRequestText = 'Ungültige Anfrage';

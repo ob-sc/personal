@@ -1,23 +1,18 @@
 import { NextApiHandlerWithConnections } from 'types/server';
-import { Region } from 'entities/Region';
-import { unresolved } from 'utils/server';
 import { withSessionApi } from 'lib/withSession';
+import { unresolved } from 'utils/server';
 import { error, httpMethodError } from 'server/response';
 import { removeRegion, singleRegion } from 'server/handler/regions';
 
 const handler: NextApiHandlerWithConnections = async (req, res) => {
   try {
-    const { query, method, db } = req;
-    if (!db) throw new Error('Datenbank nicht verfügbar');
-
-    const regionRepository = db.getRepository(Region);
-
+    const { method } = req;
     switch (method?.toUpperCase()) {
       case 'GET':
-        await singleRegion(res, regionRepository, { query });
+        await singleRegion(req, res);
         break;
       case 'DELETE':
-        await removeRegion(res, regionRepository, { query });
+        await removeRegion(req, res);
         break;
       default:
         httpMethodError(res, method, ['GET', 'DELETE']);

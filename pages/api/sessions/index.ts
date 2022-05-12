@@ -1,69 +1,18 @@
-import { User } from 'entities/User';
-import parseUser from 'lib/parseUser';
-import { withSessionApi } from 'lib/withSession';
-import { error, httpMethodError, success } from 'server/response';
-import { unresolved } from 'utils/server';
 import { NextApiHandlerWithConnections } from 'types/server';
+import { withSessionApi } from 'lib/withSession';
+import { unresolved } from 'utils/server';
+import { error, httpMethodError } from 'server/response';
+import { login, logout } from 'server/handler/sessions';
 
 const handler: NextApiHandlerWithConnections = async (req, res) => {
   try {
-    const {
-      body: { username, password },
-      session,
-      method,
-      db,
-      ldap,
-    } = req;
-    if (!ldap) throw new Error('AD nicht verfügbar');
-    if (!db) throw new Error('Datenbank nicht verfügbar');
-
-    const login = async () => {
-      const isUndefined = username === undefined || password === undefined;
-
-      if (isUndefined) {
-        error(res, 'Benutzername und Passwort müssen angegeben werden', 401);
-      }
-
-      const [ldapUser] = await ldap.authenticate(username, password);
-
-      const userRepository = db.getRepository(User);
-
-      let dbUser = await userRepository.findOne({
-        where: { username },
-        relations: { region: true, allowedStations: true },
-      });
-
-      if (dbUser === null) {
-        dbUser = new User();
-        dbUser.username = username;
-      }
-
-      dbUser.first_name = ldapUser.givenName;
-      dbUser.last_name = ldapUser.sn;
-      dbUser.email = ldapUser.mail;
-      dbUser.dn = ldapUser.distinguishedName;
-
-      dbUser = await userRepository.save(dbUser);
-
-      const parsed = parseUser(dbUser);
-
-      session.user = parsed;
-      await session.save();
-
-      success(res, 'Login erfolgreich');
-    };
-
-    const logout = () => {
-      req.session.destroy();
-      success(res, 'Session entfernt');
-    };
-
+    const { method } = req;
     switch (method?.toUpperCase()) {
       case 'POST':
-        await login();
+        await login(req, res);
         break;
       case 'DELETE':
-        logout();
+        logout(req, res);
         break;
       default:
         httpMethodError(res, method, ['POST', 'DELETE']);

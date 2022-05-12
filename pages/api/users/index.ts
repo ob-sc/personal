@@ -1,24 +1,15 @@
-import { User } from 'entities/User';
-import { withSessionApi } from 'lib/withSession';
-import { error, httpMethodError, success } from 'server/response';
-import { unresolved } from 'utils/server';
 import { NextApiHandlerWithConnections } from 'types/server';
+import { withSessionApi } from 'lib/withSession';
+import { unresolved } from 'utils/server';
+import { error, httpMethodError } from 'server/response';
+import { allUsers } from 'server/handler/users';
 
 const handler: NextApiHandlerWithConnections = async (req, res) => {
   try {
-    const { method, db } = req;
-    if (!db) throw new Error('Datenbank nicht verfügbar');
-
-    const userRepository = db.getRepository(User);
-
-    const allUsers = async () => {
-      const data = await userRepository.find();
-      success(res, data);
-    };
-
+    const { method } = req;
     switch (method?.toUpperCase()) {
       case 'GET':
-        await allUsers();
+        await allUsers(req, res);
         break;
       default:
         httpMethodError(res, method, ['GET']);

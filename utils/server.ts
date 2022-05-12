@@ -1,8 +1,15 @@
 import { isDev, isEmpty } from 'utils/shared';
 
 export class ApiError extends Error {
-  constructor(message: string, public fields: string[] = []) {
+  readonly statusCode: number;
+  readonly fields: string[];
+
+  constructor(message: string, statusCode = 500, fields: string[] = []) {
     super(message);
+    this.statusCode = statusCode;
+    this.fields = fields;
+
+    Object.setPrototypeOf(this, ApiError.prototype);
   }
 }
 
@@ -26,12 +33,14 @@ export const UNIQUE = { unique: true };
 export function parseLdapError(err: any): ApiError {
   let message = '';
   let field = null;
+  let statusCode = 400;
 
   if (!isDev) message = 'Fehler bei LDAP Authentifizierung';
   else message = String(err);
 
   if (err.code === 'ENETUNREACH') {
     message = 'Keine Verbindung zum LDAP Server';
+    statusCode = 500;
   }
 
   if (err.message.includes('data 52e')) {
@@ -41,19 +50,19 @@ export function parseLdapError(err: any): ApiError {
 
   const fields = field ? [field] : [];
 
-  return new ApiError(message, fields);
+  return new ApiError(message, statusCode, fields);
 }
 
 export function requiredField(...args: (string | null | undefined)[]) {
   for (const arg of args) {
     if (isEmpty(arg)) {
-      throw new Error(`Argument ${arg} fehlt`);
+      throw new ApiError('Ein Pflichtfeld fehlt', 400);
     }
   }
 }
 
 export function idFromQuery(id: string | string[]): number {
   const num = Number(Array.isArray(id) ? id[0] : id);
-  if (Number.isNaN(num)) throw new Error('Keine gültige ID');
+  if (Number.isNaN(num)) throw new ApiError('Keine gültige ID', 400);
   return num;
 }

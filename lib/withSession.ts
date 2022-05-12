@@ -68,7 +68,8 @@ export const withSessionApi = (
       const { session } = req;
       // nicht authentifiziert
       if (session.user === undefined) {
-        return error(res, 'Authentifizierung erforderlich', 401);
+        error(res, 'Authentifizierung erforderlich', 401);
+        return;
       }
 
       // wenn authentifiziert, Session erneuern
@@ -77,14 +78,18 @@ export const withSessionApi = (
       // Berechtigung prüfen
       const { hasAccess } = accessConstants(session.user.access, page);
 
-      if (!hasAccess) return error(res, 'Keine Berechtigung', 403);
+      if (!hasAccess) {
+        error(res, 'Keine Berechtigung', 403);
+        return;
+      }
     }
 
     if (!req.db) {
       const db = await getDatabaseConnection();
 
       if (db === null || db === undefined) {
-        return error(res, 'Datenbank nicht verfügbar', 500);
+        error(res, 'Datenbank nicht verfügbar', 500);
+        return;
       }
 
       req.db = db;

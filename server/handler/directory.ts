@@ -1,15 +1,10 @@
-import { ApiRequestHandler } from 'types/server';
-import { User } from 'entities/User';
+import { NextApiHandlerWithConnections } from 'types/server';
 import { success } from 'server/response';
+import { ApiError } from 'utils/server';
 
-export const allLdapUsers: ApiRequestHandler<User> = async (
-  res,
-  repo,
-  data
-) => {
-  if (!data || !data.ldap) throw new Error('Kein LDAP-Client vorhanden');
-
-  const { ldap } = data;
+export const allLdapUsers: NextApiHandlerWithConnections = async (req, res) => {
+  const { ldap } = req;
+  if (!ldap) throw new ApiError('Kein LDAP-Client vorhanden');
 
   await ldap.connect();
   const ldapUsers = await ldap.search();

@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { Region } from 'entities/Region';
-import { entities } from 'server/database';
 
 /** Array aus input-Feldern, für Übermittlung von fehlerhaften Eingaben */
 export type Fields = string[];
@@ -49,19 +48,21 @@ export interface LdapClient {
   destroy: () => void;
 }
 
-/** Session, DB ORM und ldapjs Client in `req` */
-type NextApiRequestWithConnections = NextApiRequest & {
+interface NextApiRequestWithConnection<T> extends NextApiRequest {
+  body: T;
   db?: DataSource;
   ldap?: LdapClient;
-};
+}
 
 /**
  * Mit Session, DB ORM und ldapjs Client
  * @example
- * const routeHandler: NextApiHandlerWithConnections = async (req, res) => { const { session, db, ldap } = req; ... };
+ * const routeHandler: NextApiHandlerWithConnections = async (req, res) => { const { session, db, ldap } = req; };
  */
-export type NextApiHandlerWithConnections = (
-  req: NextApiRequestWithConnections,
+export type NextApiHandlerWithConnections<
+  RequestBody = NextApiRequest['body']
+> = (
+  req: NextApiRequestWithConnection<RequestBody>,
   res: NextApiResponse
 ) => Promise<void>;
 
@@ -77,15 +78,3 @@ export interface ParsedUser {
   /** IDs, erste Station ist OU-Station, 0 wenn es keine gibt. Rest aus DB. */
   stations: number[];
 }
-
-export interface ApiRequestHandlerData {
-  ldap?: LdapClient;
-  query?: NextApiRequest['query'];
-  body?: NextApiRequest['body'];
-}
-
-export type ApiRequestHandler<T = typeof entities> = (
-  res: NextApiResponse,
-  repo: Repository<T>,
-  data?: ApiRequestHandlerData
-) => Promise<void>;

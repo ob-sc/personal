@@ -1,9 +1,8 @@
-import { withSessionApi } from 'lib/withSession';
-import { error, httpMethodError } from 'server/response';
-import { unresolved } from 'utils/server';
 import { NextApiHandlerWithConnections } from 'types/server';
+import { withSessionApi } from 'lib/withSession';
+import { unresolved } from 'utils/server';
+import { error, httpMethodError } from 'server/response';
 import { allLdapUsers } from 'server/handler/directory';
-import { User } from 'entities/User';
 
 /* todo
 auf /users nur die daten aus der datenbank die nicht durch sync aktualisiert werden darstellen
@@ -19,15 +18,10 @@ sync dann per:
 
 const handler: NextApiHandlerWithConnections = async (req, res) => {
   try {
-    const { method, ldap, db } = req;
-    if (!ldap) throw new Error('AD nicht verfügbar');
-    if (!db) throw new Error('Datenbank nicht verfügbar');
-
-    const userRepository = db.getRepository(User);
-
+    const { method } = req;
     switch (method?.toUpperCase()) {
       case 'GET':
-        await allLdapUsers(res, userRepository, { ldap });
+        await allLdapUsers(req, res);
         break;
       default:
         httpMethodError(res, method, ['GET']);

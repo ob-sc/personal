@@ -87,7 +87,7 @@ function ldapConnection(): LdapClient {
     // bind für search
     await connect();
     const [user] = await search(username);
-    if (!user) throw new ApiError('Benutzer nicht gefunden', ['username']);
+    if (!user) throw new ApiError('Benutzer nicht gefunden', 400, ['username']);
     // bind mit user und pw aus form
     await bind(user.distinguishedName, password);
     return [user];

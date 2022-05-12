@@ -25,7 +25,7 @@ type ErrorResponseParam = number | string | Error | string[] | null;
 
 /**
  * `res` muss als Parameter gegeben werden, der Rest ist optional.
- * Nur ein Parameter pro Typ.
+ * Wichtig: Nur ein Parameter pro Typ.
  * Typen werden wie folgt ausgelesen:
  * - `number` als Status Code
  * - `string` als Nachricht
@@ -50,6 +50,7 @@ export const error = (
     if (arg instanceof ApiError) {
       // eslint-disable-next-line prefer-destructuring
       fields = arg.fields;
+      status = arg.statusCode;
       err = arg;
     } else if (arg instanceof Error) err = arg;
   }

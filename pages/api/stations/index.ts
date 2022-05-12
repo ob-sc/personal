@@ -1,57 +1,18 @@
-import { validate } from 'class-validator';
 import { NextApiHandlerWithConnections } from 'types/server';
-import { NewStationForm } from 'types/forms';
-import { Station } from 'entities/Station';
 import { withSessionApi } from 'lib/withSession';
-import { error, httpMethodError, success } from 'server/response';
-import { requiredField, unresolved } from 'utils/server';
-import { nullOnEmpty, nullOnEmptyNum } from 'utils/shared';
+import { unresolved } from 'utils/server';
+import { error, httpMethodError } from 'server/response';
+import { allStations, createStation } from 'server/handler/stations';
 
 const handler: NextApiHandlerWithConnections = async (req, res) => {
   try {
-    const { method, body, db } = req;
-    if (!db) throw new Error('Datenbank nicht verfügbar');
-
-    const stationRepository = db.getRepository(Station);
-
-    const allStations = async () => {
-      const data = await stationRepository.find({
-        relations: { region: true, subregion: true },
-      });
-      success(res, data);
-    };
-
-    const newStation = async (form: NewStationForm) => {
-      requiredField(form.id, form.name, form.region_id);
-
-      const station = new Station();
-
-      station.id = Number(form.id);
-      station.name = form.name;
-      station.address = nullOnEmpty(form.address);
-      station.zip = nullOnEmptyNum(form.zip);
-      station.city = nullOnEmpty(form.city);
-      station.telephone = nullOnEmpty(form.telephone);
-      station.fax = nullOnEmpty(form.fax);
-      station.email = nullOnEmpty(form.email);
-      station.region_id = Number(form.region_id);
-      station.subregion_id = nullOnEmptyNum(form.subregion_id);
-
-      const errors = await validate(station);
-      if (errors.length > 0) {
-        error(res, new Error(JSON.stringify(errors)));
-      } else {
-        await stationRepository.insert(station);
-        success(res);
-      }
-    };
-
+    const { method } = req;
     switch (method?.toUpperCase()) {
       case 'GET':
-        await allStations();
+        await allStations(req, res);
         break;
       case 'POST':
-        await newStation(body);
+        await createStation(req, res);
         break;
       default:
         httpMethodError(res, method, ['GET', 'POST']);
