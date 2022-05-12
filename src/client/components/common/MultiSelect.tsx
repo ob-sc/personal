@@ -19,6 +19,7 @@ interface Props {
   errors: FieldErrors;
   required?: boolean;
   cn?: string;
+  loading?: boolean;
 }
 
 // https://mui.com/components/selects/#MultipleSelectCheckmarks.tsx
@@ -37,6 +38,7 @@ function MultiSelect({
   control,
   errors,
   cn,
+  loading,
 }: Props) {
   return (
     <Controller
@@ -64,7 +66,7 @@ function MultiSelect({
             {...field}
             value={[...field.value]}
           >
-            {options.length === 0 ? (
+            {loading ? (
               <CenteredSpinner size={25} />
             ) : (
               options.map(({ optval, optlabel }) => (

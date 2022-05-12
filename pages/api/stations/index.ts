@@ -1,6 +1,6 @@
 import { validate } from 'class-validator';
 import { NextApiHandlerWithConnections } from 'types/server';
-import { NewStationForm } from 'pages/stations/new';
+import { NewStationForm } from 'types/forms';
 import { Station } from 'src/entities/Station';
 import { withSessionApi } from 'src/lib/withSession';
 import { error, httpMethodError, success } from 'src/server/response';

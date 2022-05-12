@@ -112,7 +112,7 @@ function RegionsContainer() {
               required: true,
             },
           ]}
-          submitHandler={async (values) => {
+          onSubmit={async (values) => {
             await postRegion(values);
             await regions.mutate();
             setModalOpen(false);

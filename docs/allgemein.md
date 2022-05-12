@@ -1,18 +1,22 @@
 # Allgemein
 
-Neues Konzept, was möchte ich verwalten und wie:
+Neues Konzept, es gibt als Kern Stationen, Mitarbeiter (Benutzer) und Aushilfen zu verwalten.
 
-Es gibt Stationen, Mitarbeiter (Benutzer) und Aushilfen zu verwalten:  
-Benutzer werden angelegt (von Perso) und bekommen Accounts (von EDV) (onboarding), werden abgemeldet (offboarding) oder wechseln eine Station / Position.  
-Stationen werden angelegt, bearbeitet oder gelöscht.  
-Aushilfen
+Home ist eine Seite, die je nach Bedarf eingerichtet wird. Disponenten (und SL / IDL) können dort Zeiten der Aushilfen eintragen.
+TODO SL bekommen dort die Auswertung der Station? (Monatsabrechnung etc)
 
 ## Stationen
 
-Am besten nur von Perso / EDV verwalten, ggf Steffi?
+Stationen werden angelegt, bearbeitet oder gelöscht.
+
+TODO Am besten nur von Perso / EDV verwalten, ggf Steffi?
 
 ## Benutzer
 
-Benutzer werden nicht manuell in DB angelegt, sie müssen sich initial anmelden, werden dann in die DB eingefügt (ohne Berechtigungen) und können dann erst unter _Benutzer_ angepasst werden.
+Benutzer werden angelegt (von Perso) und bekommen Accounts (von EDV) (onboarding), werden abgemeldet (offboarding), wechseln eine Station / Position. Es werden für die Mitarbeiter auch Wochenendschichten eingetragen.
+
+Das Active Directory wird ausgelesen, in der Datenbank bestehende Benutzer werden ggf aktualisiert, neue Benutzer werden ohne Berechtigungen angelegt. Die Datenbank funktioniert als Cache, aber auch als Erweiterung vom AD. In der DB von Perso / EDV angepasst werden nur die Berechtigung, Region und freigegebene Stationen.
 
 ## Aushilfen
+
+Aushilfen werden angelegt, bearbeitet oder gelöscht und bekommen Zeiten eingetragen. Ihre Gehälter werden ausgewertet.

@@ -16,6 +16,7 @@ interface Props {
   errors: FieldErrors;
   required?: boolean;
   cn?: string;
+  loading?: boolean;
 }
 
 function Select({
@@ -26,6 +27,7 @@ function Select({
   control,
   errors,
   cn,
+  loading,
 }: Props) {
   return (
     <Controller
@@ -48,7 +50,7 @@ function Select({
             label={label}
             {...field}
           >
-            {options.length === 0 ? (
+            {loading ? (
               <CenteredSpinner size={25} />
             ) : (
               options.map(({ optval, optlabel }) => (

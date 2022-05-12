@@ -9,22 +9,17 @@ import Select from 'src/client/components/common/Select';
 import MultiSelect from 'src/client/components/common/MultiSelect';
 import Input from 'src/client/components/common/Input';
 import SubmitButton from 'src/client/components/common/SubmitButton';
+import { errorText } from 'config/constants';
 
 interface Props extends CProps {
   fields: FormField[];
-  submitHandler: (values: unknown) => Promise<void>;
+  onSubmit: (values: unknown) => Promise<void>;
   submitName?: string;
   size?: 'sm' | 'md' | 'lg';
   cols?: number;
 }
 
-function Form({
-  submitHandler,
-  fields,
-  submitName,
-  size = 'md',
-  cols = 1,
-}: Props) {
+function Form({ onSubmit, fields, submitName, size = 'md', cols = 1 }: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<AxiosError<ErrorResponse> | null>(null);
   const {
@@ -61,9 +56,9 @@ function Form({
     }
   }, [error?.response, setFormError]);
 
-  const onSubmit = (values: unknown) => {
+  const submitHandler = (values: unknown) => {
     setSubmitting(true);
-    submitHandler(values)
+    onSubmit(values)
       .catch((err) => {
         setError(err as AxiosError<ErrorResponse>);
       })
@@ -73,7 +68,7 @@ function Form({
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(submitHandler)}>
       <Box
         sx={{
           display: 'flex',
@@ -126,7 +121,7 @@ function Form({
 
           {error?.response?.data?.message ? (
             <Typography color="error">
-              {error.response.data.message ?? 'Unbekannter Fehler'}
+              {error.response.data.message ?? errorText}
             </Typography>
           ) : null}
         </Box>

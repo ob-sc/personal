@@ -28,9 +28,8 @@ export const NextLinkComposed = forwardRef<
     const {
       to,
       linkAs,
-      // muss href rausnehmen für Anchor
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      href,
+      href, // muss href rausnehmen für Anchor
       replace,
       scroll,
       shallow,
@@ -112,6 +111,7 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(
       className={className}
       ref={ref}
       to={href}
+      underline="hover"
       {...other}
     />
   );

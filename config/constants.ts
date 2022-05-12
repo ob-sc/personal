@@ -15,6 +15,9 @@ interface Access {
   translated: string;
 }
 
+// todo alles niedrigen access und innerhalb der seite nach station / berechtigung freigeben?
+// todo stationen haben immer ihre station berechtigt, inkl extrastationen und region. was ist mit verwaltung? immer alle aber keinen zugriff auf features ohne mindestens idl berechtigung?
+
 /** Definiert die Berechtigungen. Für `hasAccess` werden beide Parameter benötigt, für translate nur `access` und für `routes` keiner. */
 export function accessConstants(access?: number, route?: Route): Access {
   const routes: Record<Route, number> = {
@@ -53,5 +56,4 @@ export function accessConstants(access?: number, route?: Route): Access {
   };
 }
 
-// todo alles niedrigen access und innerhalb der seite nach station / berechtigung freigeben?
-// todo stationen haben immer ihre station berechtigt, inkl extrastationen und region. was ist mit verwaltung? immer alle aber keinen zugriff auf features ohne mindestens idl berechtigung?
+export const errorText = 'Es ist ein Fehler aufgetreten';

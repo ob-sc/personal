@@ -1,3 +1,5 @@
+import { errorText } from 'config/constants';
+
 export const isDev = process.env.NODE_ENV !== 'production';
 
 export function prepend0(num: number) {
@@ -9,7 +11,7 @@ export function toLocalDate(date: string | undefined | null) {
 
   const dateInstance = new Date(date);
 
-  if (Number.isNaN(dateInstance.getTime())) return 'Fehler';
+  if (Number.isNaN(dateInstance.getTime())) return errorText;
 
   const y = dateInstance.getFullYear();
   const m = dateInstance.getMonth();

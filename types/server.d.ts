@@ -32,7 +32,7 @@ export interface ParsedUser {
   stations: number[];
 }
 
-// array aus input-Feldern aus dem Formular für Fehler
+/** Array aus input-Feldern, für Übermittlung von fehlerhaften Eingaben */
 export type Fields = string[];
 
 export type SuccessResponse =

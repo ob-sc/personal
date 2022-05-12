@@ -6,6 +6,7 @@ export function createEmotionCache() {
   return createCache({ key: 'css' });
 }
 
+// todo geht nicht bei verschachtelten objekten
 export function searchFilter<T = { [key: string]: unknown }>(
   searchInput: string,
   array: readonly T[]

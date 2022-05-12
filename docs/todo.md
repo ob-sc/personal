@@ -45,3 +45,7 @@ _nochaml schön iwo dokuemntieren dann löschen_
 - ldapjs client, für jeden import auch einen destroy? jetzt gefixed?
 
 - database dann auch so machen?
+
+---
+
+- [going to production](https://nextjs.org/docs/going-to-production)

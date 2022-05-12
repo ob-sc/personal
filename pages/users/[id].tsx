@@ -1,7 +1,7 @@
 import { InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
 import { Typography } from '@mui/material';
-import { accessConstants } from 'config/constants';
+import { accessConstants, errorText } from 'config/constants';
 import { withSessionSsr } from 'src/lib/withSession';
 import { useGetStations } from 'src/client/api/stations';
 import { useGetUser } from 'src/client/api/users';
@@ -29,7 +29,7 @@ const SingleUserPage = ({
       {data !== undefined ? (
         <StationsContainer stations={stations.data ?? []} user={data} />
       ) : (
-        <Typography>Fehler</Typography>
+        <Typography>{errorText}</Typography>
       )}
     </Layout>
   );

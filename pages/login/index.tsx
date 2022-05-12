@@ -60,7 +60,7 @@ const LoginPage = () => {
             borderRadius: 2,
           }}
         >
-          <Form submitHandler={handleSubmit} fields={fields} size="sm" />
+          <Form onSubmit={handleSubmit} fields={fields} size="sm" />
         </Box>
       </Box>
     </>

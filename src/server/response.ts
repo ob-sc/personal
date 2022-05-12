@@ -2,6 +2,7 @@ import { NextApiResponse } from 'next';
 import { ErrorResponse, SuccessResponse } from 'types/server';
 import logger from 'src/lib/log';
 import { ApiError } from 'src/utils/server';
+import { errorText } from 'config/constants';
 
 /**
  * Antwort mit Code 200 (bzw 204)
@@ -56,9 +57,7 @@ export const error = (
   if (message === undefined) {
     message =
       err?.message ??
-      (status === 401
-        ? 'Authentifizierung erforderlich'
-        : 'Unbekannter Fehler');
+      (status === 401 ? 'Authentifizierung erforderlich' : errorText);
   }
   logger.error(message);
 
