@@ -8,8 +8,7 @@ const userColumns: DGColFn = () => [
     field: 'access',
     headerName: 'Berechtigung',
     width: 250,
-    valueFormatter: (param) =>
-      accessConstants(param.value ?? 0).translated ?? '-',
+    valueFormatter: (param) => accessConstants(param.value ?? 0).translated,
   },
   {
     field: 'region',

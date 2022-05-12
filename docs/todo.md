@@ -35,3 +35,7 @@ _nochaml schön iwo dokuemntieren dann löschen_
 ---
 
 - [going to production](https://nextjs.org/docs/going-to-production)
+
+---
+
+- [mit suspense?](https://nextjs.org/docs/advanced-features/dynamic-import#with-suspense)

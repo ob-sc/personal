@@ -22,6 +22,6 @@ const handler: NextApiHandlerWithConnections = async (req, res) => {
   }
 };
 
-export default withSessionApi(handler, 'regions');
+export default withSessionApi(handler, '/regions');
 
 export const config = unresolved;

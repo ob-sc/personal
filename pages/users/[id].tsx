@@ -21,7 +21,8 @@ const SingleUserPage = ({
 
   const name = user.fullName;
 
-  const { hasAccess } = accessConstants(user.access, 'users');
+  const { permitted } = accessConstants(user.access);
+  const hasAccess = permitted['/users'];
 
   return (
     <Layout loading={isValidating} session={user} blockAccess={!hasAccess}>

@@ -2,6 +2,8 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { DataSource } from 'typeorm';
 import { Region } from 'entities/Region';
 
+export type PermittedMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+
 /** Array aus input-Feldern, für Übermittlung von fehlerhaften Eingaben */
 export type Fields = string[];
 

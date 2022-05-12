@@ -2,7 +2,7 @@ import { AppBar, Box, IconButton, Toolbar } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useRouter } from 'next/router';
 import { ParsedUser } from 'types/server';
-import { accessConstants } from 'config/constants';
+import { routes } from 'config/constants';
 import useMobileContext from 'client/context/MobileContext';
 import { deleteSession } from 'client/api/sessions';
 import Logo from 'client/components/layout/Logo';
@@ -13,21 +13,19 @@ interface Props {
   session?: ParsedUser;
 }
 
-const access = accessConstants();
-
 const menuItems = [
   {
-    access: access.routes.temps,
+    access: routes['/temps'],
     route: '/temps',
     label: 'Aushilfen',
   },
   {
-    access: access.routes.users,
+    access: routes['/users'],
     route: '/users',
     label: 'Benutzer',
   },
   {
-    access: access.routes.stations,
+    access: routes['/stations'],
     route: '/stations',
     label: 'Stationen',
   },

@@ -2,7 +2,7 @@ import { withIronSessionApiRoute, withIronSessionSsr } from 'iron-session/next';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import { NextApiHandlerWithConnections, ParsedUser } from 'types/server';
 import { sessionConfig } from 'config';
-import { Route, accessConstants } from 'config/constants';
+import { accessConstants, routes } from 'config/constants';
 import { redirectUrl } from 'utils/shared';
 import { error } from 'server/response';
 import getDatabaseConnection from 'server/database';
@@ -10,7 +10,7 @@ import ldapConnection from 'server/ldap';
 
 declare module 'iron-session' {
   interface IronSessionData {
-    user?: ParsedUser;
+    user: ParsedUser;
   }
 }
 
@@ -60,11 +60,11 @@ export const withSessionSsr = () =>
  */
 export const withSessionApi = (
   handler: NextApiHandlerWithConnections,
-  page: Route,
+  page: keyof typeof routes,
   withLdap?: boolean
 ) => {
   const authHandler: NextApiHandlerWithConnections = async (req, res) => {
-    if (page !== 'sessions') {
+    if (page !== '/sessions') {
       const { session } = req;
       // nicht authentifiziert
       if (session.user === undefined) {
@@ -76,7 +76,9 @@ export const withSessionApi = (
       await session.save();
 
       // Berechtigung prüfen
-      const { hasAccess } = accessConstants(session.user.access, page);
+      const { permitted } = accessConstants(session.user.access);
+
+      const hasAccess = permitted[page] === true;
 
       if (!hasAccess) {
         error(res, 'Keine Berechtigung', 403);

@@ -21,7 +21,8 @@ const SingleStationPage = ({
 
   const name = user.fullName;
 
-  const { hasAccess } = accessConstants(user.access, 'stations');
+  const { permitted } = accessConstants(user.access);
+  const hasAccess = permitted['/stations'];
 
   return (
     <Layout loading={isValidating} session={user} blockAccess={!hasAccess}>

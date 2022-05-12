@@ -24,7 +24,8 @@ const AllUsersPage = ({
 
   const cols = userColumns();
 
-  const { hasAccess } = accessConstants(user.access, 'users');
+  const { permitted } = accessConstants(user.access);
+  const hasAccess = permitted['/users'];
 
   return (
     <Layout session={user} blockAccess={!hasAccess}>

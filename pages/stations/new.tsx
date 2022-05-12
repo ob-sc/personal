@@ -29,7 +29,8 @@ const NewStationPage = ({
 
   const fields = stationFields(options);
 
-  const { hasAccess } = accessConstants(user.access, 'stations/new');
+  const { permitted } = accessConstants(user.access);
+  const hasAccess = permitted['/stations/new'];
 
   return (
     <Layout session={user} loading={isValidating} blockAccess={!hasAccess}>

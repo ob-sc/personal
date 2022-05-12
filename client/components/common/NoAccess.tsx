@@ -12,6 +12,10 @@ const words = [
   'Oh Nein!',
   'Sorry',
   'Uff...',
+  'Hoppla',
+  '...',
+  'Hmm',
+  'Nope',
 ];
 
 function NoAccess() {

@@ -19,6 +19,6 @@ const handler: NextApiHandlerWithConnections = async (req, res) => {
   }
 };
 
-export default withSessionApi(handler, 'users');
+export default withSessionApi(handler, '/users');
 
 export const config = unresolved;

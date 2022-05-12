@@ -31,6 +31,6 @@ const handler: NextApiHandlerWithConnections = async (req, res) => {
   }
 };
 
-export default withSessionApi(handler, 'directory', true);
+export default withSessionApi(handler, '/directory', true);
 
 export const config = unresolved;

@@ -1,14 +1,14 @@
 import { NextApiResponse } from 'next';
 import { errorText } from 'config/constants';
-import { ErrorResponse, SuccessResponse } from 'types/server';
+import { ErrorResponse, PermittedMethod, SuccessResponse } from 'types/server';
 import logger from 'lib/log';
 import { ApiError } from 'utils/server';
 
 /**
  * Antwort mit Code 200 (bzw 204)
  * @example
- * success(res,  { msg: "Riecht gut!" } )
- * success(res, "Riecht auch gut!" )
+ * success(res,  { foo: "bar" } )
+ * success(res, "baz" )
  */
 export const success = (
   res: NextApiResponse,
@@ -74,7 +74,7 @@ export const error = (
 export const httpMethodError = (
   res: NextApiResponse,
   method: string | undefined,
-  allowed: ('GET' | 'POST' | 'PUT' | 'DELETE')[]
+  allowed: PermittedMethod[]
 ) => {
   const upperMethods = allowed.map((m) => m.toUpperCase());
 

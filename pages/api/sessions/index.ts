@@ -22,6 +22,6 @@ const handler: NextApiHandlerWithConnections = async (req, res) => {
   }
 };
 
-export default withSessionApi(handler, 'sessions', true);
+export default withSessionApi(handler, '/sessions', true);
 
 export const config = unresolved;
