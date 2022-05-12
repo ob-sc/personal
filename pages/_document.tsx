@@ -7,7 +7,7 @@ import Document, {
   NextScript,
 } from 'next/document';
 import createEmotionServer from '@emotion/server/create-instance';
-import { createEmotionCache } from 'src/utils/client';
+import { createEmotionCache } from 'utils/client';
 
 // todo hier anders: https://github.com/mui/material-ui/blob/e5dcd443843b9efd54c245375cb698eca139f1b7/examples/nextjs-with-typescript/pages/_document.tsx
 

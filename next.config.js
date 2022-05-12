@@ -9,4 +9,16 @@ module.exports = {
   experimental: {
     outputStandalone: true,
   },
+  eslint: {
+    dirs: [
+      'client',
+      'config',
+      'entities',
+      'lib',
+      'pages',
+      'server',
+      'types',
+      'utils',
+    ],
+  },
 };

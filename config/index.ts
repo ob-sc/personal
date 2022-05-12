@@ -1,7 +1,7 @@
 import { IronSessionOptions } from 'iron-session';
 import { ClientOptions as LdapOptions } from 'ldapjs';
 import { DataSourceOptions } from 'typeorm';
-import logger from 'src/lib/log';
+import logger from 'lib/log';
 
 const validateEnv = (
   envName: string,

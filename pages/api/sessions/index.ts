@@ -1,8 +1,8 @@
-import { User } from 'src/entities/User';
-import parseUser from 'src/lib/parseUser';
-import { withSessionApi } from 'src/lib/withSession';
-import { error, httpMethodError, success } from 'src/server/response';
-import { unresolved } from 'src/utils/server';
+import { User } from 'entities/User';
+import parseUser from 'lib/parseUser';
+import { withSessionApi } from 'lib/withSession';
+import { error, httpMethodError, success } from 'server/response';
+import { unresolved } from 'utils/server';
 import { NextApiHandlerWithConnections } from 'types/server';
 
 const handler: NextApiHandlerWithConnections = async (req, res) => {

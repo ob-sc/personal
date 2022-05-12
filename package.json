@@ -6,8 +6,6 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postlint": "tsc --noEmit",
-    "deploy": "./deploy.sh",
     "p": "next dev | pino-pretty -c",
     "debug": "NODE_OPTIONS='--trace-warnings' next dev"
   },

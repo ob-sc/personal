@@ -2,13 +2,13 @@ import { InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
 import { Typography } from '@mui/material';
 import { accessConstants } from 'config/constants';
-import { withSessionSsr } from 'src/lib/withSession';
-import { postStation } from 'src/client/api/stations';
-import { useGetRegions } from 'src/client/api/regions';
-import { selectOptionMapper } from 'src/utils/client';
-import Layout from 'src/client/components/layout/Layout';
-import Form from 'src/client/components/common/Form';
-import { stationFields } from 'src/client/tables/stations';
+import { withSessionSsr } from 'lib/withSession';
+import { postStation } from 'client/api/stations';
+import { useGetRegions } from 'client/api/regions';
+import { selectOptionMapper } from 'utils/client';
+import Layout from 'client/components/layout/Layout';
+import Form from 'client/components/common/Form';
+import { stationFields } from 'client/tables/stations';
 
 export const getServerSideProps = withSessionSsr();
 

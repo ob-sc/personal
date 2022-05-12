@@ -1,8 +1,8 @@
 import { NextApiHandlerWithConnections } from 'types/server';
-import { Region } from 'src/entities/Region';
-import { withSessionApi } from 'src/lib/withSession';
-import { error, httpMethodError, success } from 'src/server/response';
-import { numFromParam, unresolved } from 'src/utils/server';
+import { Region } from 'entities/Region';
+import { withSessionApi } from 'lib/withSession';
+import { error, httpMethodError, success } from 'server/response';
+import { numFromParam, unresolved } from 'utils/server';
 
 const handler: NextApiHandlerWithConnections = async (req, res) => {
   try {

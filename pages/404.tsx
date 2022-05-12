@@ -1,5 +1,5 @@
 import { Container } from '@mui/material';
-import Layout from 'src/client/components/layout/Layout';
+import Layout from 'client/components/layout/Layout';
 
 function Custom404() {
   return (

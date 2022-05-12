@@ -28,23 +28,9 @@ _nochaml schön iwo dokuemntieren dann löschen_
 
 ---
 
-- eslint geht nicht in src
-
-- testen ob klappt
-
----
-
 - "mein account" mit access 0? einfach wenn keine berechtigung habe unter benutzer nur ich selber?
 
 - klären agenturen? auch login?
-
----
-
-- ldapjs server zum testen?
-
-- ldapjs client, für jeden import auch einen destroy? jetzt gefixed?
-
-- database dann auch so machen?
 
 ---
 

@@ -1,11 +1,11 @@
 import { validate } from 'class-validator';
 import { NextApiHandlerWithConnections } from 'types/server';
 import { NewStationForm } from 'types/forms';
-import { Station } from 'src/entities/Station';
-import { withSessionApi } from 'src/lib/withSession';
-import { error, httpMethodError, success } from 'src/server/response';
-import { requiredField, unresolved } from 'src/utils/server';
-import { nullOnEmpty, nullOnEmptyNum } from 'src/utils/shared';
+import { Station } from 'entities/Station';
+import { withSessionApi } from 'lib/withSession';
+import { error, httpMethodError, success } from 'server/response';
+import { requiredField, unresolved } from 'utils/server';
+import { nullOnEmpty, nullOnEmptyNum } from 'utils/shared';
 
 const handler: NextApiHandlerWithConnections = async (req, res) => {
   try {

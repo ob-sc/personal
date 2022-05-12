@@ -1,14 +1,14 @@
 import { InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
-import { withSessionSsr } from 'src/lib/withSession';
-import Layout from 'src/client/components/layout/Layout';
-import DataGrid from 'src/client/components/common/DataGrid';
+import { withSessionSsr } from 'lib/withSession';
+import Layout from 'client/components/layout/Layout';
+import DataGrid from 'client/components/common/DataGrid';
 import { RowClickHandler } from 'types/client';
-import stationColumns from 'src/client/tables/stations';
-import { useGetStations } from 'src/client/api/stations';
+import stationColumns from 'client/tables/stations';
+import { useGetStations } from 'client/api/stations';
 import { accessConstants } from 'config/constants';
 
-import RegionsContainer from 'src/client/components/stations/RegionsContainer';
+import RegionsContainer from 'client/components/stations/RegionsContainer';
 
 export const getServerSideProps = withSessionSsr();
 

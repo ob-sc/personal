@@ -3,8 +3,8 @@ import { Box, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { FormField } from 'types/client';
 import theme from 'config/theme';
-import { postSession } from 'src/client/api/sessions';
-import Form from 'src/client/components/common/Form';
+import { postSession } from 'client/api/sessions';
+import Form from 'client/components/common/Form';
 
 const LoginPage = () => {
   const router = useRouter();
