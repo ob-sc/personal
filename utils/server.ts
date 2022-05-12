@@ -6,7 +6,22 @@ export class ApiError extends Error {
   }
 }
 
-// iwie gibt es keinen LDAP Error mit nem type der passt, Error hat code mit text bei keiner Verbindung
+export const unresolved = {
+  api: {
+    externalResolver: true,
+  },
+};
+
+export const NULL = {
+  nullable: true,
+  // default: null,
+};
+
+// automatisch not null
+// export const NOT_NULL = { nullable: false };
+
+export const UNIQUE = { unique: true };
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function parseLdapError(err: any): ApiError {
   let message = '';
@@ -29,12 +44,6 @@ export function parseLdapError(err: any): ApiError {
   return new ApiError(message, fields);
 }
 
-export const unresolved = {
-  api: {
-    externalResolver: true,
-  },
-};
-
 export function requiredField(...args: (string | null | undefined)[]) {
   for (const arg of args) {
     if (isEmpty(arg)) {
@@ -43,16 +52,8 @@ export function requiredField(...args: (string | null | undefined)[]) {
   }
 }
 
-export const NULL = {
-  nullable: true,
-  // default: null,
-};
-
-// automatisch not null
-// export const NOT_NULL = { nullable: false };
-
-export const UNIQUE = { unique: true };
-
-export function numFromParam(id: string | string[]): number {
-  return Number(Array.isArray(id) ? id[0] : id);
+export function idFromQuery(id: string | string[]): number {
+  const num = Number(Array.isArray(id) ? id[0] : id);
+  if (Number.isNaN(num)) throw new Error('Keine gültige ID');
+  return num;
 }

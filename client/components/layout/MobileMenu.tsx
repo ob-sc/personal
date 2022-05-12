@@ -54,5 +54,3 @@ const MobileMenu = ({ mobile, session, menuItems }: Props) => {
 };
 
 export default MobileMenu;
-
-// todo wenn es horizontalen overflow gibt, dann verschiebt das offene mobile menu das komplette layout

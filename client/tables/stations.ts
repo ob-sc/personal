@@ -12,7 +12,7 @@ const stationColumns: DGColFn = () => [
   {
     field: 'name',
     headerName: 'Name',
-    width: 180,
+    width: 220,
     sm: true,
   },
   {

@@ -29,9 +29,7 @@ function NoAccess() {
       <Typography>
         Dafür scheinen deine Berechtigungen nicht zu reichen. Ist das ein Fehler
         oder benötigst du diese? Dann{' '}
-        <a href="mailto:personalabteilungœ@starcar.de">
-          schreib uns eine Mail.
-        </a>
+        <a href="mailto:personalabteilung@starcar.de">schreib uns eine Mail.</a>
       </Typography>
     </>
   );

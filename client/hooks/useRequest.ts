@@ -31,7 +31,7 @@ export default function useRequest<Data = unknown, Error = unknown>(
     mutate,
   } = useSWR<AxiosResponse<Data>, AxiosError<Error>>(
     request && JSON.stringify(request),
-    // useSWR fetch nur wenn request nicht null
+    // useSWR fetch nur wenn request nicht null ist
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     () => axios.request<Data>(request!),
     {

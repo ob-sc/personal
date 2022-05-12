@@ -46,7 +46,7 @@ function DataGrid({
   const filteredRows = searchFilter(search, rows);
 
   // todo zuviele nested loops? hier optimieren?
-  // mit moobile sm werden nur spalten mit `sm: true` angezeigt
+  // mit mobile sm werden nur spalten mit `sm: true` angezeigt (definiert in tables/[table].tsx)
   const cols: DataGridCol[] = [];
   if (mobile.sm) {
     for (const obj of columns) {

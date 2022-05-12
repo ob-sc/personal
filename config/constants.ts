@@ -57,3 +57,5 @@ export function accessConstants(access?: number, route?: Route): Access {
 }
 
 export const errorText = 'Es ist ein Fehler aufgetreten';
+
+export const incompleteRequestText = 'Ungültige Anfrage';

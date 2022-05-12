@@ -1,56 +1,23 @@
 import { NextApiHandlerWithConnections } from 'types/server';
 import { Region } from 'entities/Region';
+import { unresolved } from 'utils/server';
 import { withSessionApi } from 'lib/withSession';
-import { error, httpMethodError, success } from 'server/response';
-import { numFromParam, unresolved } from 'utils/server';
+import { error, httpMethodError } from 'server/response';
+import { removeRegion, singleRegion } from 'server/handler/regions';
 
 const handler: NextApiHandlerWithConnections = async (req, res) => {
   try {
-    const {
-      query: { id },
-      method,
-      db,
-    } = req;
+    const { query, method, db } = req;
     if (!db) throw new Error('Datenbank nicht verfügbar');
 
     const regionRepository = db.getRepository(Region);
 
-    const singleRegion = async () => {
-      const region = await regionRepository.findOne({
-        where: {
-          id: numFromParam(id),
-        },
-        relations: { users: true, stations: true, subStations: true },
-      });
-
-      if (region === null) {
-        error(res, 'Benutzer nicht gefunden');
-        return;
-      }
-
-      success(res, region);
-    };
-
-    const removeRegion = async () => {
-      const region = await regionRepository.findOne({
-        where: { id: numFromParam(id) },
-      });
-
-      if (region === null) {
-        error(res, 'Region nicht gefunden');
-        return;
-      }
-
-      await regionRepository.remove(region);
-      success(res, 'Region gelöscht');
-    };
-
     switch (method?.toUpperCase()) {
       case 'GET':
-        await singleRegion();
+        await singleRegion(res, regionRepository, { query });
         break;
       case 'DELETE':
-        await removeRegion();
+        await removeRegion(res, regionRepository, { query });
         break;
       default:
         httpMethodError(res, method, ['GET', 'DELETE']);

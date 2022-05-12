@@ -1,8 +1,8 @@
 import { NextApiResponse } from 'next';
+import { errorText } from 'config/constants';
 import { ErrorResponse, SuccessResponse } from 'types/server';
 import logger from 'lib/log';
 import { ApiError } from 'utils/server';
-import { errorText } from 'config/constants';
 
 /**
  * Antwort mit Code 200 (bzw 204)

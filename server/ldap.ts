@@ -1,16 +1,8 @@
+import ldap from 'ldapjs';
 import { ldapConfig } from 'config';
-import ldap, { Client } from 'ldapjs';
-import logger from 'lib/log';
+import { DomainUser, LdapClient } from 'types/server';
 import { ApiError, parseLdapError } from 'utils/server';
-import { DomainUser } from 'types/server';
-
-export interface LdapClient {
-  client: Client;
-  connect: () => Promise<void>;
-  authenticate: (username: string, password: string) => Promise<DomainUser[]>;
-  search: () => Promise<DomainUser[]>;
-  destroy: () => void;
-}
+import logger from 'lib/log';
 
 function ldapConnection(): LdapClient {
   const baseDN = 'DC=starcar,DC=local';

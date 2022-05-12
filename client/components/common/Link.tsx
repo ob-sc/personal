@@ -22,7 +22,7 @@ export const NextLinkComposed = forwardRef<
   HTMLAnchorElement,
   NextLinkComposedProps
 >(
-  // kann hier keine anonyme funtion passen
+  // kann hier keine anonyme funtion weitergeben
   // eslint-disable-next-line prefer-arrow-callback
   function NextLinkComposed(props, ref) {
     const {

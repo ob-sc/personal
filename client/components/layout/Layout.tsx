@@ -18,7 +18,7 @@ function Layout({ session, loading, blockAccess, children }: Props) {
   return (
     <>
       <Navbar session={session} />
-      <Container component="main" maxWidth="lg">
+      <Container component="main" maxWidth="lg" sx={{ overflowX: 'hidden' }}>
         {loading ? <CenteredSpinner /> : blockAccess ? <NoAccess /> : children}
       </Container>
     </>

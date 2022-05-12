@@ -43,8 +43,8 @@ const sessionPropHandler: (
  * Kompatibel mit `InferGetServerSidePropsType`
  * @example
  * export const getServerSideProps = withSessionSsr();
- * const Manage = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) => { ... };
- * export default Manage;
+ * const Foo = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) => { ... };
+ * export default Foo;
  */
 export const withSessionSsr = () =>
   withIronSessionSsr(sessionPropHandler, sessionConfig);

@@ -20,12 +20,11 @@ const LoginPage = () => {
 
   const handleSubmit = async (values: unknown) => {
     await postSession(values);
-    // wenn ok: speichern um zu sehen ob user schon eingeloggt war
+    // wenn login ok: speichern um zu sehen ob user schon eingeloggt war
     // dann kommt bei 401 "session abgelaufen"
     window.sessionStorage.setItem('session', 'true');
 
     router.push(typeof redirect === 'string' ? redirect : '/');
-    // window.location.href = typeof redirect === 'string' ? redirect : '/';
   };
 
   const fields: FormField[] = [

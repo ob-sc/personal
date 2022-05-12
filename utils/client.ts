@@ -41,8 +41,8 @@ export function selectOptionMapper(obj: {
 }
 
 export function withEmptyOption(
-  options: SelectOption[],
-  text?: string
+  options: SelectOption[] = [],
+  text = 'Bitte wählen'
 ): SelectOption[] {
-  return [{ optval: '', optlabel: text ?? 'Bitte wählen' }, ...options];
+  return [{ optval: '', optlabel: text }, ...options];
 }

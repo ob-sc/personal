@@ -1,7 +1,53 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { DataSource, Repository } from 'typeorm';
 import { Region } from 'entities/Region';
-import { LdapClient } from 'server/ldap';
-import { DataSource } from 'typeorm';
+import { entities } from 'server/database';
+
+/** Array aus input-Feldern, für Übermittlung von fehlerhaften Eingaben */
+export type Fields = string[];
+
+export type SuccessResponse =
+  | { message: string }
+  | object
+  | object[]
+  | null
+  | undefined;
+
+export type ErrorResponse = {
+  message: string;
+  fields: Fields;
+};
+
+export interface LdapError {
+  instance: Error;
+  fields: Fields;
+}
+
+export interface DomainUser {
+  cn: string; // "SC - Bergen, Ole"
+  sn: string; // "Bergen"
+  l: string; // "Hamburg"
+  postalCode: string; // "20537"
+  telephoneNumber: string; // "+49 40 654411503"
+  givenName: string; // "Ole"
+  /** Disponenten sind in `OU=[Stationsnummer] - [Station],OU=Counter, ...` */
+  distinguishedName: string; // "CN=SC - Bergen\\, Ole,OU=_IT,OU=_Flotte,OU=Verwaltung,OU=User,OU=STARCAR,DC=starcar,DC=local"
+  // memberOf?
+  displayName: string; // "STARCAR GmbH - Ole Bergen"
+  streetAddress: string; // "Süderstr. 282"
+  sAMAccountName: string; // "bergen", Login-Name
+  userPrincipalName: string; // "bergen@starcar.de"
+  userAccountControl: string; // Account aktiv | 512 = ja, 514 = nein
+  mail: string; // "ole.bergen@starcar.de"
+}
+
+export interface LdapClient {
+  client: Client;
+  connect: () => Promise<void>;
+  authenticate: (username: string, password: string) => Promise<DomainUser[]>;
+  search: () => Promise<DomainUser[]>;
+  destroy: () => void;
+}
 
 /** Session, DB ORM und ldapjs Client in `req` */
 type NextApiRequestWithConnections = NextApiRequest & {
@@ -32,42 +78,14 @@ export interface ParsedUser {
   stations: number[];
 }
 
-/** Array aus input-Feldern, für Übermittlung von fehlerhaften Eingaben */
-export type Fields = string[];
-
-export type SuccessResponse =
-  | { message: string }
-  | object
-  | object[]
-  | null
-  | undefined;
-
-export type ErrorResponse = {
-  message: string;
-  fields: Fields;
-};
-
-// Active Directory / Domain STARCAR
-
-export interface LdapError {
-  instance: Error;
-  fields: Fields;
+export interface ApiRequestHandlerData {
+  ldap?: LdapClient;
+  query?: NextApiRequest['query'];
+  body?: NextApiRequest['body'];
 }
 
-export interface DomainUser {
-  cn: string; // "SC - Bergen, Ole"
-  sn: string; // "Bergen"
-  l: string; // "Hamburg"
-  postalCode: string; // "20537"
-  telephoneNumber: string; // "+49 40 654411503"
-  givenName: string; // "Ole"
-  /** Disponenten sind in `OU=[Stationsnummer] - [Station],OU=Counter, ...` */
-  distinguishedName: string; // "CN=SC - Bergen\\, Ole,OU=_IT,OU=_Flotte,OU=Verwaltung,OU=User,OU=STARCAR,DC=starcar,DC=local"
-  // memberOf?
-  displayName: string; // "STARCAR GmbH - Ole Bergen"
-  streetAddress: string; // "Süderstr. 282"
-  sAMAccountName: string; // "bergen", Login-Name
-  userPrincipalName: string; // "bergen@starcar.de"
-  userAccountControl: string; // Account aktiv | 512 = ja, 514 = nein
-  mail: string; // "ole.bergen@starcar.de"
-}
+export type ApiRequestHandler<T = typeof entities> = (
+  res: NextApiResponse,
+  repo: Repository<T>,
+  data?: ApiRequestHandlerData
+) => Promise<void>;

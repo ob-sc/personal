@@ -2,7 +2,7 @@ import { NextApiHandlerWithConnections } from 'types/server';
 import { Station } from 'entities/Station';
 import { withSessionApi } from 'lib/withSession';
 import { error, httpMethodError, success } from 'server/response';
-import { numFromParam, unresolved } from 'utils/server';
+import { idFromQuery, unresolved } from 'utils/server';
 
 const handler: NextApiHandlerWithConnections = async (req, res) => {
   try {
@@ -18,7 +18,7 @@ const handler: NextApiHandlerWithConnections = async (req, res) => {
     const singleStation = async () => {
       const station = await stationRepository.findOne({
         where: {
-          id: numFromParam(id),
+          id: idFromQuery(id),
         },
         relations: { region: true, subregion: true, users: true },
       });
