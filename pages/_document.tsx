@@ -9,6 +9,8 @@ import Document, {
 import createEmotionServer from '@emotion/server/create-instance';
 import { createEmotionCache } from 'src/utils/client';
 
+// todo hier anders: https://github.com/mui/material-ui/blob/e5dcd443843b9efd54c245375cb698eca139f1b7/examples/nextjs-with-typescript/pages/_document.tsx
+
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
     const originalRenderPage = ctx.renderPage;
@@ -44,6 +46,7 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
+          <link rel="shortcut icon" href="/public/favicon.ico" />
           <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"

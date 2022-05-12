@@ -3,6 +3,18 @@ import { error, httpMethodError, success } from 'src/server/response';
 import { unresolved } from 'src/utils/server';
 import { NextApiHandlerWithConnections } from 'types/server';
 
+/* todo
+auf /users nur die daten aus der datenbank die nicht durch sync aktualisiert werden darstellen
+sync dann per:
+- button auf /users (alle)
+- cron job (curl auf route?, alle aktualisieren)
+- bei login
+- bei aufruf /users/:id
+
+* am besten kein parseUser mehr sondern direkt alles geparsed in db, dann bei sync parse
+* mach dn speichern sinn? lieber parsen und dann speichern
+*/
+
 const handler: NextApiHandlerWithConnections = async (req, res) => {
   try {
     const { method, ldap } = req;

@@ -54,3 +54,4 @@ export function accessConstants(access?: number, route?: Route): Access {
 }
 
 // todo alles niedrigen access und innerhalb der seite nach station / berechtigung freigeben?
+// todo stationen haben immer ihre station berechtigt, inkl extrastationen und region. was ist mit verwaltung? immer alle aber keinen zugriff auf features ohne mindestens idl berechtigung?

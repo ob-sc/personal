@@ -35,6 +35,8 @@
 - ssr: https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering
 
 - mui next ts: https://github.com/mui-org/material-ui/tree/HEAD/examples/nextjs-with-typescript
+  - bzw https://github.com/mui/material-ui/blob/master/examples/nextjs-with-typescript
+  - aus https://mui.com/material-ui/guides/server-rendering/
   - mui ssr: https://mui.com/guides/server-rendering/
 
 ## api routes

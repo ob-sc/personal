@@ -7,6 +7,7 @@ import { RowClickHandler } from '../../types/client';
 import stationColumns from '../../src/client/tables/stations';
 import { useGetStations } from '../../src/client/api/stations';
 import { accessConstants } from '../../config/constants';
+
 import RegionsContainer from 'src/client/components/stations/RegionsContainer';
 
 export const getServerSideProps = withSessionSsr();
