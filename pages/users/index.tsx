@@ -1,4 +1,4 @@
-import { InferGetServerSidePropsType } from 'next';
+import { InferGetServerSidePropsType as IPT } from 'next';
 import { useRouter } from 'next/router';
 import { RowClickHandler } from 'types/client';
 import { accessConstants } from 'config/constants';
@@ -10,10 +10,7 @@ import userColumns from 'client/tables/users';
 
 export const getServerSideProps = withSessionSsr();
 
-// Home: NextPage
-const AllUsersPage = ({
-  user,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+function AllUsersPage({ user }: IPT<typeof getServerSideProps>) {
   const users = useGetUsers();
   const router = useRouter();
 
@@ -38,6 +35,6 @@ const AllUsersPage = ({
       />
     </Layout>
   );
-};
+}
 
 export default AllUsersPage;

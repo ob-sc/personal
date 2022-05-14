@@ -1,4 +1,4 @@
-import { InferGetServerSidePropsType } from 'next';
+import { InferGetServerSidePropsType as IPT } from 'next';
 import { useRouter } from 'next/router';
 import { Typography } from '@mui/material';
 import { accessConstants, errorText } from 'config/constants';
@@ -10,9 +10,7 @@ import StationsContainer from 'client/components/users/id/StationsContainer';
 
 export const getServerSideProps = withSessionSsr();
 
-const SingleUserPage = ({
-  user,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+function SingleUserPage({ user }: IPT<typeof getServerSideProps>) {
   const router = useRouter();
   const { id } = router.query;
   const { data, isValidating } = useGetUser(Number(id));
@@ -34,7 +32,7 @@ const SingleUserPage = ({
       )}
     </Layout>
   );
-};
+}
 
 export default SingleUserPage;
 

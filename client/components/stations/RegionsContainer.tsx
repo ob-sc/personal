@@ -106,5 +106,3 @@ function RegionsContainer() {
 }
 
 export default RegionsContainer;
-
-// todo text overflow in container testen (am besten west 1, regionen und benutzer)

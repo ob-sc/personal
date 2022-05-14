@@ -20,6 +20,7 @@ const theme = createTheme(
         // light: colors.grey,
       },
       secondary: {
+        light: colors.greylight,
         main: colors.grey,
         // light: colors.greylight,
       },

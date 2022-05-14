@@ -1,6 +1,5 @@
 import { Box, Typography } from '@mui/material';
 import { cropText } from 'client/styles';
-import theme from 'config/theme';
 import { CProps } from 'types/client';
 
 interface Props extends CProps {
@@ -15,7 +14,7 @@ const containerStyle = {
 };
 
 const labelStyle = {
-  color: theme.palette.secondary.dark,
+  color: 'secondary.dark',
 };
 
 function DataContainer({ label, children }: Props) {

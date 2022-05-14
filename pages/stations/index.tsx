@@ -1,4 +1,4 @@
-import { InferGetServerSidePropsType } from 'next';
+import { InferGetServerSidePropsType as IPT } from 'next';
 import { useRouter } from 'next/router';
 import { withSessionSsr } from 'lib/withSession';
 import Layout from 'client/components/layout/Layout';
@@ -13,9 +13,7 @@ import RegionsContainer from 'client/components/stations/RegionsContainer';
 export const getServerSideProps = withSessionSsr();
 
 // Home: NextPage
-const AllStationsPage = ({
-  user,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+function AllStationsPage({ user }: IPT<typeof getServerSideProps>) {
   const { data, error } = useGetStations();
   const router = useRouter();
 
@@ -46,6 +44,6 @@ const AllStationsPage = ({
       <RegionsContainer />
     </Layout>
   );
-};
+}
 
 export default AllStationsPage;

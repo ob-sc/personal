@@ -1,4 +1,4 @@
-import { InferGetServerSidePropsType } from 'next';
+import { InferGetServerSidePropsType as IPT } from 'next';
 import { useRouter } from 'next/router';
 import { Typography } from '@mui/material';
 import { accessConstants } from 'config/constants';
@@ -13,9 +13,7 @@ import { stationFields } from 'client/tables/stations';
 export const getServerSideProps = withSessionSsr();
 
 // Home: NextPage
-const NewStationPage = ({
-  user,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+function NewStationPage({ user }: IPT<typeof getServerSideProps>) {
   const router = useRouter();
 
   const submitHandler = async (values: unknown) => {
@@ -40,6 +38,6 @@ const NewStationPage = ({
       <Form onSubmit={submitHandler} fields={fields} cols={3} />
     </Layout>
   );
-};
+}
 
 export default NewStationPage;

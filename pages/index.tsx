@@ -1,4 +1,4 @@
-import { InferGetServerSidePropsType } from 'next';
+import { InferGetServerSidePropsType as IPT } from 'next';
 import { withSessionSsr } from 'lib/withSession';
 import NoStation from 'client/components/home/NoStation';
 import Layout from 'client/components/layout/Layout';
@@ -6,9 +6,7 @@ import Layout from 'client/components/layout/Layout';
 export const getServerSideProps = withSessionSsr();
 
 // Home: NextPage
-function Home({
-  user,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+function Home({ user }: IPT<typeof getServerSideProps>) {
   // const noHome = user.stations[0] === 0 && user.access < 1;
   return (
     <Layout session={user}>

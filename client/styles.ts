@@ -1,8 +1,6 @@
-import theme from 'config/theme';
-
 export const border = {
   border: 1,
-  borderColor: theme.palette.secondary.light,
+  borderColor: 'secondary.light',
   borderRadius: 2,
 };
 
