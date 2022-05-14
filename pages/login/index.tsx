@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { FormField } from 'types/client';
-import theme from 'config/theme';
 import { postSession } from 'client/api/sessions';
 import Form from 'client/components/common/Form';
+import { border, fullscreenCenteredFlex } from 'client/styles';
 
-const LoginPage = () => {
+function LoginPage() {
   const router = useRouter();
 
   const { redirect } = router.query;
@@ -34,36 +34,19 @@ const LoginPage = () => {
 
   return (
     <>
-      <Box
-        sx={{
-          height: '100vh',
-          width: '100vw',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 2,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
+      <Box sx={fullscreenCenteredFlex}>
         {expired === 'true' ? (
           <Box>
             <Typography color="error">Die Sitzung ist abgelaufen</Typography>
           </Box>
         ) : null}
 
-        <Box
-          sx={{
-            p: 1.5,
-            border: 1,
-            borderColor: theme.palette.secondary.light,
-            borderRadius: 2,
-          }}
-        >
+        <Box sx={border}>
           <Form onSubmit={handleSubmit} fields={fields} size="sm" />
         </Box>
       </Box>
     </>
   );
-};
+}
 
 export default LoginPage;

@@ -4,12 +4,7 @@ import { ErrorResponse, PermittedMethod, SuccessResponse } from 'types/server';
 import logger from 'lib/log';
 import { ApiError } from 'utils/server';
 
-/**
- * Antwort mit Code 200 (bzw 204)
- * @example
- * success(res,  { foo: "bar" } )
- * success(res, "baz" )
- */
+/** Antwort mit Code 200 (bzw 204) */
 export const success = (
   res: NextApiResponse,
   data?: string | object[] | object | null
@@ -31,7 +26,6 @@ type ErrorResponseParam = number | string | Error | string[] | null;
  * - `string` als Nachricht
  * - `Array` als fehlerhafte Formularfelder
  * - `Error` als (Api-)Error-Objekt
- * @example error(res, 400, 'Fehler', new Error("Oops!"), ['username', ... ]);
  */
 export const error = (
   res: NextApiResponse,
@@ -67,10 +61,7 @@ export const error = (
   res.status(status).json(body);
 };
 
-/**
- * Antwort wenn eine Request-Methode nicht unterstützt wird
- * @example httpMethodError(res, method, ['GET', 'POST']);
- */
+/** Antwort wenn eine Request-Methode nicht unterstützt wird */
 export const httpMethodError = (
   res: NextApiResponse,
   method: string | undefined,

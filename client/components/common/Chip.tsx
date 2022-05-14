@@ -6,6 +6,11 @@ interface Props {
   onDelete?: () => void;
 }
 
+const style = {
+  margin: 0.5,
+  minWidth: 100,
+};
+
 function Chip({ label, onClick, onDelete }: Props) {
   return (
     <MuiChip
@@ -13,10 +18,7 @@ function Chip({ label, onClick, onDelete }: Props) {
       variant="outlined"
       onClick={onClick}
       onDelete={onDelete}
-      sx={{
-        margin: 0.5,
-        minWidth: 100,
-      }}
+      sx={style}
     />
   );
 }

@@ -21,6 +21,8 @@ interface Props {
   actionIcon?: ReactNode;
 }
 
+const style = { display: 'flex', flexFlow: 'row nowrap', m: 1 };
+
 function DataGridFooter({
   mobile,
   search,
@@ -35,9 +37,7 @@ function DataGridFooter({
   const { sm, mobile: responsive } = mobile;
 
   return (
-    <Box
-      sx={{ display: 'flex', flexFlow: 'row nowrap', m: 1, gap: sm ? 0 : 1 }}
-    >
+    <Box sx={{ ...style, gap: sm ? 0 : 1 }}>
       {!searching && actionHandler && actionIcon ? (
         <IconButton onClick={actionHandler}>{actionIcon}</IconButton>
       ) : null}

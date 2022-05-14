@@ -55,11 +55,12 @@ export const NextLinkComposed = forwardRef<
   }
 );
 
-export type LinkProps = {
+type LinkProps = {
   activeClassName?: string;
   as?: NextLinkProps['as'];
   href: NextLinkProps['href'];
   noLinkStyle?: boolean;
+  underline?: MuiLinkProps['underline'];
 } & Omit<NextLinkComposedProps, 'to' | 'linkAs' | 'href'> &
   Omit<MuiLinkProps, 'href'>;
 
@@ -75,6 +76,7 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(
     className: classNameProps,
     href,
     noLinkStyle,
+    underline,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     role, // Links haben keine role
     ...other
@@ -111,7 +113,7 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(
       className={className}
       ref={ref}
       to={href}
-      underline="hover"
+      underline={underline}
       {...other}
     />
   );

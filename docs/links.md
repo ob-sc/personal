@@ -2,6 +2,7 @@
 
 ## docker
 
+- https://nextjs.org/docs#docker-image
 - https://github.com/vercel/next.js/blob/canary/docs/deployment.md#docker-image=
 - https://github.com/vercel/next.js/blob/canary/examples/with-docker
 - https://github.com/vercel/next.js/tree/canary/examples/with-docker-multi-env

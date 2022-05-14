@@ -11,18 +11,36 @@ import AddIcon from '@mui/icons-material/Add';
 import Modal from 'client/components/common/Modal';
 import Form from 'client/components/common/Form';
 import { Region } from 'entities/Region';
-
-const tableCellCrop = {
-  overflow: 'hidden',
-  whiteSpace: 'nowrap',
-  textOverflow: 'ellipsis',
-  // width: '100%',
-};
+import DataDisplay from 'client/components/common/DataDisplay';
 
 function RegionsContainer() {
   const regions = useGetRegions();
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedRegion, setSelectedRegion] = useState<Region | null>(null);
+
+  const regionUsers =
+    selectedRegion && selectedRegion.users.length > 0
+      ? selectedRegion.users
+          .map((user) => `${user.first_name} ${user.last_name}`)
+          .join(', ')
+      : 'Keine';
+
+  const regionStations =
+    selectedRegion && selectedRegion.stations.length > 0
+      ? selectedRegion.stations.map((station) => station.name).join(', ')
+      : 'Keine';
+
+  const regionSubStations =
+    selectedRegion && selectedRegion.subStations.length > 0
+      ? selectedRegion.subStations.map((station) => station.name).join(', ')
+      : 'Keine';
+
+  const regionData = [
+    { label: 'ID', value: String(selectedRegion?.id) },
+    { label: 'Benutzer', value: regionUsers },
+    { label: 'Region 1', value: regionStations },
+    { label: 'Region 2', value: regionSubStations },
+  ];
 
   return (
     <>
@@ -56,48 +74,7 @@ function RegionsContainer() {
           <Box sx={{ mt: 2 }}>
             <Typography variant="h6">{selectedRegion.name}</Typography>
 
-            <table>
-              <tr>
-                <td>ID</td>
-                <td>{selectedRegion.id}</td>
-              </tr>
-              <tr>
-                <td>Benutzer</td>
-                <td>
-                  <Box sx={tableCellCrop}>
-                    {selectedRegion.users.length > 0
-                      ? selectedRegion.users
-                          .map((user) => `${user.first_name} ${user.last_name}`)
-                          .join(', ')
-                      : 'Keine'}
-                  </Box>
-                </td>
-              </tr>
-              <tr>
-                <td>Region 1</td>
-                <td>
-                  <Box sx={tableCellCrop}>
-                    {selectedRegion.stations.length > 0
-                      ? selectedRegion.stations
-                          .map((station) => station.name)
-                          .join(', ')
-                      : 'Keine'}
-                  </Box>
-                </td>
-              </tr>
-              <tr>
-                <td>Region 2</td>
-                <td>
-                  <Box sx={tableCellCrop}>
-                    {selectedRegion.subStations.length > 0
-                      ? selectedRegion.subStations
-                          .map((station) => station.name)
-                          .join(', ')
-                      : 'Keine'}
-                  </Box>
-                </td>
-              </tr>
-            </table>
+            <DataDisplay data={regionData ?? []} />
           </Box>
         )}
       </Box>

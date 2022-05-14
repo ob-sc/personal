@@ -41,10 +41,6 @@ const sessionPropHandler: (
 /**
  * Session als Prop, ohne Authentifizierung redirect.
  * Kompatibel mit `InferGetServerSidePropsType`
- * @example
- * export const getServerSideProps = withSessionSsr();
- * const Foo = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) => { ... };
- * export default Foo;
  */
 export const withSessionSsr = () =>
   withIronSessionSsr(sessionPropHandler, sessionConfig);
@@ -54,9 +50,6 @@ export const withSessionSsr = () =>
  * Gibt `req` Session, DB ORM und ldapjs Client.
  * Bei Erfolg wird die Session erneuert.
  * Verbindungen werden in middleware aufgebaut und zerstört.
- * @example
- * const routeHandler: NextApiHandler = async (req, res) => { const { session, db } = req; ... };
- * export default withSessionApi(routeHandler);
  */
 export const withSessionApi = (
   handler: NextApiHandlerWithConnections,

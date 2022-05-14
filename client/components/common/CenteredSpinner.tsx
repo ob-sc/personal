@@ -1,4 +1,5 @@
 import { Box, CircularProgress } from '@mui/material';
+import { fullContainerCentered } from 'client/styles';
 
 interface Props {
   size?: number | string; // in px bei num, sonst unit mitgeben (3rem etc)
@@ -6,15 +7,7 @@ interface Props {
 
 function CenteredSpinner({ size }: Props) {
   return (
-    <Box
-      sx={{
-        width: '100%',
-        height: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
+    <Box sx={fullContainerCentered}>
       <CircularProgress size={size} />
     </Box>
   );

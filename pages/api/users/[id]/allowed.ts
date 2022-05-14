@@ -22,6 +22,6 @@ const handler: NextApiHandlerWithConnections = async (req, res) => {
   }
 };
 
-export default withSessionApi(handler, '/users/allowed');
+export default withSessionApi(handler, '/users/[id]/allowed');
 
 export const config = unresolved;

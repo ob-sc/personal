@@ -5,12 +5,7 @@ import { success } from 'server/response';
 import { ApiError, idFromQuery } from 'utils/server';
 
 export const allUsers: NextApiHandlerWithConnections = async (req, res) => {
-  const {
-    db,
-    session: {
-      user: { access },
-    },
-  } = req;
+  const { db } = req;
   if (!db) throw new ApiError('Datenbank nicht verfügbar');
 
   const repo = db.getRepository(User);

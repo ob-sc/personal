@@ -1,16 +1,19 @@
 import { Box } from '@mui/material';
-import { CProps } from 'types/client';
 
-interface Props extends CProps {
-  label?: string;
+interface Props {
+  data: { label: string; value: string }[];
 }
 
-function DataDisplay({ label, children }: Props) {
+function DataDisplay({ data }: Props) {
   // children ist array bei mehreren react nodes, sonst string
-  const multipleChildren = Array.isArray(children);
-  console.log(children);
 
-  return <Box>{multipleChildren}</Box>;
+  return !data ? null : (
+    <Box>
+      {data.map((r) => (
+        <div key={r.label}>{r.value}</div>
+      ))}
+    </Box>
+  );
 }
 
 export default DataDisplay;

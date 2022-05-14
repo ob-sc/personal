@@ -25,6 +25,14 @@ interface Props {
   actionIcon?: ReactNode;
 }
 
+const style = {
+  height: 650,
+  width: '100%',
+  '& .MuiDataGrid-row:hover': {
+    cursor: 'pointer',
+  },
+};
+
 function DataGrid({
   columns,
   rows,
@@ -61,15 +69,7 @@ function DataGrid({
   }
 
   return (
-    <Box
-      sx={{
-        height: 650,
-        width: '100%',
-        '& .MuiDataGrid-row:hover': {
-          cursor: 'pointer',
-        },
-      }}
-    >
+    <Box sx={style}>
       <MuiDataGrid
         rows={filteredRows}
         columns={mobile.sm ? cols : columns}

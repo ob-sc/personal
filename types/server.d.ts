@@ -56,11 +56,7 @@ interface NextApiRequestWithConnection<T> extends NextApiRequest {
   ldap?: LdapClient;
 }
 
-/**
- * Mit Session, DB ORM und ldapjs Client
- * @example
- * const routeHandler: NextApiHandlerWithConnections = async (req, res) => { const { session, db, ldap } = req; };
- */
+/** Mit Session, DB ORM und ldapjs Client */
 export type NextApiHandlerWithConnections<
   RequestBody = NextApiRequest['body']
 > = (

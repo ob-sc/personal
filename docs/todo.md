@@ -1,41 +1,21 @@
 # todo
 
-_nochaml schön iwo dokuemntieren dann löschen_
-
-- Onboarding auf /users/onboarding (.../new)
-
-- Benutzer wird im AD angelegt
-
-- Zugänge für Domäne Speichern im Onboarding
-
-- App prüft username mit Password01
-
-- Eintrag in DB (mit Berechtigungen aus Anforderung oder keinen) wenn ok
-
-- <s>User kann sich anmelden</s> ✔︎
-
-- <s>Wenn User noch nicht in DB dann Eintrag</s> ✔︎
-
-- Wenn schon in DB Update testen mit Sven / Lennart
-
-  - user andere station im ad -> login -> update db?
-
-- Einträge lassen sich nur durch Login Updaten, Hinweis auf Seite
-
-- Wenn gesperrter User sich anmelden will active auf 0 und Fehler geben
-
-  - auch testen
-
----
-
-- "mein account" mit access 0? einfach wenn keine berechtigung habe unter benutzer nur ich selber?
+## wichtig
 
 - klären agenturen? auch login?
 
----
+- circlespinner spackt ab und hat overflow, scheinen verschiedene größen zu sein?
 
-- [going to production](https://nextjs.org/docs/going-to-production)
+  - alles mal mit suspense schön machen, nur noch einen spinner?
 
----
+  - [mit suspense?](https://nextjs.org/docs/advanced-features/dynamic-import#with-suspense)
 
-- [mit suspense?](https://nextjs.org/docs/advanced-features/dynamic-import#with-suspense)
+  - gut zu testen auf seite users/id, server neu starten und seite neu laden
+
+  - scheint nur dort vorzukommen?
+
+## meh
+
+[going to production](https://nextjs.org/docs/going-to-production)
+
+## nope

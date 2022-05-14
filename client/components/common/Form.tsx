@@ -19,6 +19,22 @@ interface Props extends CProps {
   cols?: number;
 }
 
+const containerStyle = {
+  display: 'flex',
+  gap: 2,
+  flexFlow: 'column nowrap',
+};
+
+const gridStyle = {
+  display: 'grid',
+  gridGap: 10,
+  // vor und nach header neue zeile
+  '& .gridItem + .gridHeader': { gridColumnStart: 1 },
+  '& .gridHeader + .gridItem': { gridColumnStart: 1 },
+};
+
+const gridHeaderStyle = { width: '100%', minHeight: 10 };
+
 function Form({ onSubmit, fields, submitName, size = 'md', cols = 1 }: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<AxiosError<ErrorResponse> | null>(null);
@@ -67,58 +83,43 @@ function Form({ onSubmit, fields, submitName, size = 'md', cols = 1 }: Props) {
       });
   };
 
+  const fieldMap = (field: FormField) => {
+    const { type, name, label, required, options } = field;
+
+    const param = {
+      name,
+      label,
+      control,
+      errors,
+      required,
+      key: name,
+      cn: 'gridItem',
+    };
+
+    return type === 'header' ? (
+      <Box className="gridHeader" sx={gridHeaderStyle} key={name}>
+        <Typography variant="h5">{label}</Typography>
+      </Box>
+    ) : type === 'select' ? (
+      <Select {...param} options={options ?? []} />
+    ) : type === 'multiselect' ? (
+      <MultiSelect {...param} options={options ?? []} />
+    ) : (
+      <Input {...param} type={type} />
+    );
+  };
+
   return (
     <form onSubmit={handleSubmit(submitHandler)}>
-      <Box
-        sx={{
-          display: 'flex',
-          gap: 2,
-          flexFlow: 'column nowrap',
-        }}
-      >
+      <Box sx={containerStyle}>
         <Box
           sx={[
+            gridStyle,
             colWidth,
-            {
-              display: 'grid',
-              gridTemplateColumns: `repeat(${columns}, 1fr)`,
-              gridGap: 10,
-              // vor und nach header neue zeile
-              '& .gridItem + .gridHeader': { gridColumnStart: 1 },
-              '& .gridHeader + .gridItem': { gridColumnStart: 1 },
-            },
+            { gridTemplateColumns: `repeat(${columns}, 1fr)` },
           ]}
         >
-          {fields.map((field) => {
-            const { type, name, label, required, options } = field;
-
-            const param = {
-              name,
-              label,
-              control,
-              errors,
-              required,
-              key: name,
-              cn: 'gridItem',
-            };
-
-            return type === 'header' ? (
-              <Box
-                className="gridHeader"
-                sx={{ width: '100%', minHeight: 10 }}
-                key={name}
-              >
-                <Typography variant="h5">{label}</Typography>
-              </Box>
-            ) : type === 'select' ? (
-              <Select {...param} options={options ?? []} />
-            ) : type === 'multiselect' ? (
-              <MultiSelect {...param} options={options ?? []} />
-            ) : (
-              <Input {...param} type={type} />
-            );
-          })}
-
+          {fields.map(fieldMap)}
           {error?.response?.data?.message ? (
             <Typography color="error">
               {error.response.data.message ?? errorText}
