@@ -21,7 +21,7 @@ const theme = createTheme(
       },
       secondary: {
         main: colors.grey,
-        light: colors.greylight,
+        // light: colors.greylight,
       },
     },
     components: {

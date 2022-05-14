@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { GridRowsProp, DataGrid as MuiDataGrid, deDE } from '@mui/x-data-grid';
@@ -46,14 +46,11 @@ function DataGrid({
 }: Props) {
   const mobile = useMobileContext();
   const [search, setSearch] = useState('');
+  const [filteredRows, setFilteredRows] = useState(rows);
 
   // bug: bei error === false trotzdem error state, undefined nicht
   const err = error ? true : undefined;
 
-  // "suchen" input
-  const filteredRows = searchFilter(search, rows);
-
-  // todo zuviele nested loops? hier optimieren?
   // mit mobile sm werden nur spalten mit `sm: true` angezeigt (definiert in tables/[table].tsx)
   const cols: DataGridCol[] = [];
   if (mobile.sm) {
@@ -67,6 +64,11 @@ function DataGrid({
       }
     }
   }
+
+  useEffect(() => {
+    // bei Eingabe in "suchen" input
+    setFilteredRows(searchFilter(search, rows));
+  }, [rows, search]);
 
   return (
     <Box sx={style}>

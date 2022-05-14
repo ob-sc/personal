@@ -3,7 +3,12 @@ import { NextApiHandlerWithConnections } from 'types/server';
 import { Station } from 'entities/Station';
 import { success } from 'server/response';
 import { nullOnEmpty, nullOnEmptyNum } from 'utils/shared';
-import { ApiError, idFromQuery, requiredField } from 'utils/server';
+import {
+  ApiError,
+  flattenObjectToProperty,
+  idFromQuery,
+  requiredField,
+} from 'utils/server';
 import { NewStationForm } from 'types/forms';
 
 export const allStations: NextApiHandlerWithConnections = async (req, res) => {
@@ -12,10 +17,15 @@ export const allStations: NextApiHandlerWithConnections = async (req, res) => {
 
   const repo = db.getRepository(Station);
 
-  const result = await repo.find({
+  const stations = await repo.find({
     relations: { region: true, subregion: true },
   });
-  success(res, result);
+
+  const flatStations = stations.map((station) =>
+    flattenObjectToProperty({ ...station })
+  );
+
+  success(res, flatStations);
 };
 
 export const singleStation: NextApiHandlerWithConnections = async (

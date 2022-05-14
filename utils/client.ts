@@ -6,7 +6,7 @@ export function createEmotionCache() {
   return createCache({ key: 'css' });
 }
 
-// todo geht nicht bei verschachtelten objekten
+/** Filtere Objekte in Array (aus API Call) */
 export function searchFilter<T = { [key: string]: unknown }>(
   searchInput: string,
   array: readonly T[]
@@ -14,9 +14,9 @@ export function searchFilter<T = { [key: string]: unknown }>(
   return searchInput.length < 2
     ? array
     : array.filter((entry: T) => {
-        for (const [, v] of Object.entries(entry)) {
-          if (typeof v === 'string') {
-            const value = v.toString().toLowerCase();
+        for (const [, val] of Object.entries(entry)) {
+          if (typeof val === 'string') {
+            const value = val.toLowerCase();
             const term = searchInput.toLowerCase();
             if (value.includes(term)) return true;
           }

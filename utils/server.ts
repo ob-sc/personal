@@ -1,4 +1,4 @@
-import { isDev, isEmpty } from 'utils/shared';
+import { hasOwnProperty, isDev, isEmpty } from 'utils/shared';
 
 export class ApiError extends Error {
   readonly statusCode: number;
@@ -65,4 +65,18 @@ export function idFromQuery(id: string | string[]): number {
   const num = Number(Array.isArray(id) ? id[0] : id);
   if (Number.isNaN(num)) throw new ApiError('Keine gültige ID', 400);
   return num;
+}
+
+export function flattenObjectToProperty(
+  obj: { [key: string]: unknown; name?: string },
+  prop = 'name'
+) {
+  const result: { [key: string]: unknown } = {};
+  for (const [key, val] of Object.entries(obj)) {
+    const isObjWithProp =
+      typeof val === 'object' && val !== null && hasOwnProperty(val, prop);
+    if (isObjWithProp) result[key] = val.name;
+    else result[key] = val;
+  }
+  return result;
 }

@@ -1,7 +1,6 @@
 import theme from 'config/theme';
 
 export const border = {
-  p: 1.5,
   border: 1,
   borderColor: theme.palette.secondary.light,
   borderRadius: 2,
@@ -29,5 +28,4 @@ export const cropText = {
   overflow: 'hidden',
   whiteSpace: 'nowrap',
   textOverflow: 'ellipsis',
-  // width: '100%',
 };

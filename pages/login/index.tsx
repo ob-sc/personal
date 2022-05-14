@@ -6,6 +6,8 @@ import { postSession } from 'client/api/sessions';
 import Form from 'client/components/common/Form';
 import { border, fullscreenCenteredFlex } from 'client/styles';
 
+const style = { ...border, p: 1.5 };
+
 function LoginPage() {
   const router = useRouter();
 
@@ -41,7 +43,7 @@ function LoginPage() {
           </Box>
         ) : null}
 
-        <Box sx={border}>
+        <Box sx={style}>
           <Form onSubmit={handleSubmit} fields={fields} size="sm" />
         </Box>
       </Box>

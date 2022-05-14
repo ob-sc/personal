@@ -1,5 +1,6 @@
 import { CProps } from 'types/client';
 import { Box, Modal as MuiModal } from '@mui/material';
+import { border } from 'client/styles';
 
 interface Props extends CProps {
   open: boolean;
@@ -7,24 +8,22 @@ interface Props extends CProps {
 }
 
 const style = {
+  ...border,
   position: 'absolute' as const,
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 400,
   bgcolor: 'background.paper',
-  border: '1px solid #000',
   // boxShadow: 24,
-  p: 4,
+  p: 2,
 };
 
 function Modal({ open, onClose, children }: Props) {
   return (
-    <div>
-      <MuiModal open={open} onClose={onClose}>
-        <Box sx={style}>{children}</Box>
-      </MuiModal>
-    </div>
+    <MuiModal open={open} onClose={onClose}>
+      <Box sx={style}>{children}</Box>
+    </MuiModal>
   );
 }
 

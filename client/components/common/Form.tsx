@@ -15,7 +15,7 @@ interface Props extends CProps {
   fields: FormField[];
   onSubmit: (values: unknown) => Promise<void>;
   submitName?: string;
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'md' | 'lg' | 'full';
   cols?: number;
 }
 
@@ -51,6 +51,7 @@ function Form({ onSubmit, fields, submitName, size = 'md', cols = 1 }: Props) {
     sm: 280,
     md: 340,
     lg: 400,
+    full: '100%',
   };
 
   // spaltenanzahl sm = 1, md = 2, sonst mehrere

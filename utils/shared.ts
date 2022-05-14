@@ -52,10 +52,8 @@ export function isNumber(val: string | number | null | undefined) {
   return val && !Number.isNaN(Number(val));
 }
 
-export function nullOnEmpty(value: string | null | undefined) {
-  return value === null || value === undefined || value.length === 0
-    ? null
-    : value;
+export function nullOnEmpty(val: string | null | undefined) {
+  return val === null || val === undefined || val.length === 0 ? null : val;
 }
 
 export function nullOnEmptyNum(val: string | null | undefined) {
@@ -70,4 +68,16 @@ export function nullOnEmptyNum(val: string | null | undefined) {
 
 export function getRandomInt(max: number) {
   return Math.floor(Math.random() * max);
+}
+
+export function removeSpaces(str: string) {
+  return str.replace(/\s+/g, '');
+}
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export function hasOwnProperty<X extends {}, Y extends PropertyKey>(
+  obj: X,
+  prop: Y
+): obj is X & Record<Y, unknown> {
+  return Object.prototype.hasOwnProperty.call(obj, prop);
 }
