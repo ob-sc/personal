@@ -25,6 +25,7 @@ function Layout({ session, loading, blockAccess, children }: Props) {
       <Navbar session={session} />
       <Container component="main" maxWidth="lg" sx={style}>
         {loading ? (
+          // brauche height weil der spinner sonst overflow erzeugt
           <Box sx={{ height: 150 }}>
             <CenteredSpinner size="3rem" />
           </Box>

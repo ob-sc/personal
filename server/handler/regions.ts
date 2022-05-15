@@ -43,7 +43,7 @@ export const createRegion: NextApiHandlerWithConnections = async (req, res) => {
   region.name = name;
   const result = await repo.save(region);
 
-  success(res, result);
+  success(res, result, 201);
 };
 
 export const removeRegion: NextApiHandlerWithConnections = async (req, res) => {

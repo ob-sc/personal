@@ -71,3 +71,7 @@ export type CellClickHandler = (
   event: MuiEvent<MouseEvent<Element, globalThis.MouseEvent>>,
   details: GridCallbackDetails
 ) => void;
+
+// Form
+
+export type ColWidth = 'xs' | 'sm' | 'md' | 'lg' | 'xl';

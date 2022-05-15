@@ -44,6 +44,7 @@ function RegionsContainer() {
           <Chip
             label={region.name}
             onClick={async () => {
+              setDeleteError(false);
               const r = await getRegion(region.id);
               setSelectedRegion(
                 r.data.id === selectedRegion?.id ? null : r?.data
@@ -80,22 +81,17 @@ function RegionsContainer() {
         {!selectedRegion ? null : <DataList data={regionData ?? []} />}
       </Box>
 
+      {/* fields und submitHandler inlinen ist hier unschön aber leichter mit den types */}
       <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
         <Form
           fields={[
-            {
-              label: 'Name',
-              name: 'name',
-              type: 'text',
-              required: true,
-            },
+            { label: 'Name', name: 'name', type: 'text', required: true },
           ]}
           onSubmit={async (values) => {
             await postRegion(values);
             await regions.mutate();
             setModalOpen(false);
           }}
-          size="full"
         />
       </Modal>
     </>

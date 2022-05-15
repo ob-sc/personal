@@ -1,3 +1,9 @@
+import { Entity } from 'server/database';
+
+export type StringValueEntitiy = Record<keyof Entity, string>;
+
+export type FormEntity = StringValueEntitiy | Partial<StringValueEntitiy>;
+
 export interface NewStationForm {
   id: string;
   name: string;

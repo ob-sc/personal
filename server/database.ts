@@ -6,7 +6,8 @@ import { Station } from 'entities/Station';
 import { Region } from 'entities/Region';
 import logger from 'lib/log';
 
-export const entities = [User, Station, Region];
+export type Entity = User | Station | Region;
+const entities = [User, Station, Region];
 
 async function getDatabaseConnection() {
   const NODE_ENV = process.env.NODE_ENV ?? 'development';

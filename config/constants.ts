@@ -41,3 +41,6 @@ export function accessConstants(access: number) {
 export const errorText = 'Es ist ein Fehler aufgetreten';
 
 export const noAccessText = 'Kein Zugriff auf diese Ressource';
+
+// todo permitted (unda andere?) als middleware in session?
+// todo wenn mit middleware in api (und client?) die route prüfen und dann gucken ob die berechtigung gesetzt ist, ggf selber setzen

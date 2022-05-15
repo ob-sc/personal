@@ -1,4 +1,6 @@
 import { errorText } from 'config/constants';
+import { Entity } from 'server/database';
+import { StringValueEntitiy } from 'types/forms';
 
 export const isDev = process.env.NODE_ENV !== 'production';
 
@@ -84,4 +86,19 @@ export function hasOwnProperty<X extends {}, Y extends PropertyKey>(
 
 export function commaJoin(arr: string[]) {
   return arr.length === 0 ? '-' : arr.join(', ');
+}
+
+// neues objekt aus werten von entity, jeder wert ist string
+// wird von form benutzt um zb bei PUT call leere werte in die form inputs einzufügen
+export function formSafeEntity(obj: Entity | undefined) {
+  if (!obj) return;
+  const newObj: StringValueEntitiy = { id: String(obj.id) };
+
+  for (const [key, val] of Object.entries(obj)) {
+    if (val === null || val === undefined) {
+      newObj[key as keyof Entity] = '';
+    } else newObj[key as keyof Entity] = val;
+  }
+
+  return newObj;
 }

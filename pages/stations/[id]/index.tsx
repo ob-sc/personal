@@ -8,8 +8,14 @@ import Layout from 'client/components/layout/Layout';
 import DataList from 'client/components/common/DataList';
 import { stationDescriptions } from 'client/tables/stations';
 import { KeyValue } from 'types/client';
-import { commaJoin } from 'utils/shared';
+import { commaJoin, formSafeEntity } from 'utils/shared';
 import Button from 'client/components/common/Button';
+import { useState } from 'react';
+import Modal from 'client/components/common/Modal';
+import Form from 'client/components/common/Form';
+import { stationFields } from 'client/tables/stations';
+import { selectOptionMapper } from 'utils/client';
+import { useGetRegions } from 'client/api/regions';
 
 export const getServerSideProps = withSessionSsr();
 
@@ -17,6 +23,7 @@ function SingleStationPage({ user }: IPT<typeof getServerSideProps>) {
   const router = useRouter();
   const { id } = router.query;
   const { data, isValidating } = useGetStation(Number(id));
+  const [modalOpen, setModalOpen] = useState(false);
 
   const { permitted } = accessConstants(user.access);
   const hasAccess = permitted['/users'];
@@ -30,7 +37,6 @@ function SingleStationPage({ user }: IPT<typeof getServerSideProps>) {
   const displayData: KeyValue[] = [
     { key: stationDescriptions.id, value: String(data?.id) },
     { key: stationDescriptions.name, value: data?.name },
-
     { key: stationDescriptions.address, value: data?.address },
     { key: stationDescriptions.zip, value: data?.zip },
     { key: stationDescriptions.city, value: data?.city },
@@ -49,8 +55,12 @@ function SingleStationPage({ user }: IPT<typeof getServerSideProps>) {
   ];
 
   const editClickHandler = () => {
-    console.log('hi');
+    setModalOpen(true);
   };
+
+  const regions = useGetRegions();
+  const options = regions.data?.map(selectOptionMapper) ?? [];
+  const modalFields = stationFields(options);
 
   return (
     <Layout loading={isValidating} session={user} blockAccess={!hasAccess}>
@@ -60,8 +70,24 @@ function SingleStationPage({ user }: IPT<typeof getServerSideProps>) {
       <DataList data={displayData} />
       <Box sx={{ mb: 2 }} />
       <Button onClick={editClickHandler}>Bearbeiten</Button>
+
+      <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
+        <Form
+          fields={modalFields}
+          onSubmit={async (values) => {
+            // await postRegion(values);
+            // await regions.mutate();
+            console.log(values);
+            setModalOpen(false);
+          }}
+          cols={2}
+          values={formSafeEntity(data)}
+        />
+      </Modal>
     </Layout>
   );
 }
 
 export default SingleStationPage;
+
+// todo button deaktivieren (neues feld active) und button löschen (komplett weg)

@@ -77,5 +77,5 @@ export const createStation: NextApiHandlerWithConnections<
   if (errors.length > 0) throw new ApiError(JSON.stringify(errors), 400);
 
   await repo.insert(station);
-  success(res);
+  success(res, station, 201);
 };

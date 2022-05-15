@@ -7,9 +7,10 @@ import { ApiError } from 'utils/server';
 /** Antwort mit Code 200 (bzw 204) */
 export const success = (
   res: NextApiResponse,
-  data?: string | object[] | object | null
+  data?: string | object[] | object | null,
+  status?: number
 ) => {
-  res.status(data ? 200 : 204);
+  res.status(status ? status : data ? 200 : 204);
   const body: SuccessResponse =
     typeof data === 'string' ? { message: data } : data;
   if (!data) res.end();

@@ -2,6 +2,7 @@ import { InferGetServerSidePropsType as IPT } from 'next';
 import { useRouter } from 'next/router';
 import { Typography } from '@mui/material';
 import { accessConstants } from 'config/constants';
+import { StringValueEntitiy } from 'types/forms';
 import { withSessionSsr } from 'lib/withSession';
 import { postStation } from 'client/api/stations';
 import { useGetRegions } from 'client/api/regions';
@@ -16,7 +17,7 @@ export const getServerSideProps = withSessionSsr();
 function NewStationPage({ user }: IPT<typeof getServerSideProps>) {
   const router = useRouter();
 
-  const submitHandler = async (values: unknown) => {
+  const submitHandler = async (values: StringValueEntitiy) => {
     await postStation(values);
     router.push('/stations');
   };
@@ -35,7 +36,7 @@ function NewStationPage({ user }: IPT<typeof getServerSideProps>) {
       <Typography variant="h2" gutterBottom>
         Neue Station
       </Typography>
-      <Form onSubmit={submitHandler} fields={fields} cols={3} />
+      <Form onSubmit={submitHandler} fields={fields} cols={3} fullWidth />
     </Layout>
   );
 }

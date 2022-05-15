@@ -44,7 +44,12 @@ function LoginPage() {
         ) : null}
 
         <Box sx={style}>
-          <Form onSubmit={handleSubmit} fields={fields} size="sm" />
+          <Form
+            onSubmit={handleSubmit}
+            fields={fields}
+            size="sm"
+            submitName="Anmelden"
+          />
         </Box>
       </Box>
     </>
