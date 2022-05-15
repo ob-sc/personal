@@ -29,6 +29,12 @@ export interface CProps {
 // Select & MultiSelect Optionen
 export type SelectOption = { optval: number | string; optlabel: string };
 
+// DataList & DataContainer Werte
+export type KeyValue = {
+  key: string;
+  value: string | number | null | undefined;
+};
+
 export interface FormField {
   name: string;
   label: string;

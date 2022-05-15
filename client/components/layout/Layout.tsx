@@ -11,7 +11,10 @@ interface Props extends CProps {
   blockAccess?: boolean;
 }
 
-const style = { overflowX: 'hidden', pb: 2 };
+const style = {
+  // overflowX: 'hidden',
+  pb: 2,
+};
 
 /**
  * Navbar und Container mit Laden-Spinner, Nachricht über fehlende Berechtigungen oder content.

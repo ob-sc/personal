@@ -18,13 +18,19 @@ const labelStyle = {
 };
 
 function DataContainer({ label, children }: Props) {
+  const isEmpty =
+    (Array.isArray(children) && children.length === 0) ||
+    children === null ||
+    children === undefined ||
+    children === '';
+
   return (
     <Box sx={containerStyle}>
       <Typography sx={labelStyle} variant="subtitle2">
         {label}
       </Typography>
       <Typography sx={cropText} variant="body1">
-        {children}
+        {isEmpty ? '-' : children}
       </Typography>
     </Box>
   );

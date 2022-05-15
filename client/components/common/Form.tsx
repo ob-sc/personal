@@ -8,7 +8,7 @@ import useMobileContext from 'client/context/MobileContext';
 import Select from 'client/components/common/Select';
 import MultiSelect from 'client/components/common/MultiSelect';
 import Input from 'client/components/common/Input';
-import SubmitButton from 'client/components/common/SubmitButton';
+import Button from 'client/components/common/Button';
 import { errorText } from 'config/constants';
 
 interface Props extends CProps {
@@ -128,7 +128,7 @@ function Form({ onSubmit, fields, submitName, size = 'md', cols = 1 }: Props) {
           ) : null}
         </Box>
 
-        <SubmitButton text={submitName ?? 'OK'} loading={submitting} />
+        <Button text={submitName ?? 'OK'} loading={submitting} />
       </Box>
     </form>
   );

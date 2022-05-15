@@ -1,4 +1,4 @@
-import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
+import { Box, Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 import { useState } from 'react';
 import { ParsedUser } from 'types/server';
 import { postAllowedStation } from 'client/api/users';
@@ -8,6 +8,13 @@ interface Props {
   stations: Station[];
   user: ParsedUser;
 }
+
+const style = {
+  // height: 200,
+  // display: 'grid',
+  // gridTemplateColumns: 'repeat(4, 1fr)',
+  columnCount: 4,
+};
 
 const SCCheckbox = ({
   station,
@@ -43,12 +50,14 @@ const SCCheckbox = ({
 
 function StationsContainer({ stations, user }: Props) {
   return (
-    <>
+    <Box sx={style}>
       {stations.map((station) => (
         <SCCheckbox station={station} user={user} key={station.id} />
       ))}
-    </>
+    </Box>
   );
 }
 
 export default StationsContainer;
+
+// todo toggle freigegebene stationen ,damit ausklappen, sonst nur die freigegebenen anzeigen?

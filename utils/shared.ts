@@ -81,3 +81,7 @@ export function hasOwnProperty<X extends {}, Y extends PropertyKey>(
 ): obj is X & Record<Y, unknown> {
   return Object.prototype.hasOwnProperty.call(obj, prop);
 }
+
+export function commaJoin(arr: string[]) {
+  return arr.length === 0 ? '-' : arr.join(', ');
+}

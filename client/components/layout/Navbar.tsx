@@ -8,6 +8,7 @@ import { deleteSession } from 'client/api/sessions';
 import Logo from 'client/components/layout/Logo';
 import NavLink from 'client/components/common/NavLink';
 import MobileMenu from 'client/components/layout/MobileMenu';
+import { flexGrow } from 'client/styles';
 
 interface Props {
   session?: ParsedUser;
@@ -67,7 +68,7 @@ const Navbar = ({ session }: Props) => {
                       </NavLink>
                     ))}
 
-              <Box sx={{ flexGrow: 1 }} />
+              <Box sx={flexGrow} />
 
               {!mobile ? null : (
                 <MobileMenu

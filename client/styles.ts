@@ -27,3 +27,5 @@ export const cropText = {
   whiteSpace: 'nowrap',
   textOverflow: 'ellipsis',
 };
+
+export const flexGrow = { flexGrow: 1 };

@@ -28,5 +28,5 @@ export class Region {
   stations!: Relation<Station[]>;
 
   @OneToMany(() => Station, (station) => station.subregion)
-  subStations!: Relation<Station[]>;
+  substations!: Relation<Station[]>;
 }

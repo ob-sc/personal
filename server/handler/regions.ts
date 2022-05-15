@@ -22,7 +22,7 @@ export const singleRegion: NextApiHandlerWithConnections = async (req, res) => {
 
   const region = await repo.findOne({
     where: { id },
-    relations: { users: true, stations: true, subStations: true },
+    relations: { users: true, stations: true, substations: true },
   });
 
   if (region === null) throw new ApiError('Region nicht gefunden', 400);
