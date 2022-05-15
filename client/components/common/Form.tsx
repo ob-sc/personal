@@ -20,7 +20,7 @@ interface Props extends CProps {
   cols?: number;
   disableHeader?: boolean;
   fullWidth?: boolean;
-  values?: Partial<StringValueEntitiy>;
+  values?: FormEntity;
 }
 
 function Form({
