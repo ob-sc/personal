@@ -19,5 +19,3 @@
   - Berechtigungen anpassen
 
   - Bei neuem entity auch `src/entities/index.ts` anpassen
-
-## nope

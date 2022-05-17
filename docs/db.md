@@ -41,7 +41,7 @@ DROP DATABASE development; CREATE DATABASE development; USE development;
 
 /* anmelden mit sync */
 
-UPDATE users SET access = X'1111111111' WHERE username = "bergen";
+UPDATE users SET access = X'ffff' WHERE username = "bergen";
 ```
 
 ## Troubleshoot

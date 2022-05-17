@@ -50,13 +50,15 @@ export const login: ApiHandlerWithConn = async (req, res) => {
   // das ist sehr statisch, wenn der tree im AD also geändert wird knallts
   const dn = ldapUser.distinguishedName;
   const dnParts = dn.split('=');
-  const station = dnParts[2].substring(0, 3);
-  dbUser.location = station; // todo auch verwaltung da rein, test number der station und wenn nicht hole
+  const location = dnParts[2].substring(0, 3);
+  dbUser.location = location;
 
   // und am Ende speichern
   dbUser = await repo.save(dbUser);
 
+  console.log(new Date().toISOString());
   const parsed = parseUser(dbUser);
+  console.log(new Date().toISOString());
 
   session.user = parsed;
   await session.save();
