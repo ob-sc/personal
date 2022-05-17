@@ -3,7 +3,7 @@ import { User } from 'src/entities/User';
 import parseUser from 'src/common/utils/parseUser';
 import { success } from 'src/common/utils/response';
 import { ApiError } from 'src/common/utils/server';
-import { access } from 'src/config/constants';
+import { access, adErrorText, dbErrorText } from 'src/config/constants';
 
 export const login: ApiHandlerWithConn = async (req, res) => {
   const {
@@ -12,8 +12,8 @@ export const login: ApiHandlerWithConn = async (req, res) => {
     db,
     ldap,
   } = req;
-  if (!ldap) throw new ApiError('AD nicht verfügbar');
-  if (!db) throw new ApiError('Datenbank nicht verfügbar');
+  if (!ldap) throw new ApiError(adErrorText);
+  if (!db) throw new ApiError(dbErrorText);
 
   if (!username) {
     throw new ApiError('Benutzername muss angegeben werden', 400, ['username']);
@@ -28,7 +28,7 @@ export const login: ApiHandlerWithConn = async (req, res) => {
 
   const repo = db.getRepository(User);
 
-  // suche username aus request in db
+  // suche username aus request in der db
   let dbUser = await repo.findOne({
     where: { username },
     relations: { region: true, allowed_stations: true },
@@ -56,10 +56,8 @@ export const login: ApiHandlerWithConn = async (req, res) => {
   // und am Ende speichern
   dbUser = await repo.save(dbUser);
 
-  console.log(new Date().toISOString());
+  // für Session parsen
   const parsed = parseUser(dbUser);
-  console.log(new Date().toISOString());
-
   session.user = parsed;
   await session.save();
 

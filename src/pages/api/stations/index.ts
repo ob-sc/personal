@@ -8,7 +8,7 @@ import { noAccessText } from 'src/config/constants';
 const handler: ApiHandlerWithConn = async (req, res) => {
   try {
     const { method } = req;
-    const { read, write } = req.session.user?.access.users ?? {};
+    const { read, write } = req.session.user?.access.stations ?? {};
 
     switch (method?.toUpperCase()) {
       case 'GET':

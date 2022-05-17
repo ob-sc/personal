@@ -77,6 +77,12 @@ const parseUser = (user: User): ParsedUser => {
     location,
   } = user;
 
+  console.log(access);
+
+  const accessFromBinary = Buffer.isBuffer(access)
+    ? access.readUIntBE(0, 2)
+    : 0;
+
   return {
     id,
     username,
@@ -85,15 +91,10 @@ const parseUser = (user: User): ParsedUser => {
     firstName: first_name,
     lastName: last_name,
     fullName: `${first_name} ${last_name}`,
-    access: parseAccess((access as Buffer).readUIntBE(0, 2)),
+    access: parseAccess(accessFromBinary),
     location,
     stations: allowed_stations?.map((stat) => stat.id) ?? [],
   };
 };
 
 export default parseUser;
-
-// todo /admin seite in der man berechtigungsgruppen eingeben kann, diese dann bei neuer ma erstellen
-// todo statt dn direkt station / abteilung in db eintragen
-
-// https://medium.com/swlh/an-illustrated-guide-to-bitwise-operators-60b1b1ad5ac

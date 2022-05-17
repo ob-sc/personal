@@ -62,6 +62,7 @@ function Form({
     display: 'flex',
     gap: 2,
     flexFlow: 'column nowrap',
+    mb: 2,
   };
 
   // spaltenanzahl bei responsive variablen: sm = 1, md = 2, nicht responsive auch mehrere
@@ -140,17 +141,16 @@ function Form({
   return (
     <form onSubmit={handleSubmit(submitHandler)}>
       <Box sx={containerStyle}>
-        <Box sx={gridStyle}>
-          {fields.map(fieldMap)}
-          {error?.response?.data?.message ? (
-            <Typography color="error">
-              {error.response.data.message ?? errorText}
-            </Typography>
-          ) : null}
-        </Box>
+        <Box sx={gridStyle}>{fields.map(fieldMap)}</Box>
 
         <Button text={submitName ?? 'OK'} loading={submitting} submit={true} />
       </Box>
+
+      {error?.response?.data?.message ? (
+        <Typography color="error">
+          {error.response.data.message ?? errorText}
+        </Typography>
+      ) : null}
     </form>
   );
 }

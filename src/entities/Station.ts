@@ -14,7 +14,7 @@ import { User } from 'src/entities/User';
 
 @Entity({ name: 'stations' })
 export class Station {
-  @Min(0)
+  @Min(1)
   @PrimaryColumn({ ...UNIQUE })
   id!: number;
 
@@ -44,6 +44,9 @@ export class Station {
 
   @Column('int', { ...NULL })
   subregion_id!: number | null;
+
+  @Column('tinyint', { default: 1 })
+  active!: boolean;
 
   // ---
 

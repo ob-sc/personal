@@ -2,10 +2,11 @@ import { ApiHandlerWithConn } from 'src/common/types/server';
 import { Region } from 'src/entities/Region';
 import { success } from 'src/common/utils/response';
 import { ApiError, idFromQuery } from 'src/common/utils/server';
+import { dbErrorText } from 'src/config/constants';
 
 export const allRegions: ApiHandlerWithConn = async (req, res) => {
   const { db } = req;
-  if (!db) throw new ApiError('Datenbank nicht verfügbar');
+  if (!db) throw new ApiError(dbErrorText);
 
   const repo = db.getRepository(Region);
 
@@ -13,9 +14,30 @@ export const allRegions: ApiHandlerWithConn = async (req, res) => {
   success(res, result);
 };
 
+export const createRegion: ApiHandlerWithConn<{ name: string }> = async (
+  req,
+  res
+) => {
+  const {
+    body: { name },
+    db,
+  } = req;
+  if (!db) throw new ApiError(dbErrorText);
+
+  const repo = db.getRepository(Region);
+
+  const region = new Region();
+  region.name = name.trim();
+  const result = await repo.save(region);
+
+  success(res, result, 201);
+};
+
+// [id]
+
 export const singleRegion: ApiHandlerWithConn = async (req, res) => {
   const { db, query } = req;
-  if (!db) throw new ApiError('Datenbank nicht verfügbar');
+  if (!db) throw new ApiError(dbErrorText);
   const id = idFromQuery(query.id);
 
   const repo = db.getRepository(Region);
@@ -30,25 +52,9 @@ export const singleRegion: ApiHandlerWithConn = async (req, res) => {
   success(res, region);
 };
 
-export const createRegion: ApiHandlerWithConn = async (req, res) => {
-  const {
-    body: { name },
-    db,
-  } = req;
-  if (!db) throw new ApiError('Datenbank nicht verfügbar');
-
-  const repo = db.getRepository(Region);
-
-  const region = new Region();
-  region.name = name;
-  const result = await repo.save(region);
-
-  success(res, result, 201);
-};
-
-export const removeRegion: ApiHandlerWithConn = async (req, res) => {
+export const deleteRegion: ApiHandlerWithConn = async (req, res) => {
   const { db, query } = req;
-  if (!db) throw new ApiError('Datenbank nicht verfügbar');
+  if (!db) throw new ApiError(dbErrorText);
   const id = idFromQuery(query.id);
 
   const repo = db.getRepository(Region);

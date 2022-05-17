@@ -6,6 +6,7 @@ import { redirectUrl } from 'src/common/utils/shared';
 import { error } from 'src/common/utils/response';
 import getDatabaseConnection from 'src/entities';
 import ldapConnection from 'src/modules/ldap/ldap';
+import { dbErrorText } from 'src/config/constants';
 
 declare module 'iron-session' {
   interface IronSessionData {
@@ -73,7 +74,7 @@ export const withSessionApi = (
       const db = await getDatabaseConnection();
 
       if (db === null || db === undefined) {
-        error(res, 'Datenbank nicht verfügbar', 500);
+        error(res, dbErrorText, 500);
         return;
       }
 
@@ -88,6 +89,9 @@ export const withSessionApi = (
 
     await handler(req, res);
 
+    // wenn "Error: Can't add new command when connection is in closed state" kommt:
+    // der handler läuft durch, aber eine DB Operation wird noch durchgeführt
+    // vermutlich fehlt dann irgendwo ein await
     req.db.destroy();
     req.db = undefined;
     req.ldap?.destroy();

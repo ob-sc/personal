@@ -14,4 +14,5 @@ export const useGetStations = () => useRequest<Station[]>({ url: route });
 
 export const postStation = (values: FormValues) => axios.post(route, values);
 
-export const putStation = (values: FormValues) => axios.put(route, values);
+export const putStation = (id: number, values: FormValues) =>
+  axios.put(`${route}/${id}`, values);

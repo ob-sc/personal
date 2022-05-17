@@ -3,10 +3,11 @@ import { User } from 'src/entities/User';
 import parseUser from 'src/common/utils/parseUser';
 import { success } from 'src/common/utils/response';
 import { ApiError, idFromQuery } from 'src/common/utils/server';
+import { dbErrorText } from 'src/config/constants';
 
 export const allUsers: ApiHandlerWithConn = async (req, res) => {
   const { db } = req;
-  if (!db) throw new ApiError('Datenbank nicht verfügbar');
+  if (!db) throw new ApiError(dbErrorText);
 
   const repo = db.getRepository(User);
   const result = await repo.find();
@@ -15,7 +16,7 @@ export const allUsers: ApiHandlerWithConn = async (req, res) => {
 
 export const singleUser: ApiHandlerWithConn = async (req, res) => {
   const { query, db } = req;
-  if (!db) throw new ApiError('Datenbank nicht verfügbar');
+  if (!db) throw new ApiError(dbErrorText);
   const id = idFromQuery(query.id);
 
   const repo = db.getRepository(User);
@@ -35,7 +36,7 @@ export const singleUser: ApiHandlerWithConn = async (req, res) => {
 
 export const createAllowedStation: ApiHandlerWithConn = async (req, res) => {
   const { body, db } = req;
-  if (!db) throw new ApiError('Datenbank nicht verfügbar');
+  if (!db) throw new ApiError(dbErrorText);
 
   const repo = db.getRepository(User);
 

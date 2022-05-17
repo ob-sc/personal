@@ -9,7 +9,7 @@ import Layout from 'src/common/components/Layout';
 import Form, { FormValues } from 'src/common/components/Form';
 import { stationFields } from 'src/modules/stations/columns';
 
-export interface NewStationForm {
+export interface StationForm {
   id: string;
   name: string;
   address: string;

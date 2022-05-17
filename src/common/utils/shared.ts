@@ -53,8 +53,10 @@ export function isNumber(val: string | number | null | undefined) {
   return val && !Number.isNaN(Number(val));
 }
 
-export function nullOnEmpty(val: string | null | undefined) {
-  return val === null || val === undefined || val.length === 0 ? null : val;
+export function nullOnEmptyTrim(val: string | null | undefined) {
+  return val === null || val === undefined || val.length === 0
+    ? null
+    : val.trim();
 }
 
 export function nullOnEmptyNum(val: string | null | undefined) {

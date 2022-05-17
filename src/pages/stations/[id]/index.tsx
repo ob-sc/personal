@@ -2,10 +2,10 @@ import { InferGetServerSidePropsType as IPT } from 'next';
 import { useRouter } from 'next/router';
 import { Box, Typography } from '@mui/material';
 import { withSessionSsr } from 'src/common/middleware/withSession';
-import { useGetStation } from 'src/modules/stations/api';
+import { putStation, useGetStation } from 'src/modules/stations/api';
 import Layout from 'src/common/components/Layout';
 import DataList from 'src/common/components/DataList';
-import { stationDescriptions } from 'src/modules/stations/columns';
+import { stationDescriptions as statDesc } from 'src/modules/stations/columns';
 import { KeyValue } from 'src/common/types/client';
 import { commaJoin, formSafeEntity } from 'src/common/utils/shared';
 import Button from 'src/common/components/Button';
@@ -15,13 +15,15 @@ import Form from 'src/common/components/Form';
 import { stationFields } from 'src/modules/stations/columns';
 import { selectOptionMapper } from 'src/common/utils/client';
 import { useGetRegions } from 'src/modules/regions/api';
+import { idFromQuery } from 'src/common/utils/server';
 
 export const getServerSideProps = withSessionSsr();
 
 function SingleStationPage({ user }: IPT<typeof getServerSideProps>) {
   const router = useRouter();
-  const { id } = router.query;
-  const { data, isValidating } = useGetStation(Number(id));
+  const id = idFromQuery(router.query.id ?? '');
+
+  const { data, isValidating, mutate } = useGetStation(id);
   const [modalOpen, setModalOpen] = useState(false);
 
   const hasAccess = user.access.stations.read;
@@ -33,17 +35,17 @@ function SingleStationPage({ user }: IPT<typeof getServerSideProps>) {
   );
 
   const displayData: KeyValue[] = [
-    { key: stationDescriptions.id, value: String(data?.id) },
-    { key: stationDescriptions.name, value: data?.name },
-    { key: stationDescriptions.address, value: data?.address },
-    { key: stationDescriptions.zip, value: data?.zip },
-    { key: stationDescriptions.city, value: data?.city },
-    { key: stationDescriptions.telephone, value: data?.telephone },
-    { key: stationDescriptions.fax, value: data?.fax },
-    { key: stationDescriptions.email, value: data?.email },
-    { key: stationDescriptions.region, value: data?.region.name },
+    { key: statDesc.id, value: String(data?.id) },
+    { key: statDesc.name, value: data?.name },
+    { key: statDesc.address, value: data?.address },
+    { key: statDesc.zip, value: data?.zip },
+    { key: statDesc.city, value: data?.city },
+    { key: statDesc.telephone, value: data?.telephone },
+    { key: statDesc.fax, value: data?.fax },
+    { key: statDesc.email, value: data?.email },
+    { key: statDesc.region, value: data?.region.name },
     {
-      key: stationDescriptions.subregion,
+      key: statDesc.subregion,
       value: data?.subregion ? data.subregion.name : null,
     },
     {
@@ -73,8 +75,8 @@ function SingleStationPage({ user }: IPT<typeof getServerSideProps>) {
         <Form
           fields={modalFields}
           onSubmit={async (values) => {
-            // await putStation(values);
-            // await stations.mutate();
+            await putStation(id, values);
+            await mutate();
             setModalOpen(false);
           }}
           cols={2}

@@ -1,5 +1,7 @@
+import { ValidationError } from 'class-validator';
 import { hasOwnProperty, isDev, isEmpty } from 'src/common/utils/shared';
 
+/** Genereller Fehler wenn in der API was schieft läuft */
 export class ApiError extends Error {
   readonly statusCode: number;
   readonly fields: string[];
@@ -13,20 +15,15 @@ export class ApiError extends Error {
   }
 }
 
+// Next config auf api pages
 export const unresolved = {
   api: {
     externalResolver: true,
   },
 };
 
-export const NULL = {
-  nullable: true,
-  // default: null,
-};
-
-// automatisch not null
-// export const NOT_NULL = { nullable: false };
-
+// helper für TypeORM
+export const NULL = { nullable: true };
 export const UNIQUE = { unique: true };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -53,6 +50,16 @@ export function parseLdapError(err: any): ApiError {
   return new ApiError(message, statusCode, fields);
 }
 
+/** Wirft Exception mit `fields` */
+export function handleValidationErrors(errors: ValidationError[]): never {
+  throw new ApiError(
+    'Ungültige Eingabe',
+    400,
+    errors.map((e) => e.property)
+  );
+}
+
+/** Wirft Exception wenn ein Pflichtfeld fehlt */
 export function requiredField(...args: (string | null | undefined)[]) {
   for (const arg of args) {
     if (isEmpty(arg)) {
@@ -61,6 +68,7 @@ export function requiredField(...args: (string | null | undefined)[]) {
   }
 }
 
+/** Gibt ID aus `string` / erstem Element von `string[]`. Wirft Exception wenn ID keine `number` ist. */
 export function idFromQuery(id: string | string[]): number {
   const num = Number(Array.isArray(id) ? id[0] : id);
   if (Number.isNaN(num)) throw new ApiError('Keine gültige ID', 400);
