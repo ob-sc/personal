@@ -54,15 +54,10 @@ export const error = (
     } else if (arg instanceof Error) err = arg;
   }
 
-  if (message === undefined) {
-    message =
-      err?.message ??
-      (status === 401 ? 'Authentifizierung erforderlich' : errorText);
-  }
+  if (message === undefined) message = err?.message ?? errorText;
   logger.error(message);
 
   const body: ErrorResponse = { message, fields };
-
   res.status(status).json(body);
 };
 

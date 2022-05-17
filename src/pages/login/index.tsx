@@ -3,7 +3,7 @@ import { Box, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { FormField } from 'src/common/types/client';
 import { postSession } from 'src/modules/auth/api';
-import Form from 'src/common/components/Form';
+import Form, { FormValues } from 'src/common/components/Form';
 import { border, fullscreenCenteredFlex } from 'src/common/styles';
 
 const style = { ...border, p: 1.5 };
@@ -20,10 +20,10 @@ function LoginPage() {
     if (window) setExpired(window.sessionStorage.getItem('session') ?? '');
   }, []);
 
-  const handleSubmit = async (values: unknown) => {
+  const handleSubmit = async (values: FormValues) => {
     await postSession(values);
     // wenn login ok: speichern um zu sehen ob user schon eingeloggt war
-    // dann kommt bei 401 "session abgelaufen"
+    // dann kommt bei response mit 401 "session abgelaufen"
     window.sessionStorage.setItem('session', 'true');
 
     router.push(typeof redirect === 'string' ? redirect : '/');

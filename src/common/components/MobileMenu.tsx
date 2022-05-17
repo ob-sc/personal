@@ -1,16 +1,15 @@
 import { MouseEvent, useState } from 'react';
-import { IconButton, Menu, MenuItem } from '@mui/material';
+import { IconButton, Menu, MenuItem as MuiMenuItem } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { ParsedUser } from 'src/common/types/server';
 import NavLink from 'src/common/components/NavLink';
+import { MenuItem } from 'src/common/components/Navbar';
 
 interface Props {
   mobile: boolean;
-  session: ParsedUser;
-  menuItems: { access: number; route: string; label: string }[];
+  menuItems: MenuItem[];
 }
 
-const MobileMenu = ({ mobile, session, menuItems }: Props) => {
+const MobileMenu = ({ mobile, menuItems }: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
@@ -42,11 +41,11 @@ const MobileMenu = ({ mobile, session, menuItems }: Props) => {
         }}
       >
         {menuItems
-          .filter((item) => session.access >= item.access)
+          .filter((item) => item.access === true)
           .map((item) => (
-            <MenuItem key={item.route} onClick={handleClose}>
+            <MuiMenuItem key={item.route} onClick={handleClose}>
               <NavLink href={item.route}>{item.label}</NavLink>
-            </MenuItem>
+            </MuiMenuItem>
           ))}
       </Menu>
     </>

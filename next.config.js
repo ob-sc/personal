@@ -10,15 +10,6 @@ module.exports = {
     outputStandalone: true,
   },
   eslint: {
-    dirs: [
-      'client',
-      'config',
-      'entities',
-      'lib',
-      'pages',
-      'server',
-      'types',
-      'utils',
-    ],
+    dirs: ['src'],
   },
 };

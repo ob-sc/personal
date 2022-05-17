@@ -1,10 +1,10 @@
-import { NextApiHandlerWithConnections } from 'src/common/types/server';
+import { ApiHandlerWithConn } from 'src/common/types/server';
 import { User } from 'src/entities/User';
 import parseUser from 'src/common/utils/parseUser';
 import { success } from 'src/common/utils/response';
 import { ApiError, idFromQuery } from 'src/common/utils/server';
 
-export const allUsers: NextApiHandlerWithConnections = async (req, res) => {
+export const allUsers: ApiHandlerWithConn = async (req, res) => {
   const { db } = req;
   if (!db) throw new ApiError('Datenbank nicht verfügbar');
 
@@ -13,7 +13,7 @@ export const allUsers: NextApiHandlerWithConnections = async (req, res) => {
   success(res, result);
 };
 
-export const singleUser: NextApiHandlerWithConnections = async (req, res) => {
+export const singleUser: ApiHandlerWithConn = async (req, res) => {
   const { query, db } = req;
   if (!db) throw new ApiError('Datenbank nicht verfügbar');
   const id = idFromQuery(query.id);
@@ -24,7 +24,7 @@ export const singleUser: NextApiHandlerWithConnections = async (req, res) => {
     where: {
       id,
     },
-    relations: { region: true, allowedStations: true },
+    relations: { region: true, allowed_stations: true },
   });
 
   if (user === null) throw new ApiError('Benutzer nicht gefunden', 400);
@@ -33,10 +33,7 @@ export const singleUser: NextApiHandlerWithConnections = async (req, res) => {
   success(res, result);
 };
 
-export const createAllowedStation: NextApiHandlerWithConnections = async (
-  req,
-  res
-) => {
+export const createAllowedStation: ApiHandlerWithConn = async (req, res) => {
   const { body, db } = req;
   if (!db) throw new ApiError('Datenbank nicht verfügbar');
 
@@ -46,7 +43,7 @@ export const createAllowedStation: NextApiHandlerWithConnections = async (
     where: {
       id: Number(body.id),
     },
-    relations: { region: true, allowedStations: true },
+    relations: { region: true, allowed_stations: true },
   });
 
   if (user === null) throw new ApiError('Benutzer nicht gefunden', 400);

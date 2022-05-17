@@ -1,8 +1,9 @@
-import { NextApiHandlerWithConnections } from 'src/common/types/server';
+import { ApiHandlerWithConn } from 'src/common/types/server';
 import { withSessionApi } from 'src/common/middleware/withSession';
-import { unresolved } from 'src/common/utils/server';
+import { ApiError, unresolved } from 'src/common/utils/server';
 import { error, httpMethodError } from 'src/common/utils/response';
 import { allLdapUsers } from 'src/modules/ldap/apiHandler';
+import { noAccessText } from 'src/config/constants';
 
 /* todo
 auf /users nur die daten aus der datenbank die nicht durch sync aktualisiert werden darstellen
@@ -16,11 +17,15 @@ sync dann per:
 * mach dn speichern sinn? lieber parsen und dann speichern
 */
 
-const handler: NextApiHandlerWithConnections = async (req, res) => {
+const handler: ApiHandlerWithConn = async (req, res) => {
   try {
     const { method } = req;
+    const { write } = req.session.user?.access.users ?? {};
+
     switch (method?.toUpperCase()) {
       case 'GET':
+        // hier write obwohl es eig read wäre, aber ldap ist wichtiger als users read aus dn
+        if (!write) throw new ApiError(noAccessText, 403);
         await allLdapUsers(req, res);
         break;
       default:
@@ -31,6 +36,6 @@ const handler: NextApiHandlerWithConnections = async (req, res) => {
   }
 };
 
-export default withSessionApi(handler, '/directory', true);
+export default withSessionApi(handler, true);
 
 export const config = unresolved;

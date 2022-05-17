@@ -1,17 +1,18 @@
-import { NextApiHandlerWithConnections } from 'src/common/types/server';
+import { ApiHandlerWithConn } from 'src/common/types/server';
 import { withSessionApi } from 'src/common/middleware/withSession';
-import { unresolved } from 'src/common/utils/server';
+import { ApiError, unresolved } from 'src/common/utils/server';
 import { error, httpMethodError } from 'src/common/utils/response';
 import { createAllowedStation } from 'src/modules/users/apiHandler';
+import { noAccessText } from 'src/config/constants';
 
-// todo api/allowed-stations oder weiter api/users/allowed?
-
-const handler: NextApiHandlerWithConnections = async (req, res) => {
+const handler: ApiHandlerWithConn = async (req, res) => {
   try {
     const { method } = req;
+    const { write } = req.session.user?.access.users ?? {};
 
     switch (method?.toUpperCase()) {
       case 'POST':
+        if (!write) throw new ApiError(noAccessText, 403);
         await createAllowedStation(req, res);
         break;
       default:
@@ -22,6 +23,6 @@ const handler: NextApiHandlerWithConnections = async (req, res) => {
   }
 };
 
-export default withSessionApi(handler, '/users/[id]/allowed');
+export default withSessionApi(handler);
 
 export const config = unresolved;

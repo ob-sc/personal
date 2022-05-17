@@ -16,7 +16,7 @@ const style = {
   columnCount: 4,
 };
 
-const SCCheckbox = ({
+const ASCCheckbox = ({
   station,
   user,
 }: {
@@ -48,17 +48,17 @@ const SCCheckbox = ({
   );
 };
 
-function StationsContainer({ stations, user }: Props) {
+function AllowedStationsContainer({ stations, user }: Props) {
   return (
     <Box sx={style}>
       {stations.map((station) => (
-        <SCCheckbox station={station} user={user} key={station.id} />
+        <ASCCheckbox station={station} user={user} key={station.id} />
       ))}
     </Box>
   );
 }
 
-export default StationsContainer;
+export default AllowedStationsContainer;
 
 // todo toggle freigegebene stationen ,damit ausklappen, sonst nur die freigegebenen anzeigen?
 // todo iwo oben auswahl für zb alle, keine, alle aus region bla etc? dann brauch ich allgemeinen speicher knopf der eine form abschickt, dann wird api komisch

@@ -1,27 +1,22 @@
-import { NextApiHandlerWithConnections } from 'src/common/types/server';
+import { ApiHandlerWithConn } from 'src/common/types/server';
 import { withSessionApi } from 'src/common/middleware/withSession';
 import { ApiError, unresolved } from 'src/common/utils/server';
 import { error, httpMethodError } from 'src/common/utils/response';
 import { allStations, createStation } from 'src/modules/stations/apiHandler';
-import { accessConstants, noAccessText } from 'src/config/constants';
+import { noAccessText } from 'src/config/constants';
 
-const handler: NextApiHandlerWithConnections = async (req, res) => {
+const handler: ApiHandlerWithConn = async (req, res) => {
   try {
-    const {
-      method,
-      session: {
-        user: { access },
-      },
-    } = req;
-
-    const { permitted } = accessConstants(access);
+    const { method } = req;
+    const { read, write } = req.session.user?.access.users ?? {};
 
     switch (method?.toUpperCase()) {
       case 'GET':
+        if (!read) throw new ApiError(noAccessText, 403);
         await allStations(req, res);
         break;
       case 'POST':
-        if (!permitted['/stations/new']) throw new ApiError(noAccessText);
+        if (!write) throw new ApiError(noAccessText, 403);
         await createStation(req, res);
         break;
       default:
@@ -32,6 +27,6 @@ const handler: NextApiHandlerWithConnections = async (req, res) => {
   }
 };
 
-export default withSessionApi(handler, '/stations');
+export default withSessionApi(handler);
 
 export const config = unresolved;

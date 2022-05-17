@@ -1,6 +1,6 @@
 import { Box, Container } from '@mui/material';
-import { CProps } from 'src/common/types/client';
 import { ParsedUser } from 'src/common/types/server';
+import { CProps } from 'src/common/types/client';
 import NoAccess from 'src/common/components/NoAccess';
 import CenteredSpinner from 'src/common/components/CenteredSpinner';
 import Navbar from 'src/common/components/Navbar';

@@ -1,9 +1,9 @@
-import { NextApiHandlerWithConnections } from 'src/common/types/server';
+import { ApiHandlerWithConn } from 'src/common/types/server';
 import { Region } from 'src/entities/Region';
 import { success } from 'src/common/utils/response';
 import { ApiError, idFromQuery } from 'src/common/utils/server';
 
-export const allRegions: NextApiHandlerWithConnections = async (req, res) => {
+export const allRegions: ApiHandlerWithConn = async (req, res) => {
   const { db } = req;
   if (!db) throw new ApiError('Datenbank nicht verfügbar');
 
@@ -13,7 +13,7 @@ export const allRegions: NextApiHandlerWithConnections = async (req, res) => {
   success(res, result);
 };
 
-export const singleRegion: NextApiHandlerWithConnections = async (req, res) => {
+export const singleRegion: ApiHandlerWithConn = async (req, res) => {
   const { db, query } = req;
   if (!db) throw new ApiError('Datenbank nicht verfügbar');
   const id = idFromQuery(query.id);
@@ -30,7 +30,7 @@ export const singleRegion: NextApiHandlerWithConnections = async (req, res) => {
   success(res, region);
 };
 
-export const createRegion: NextApiHandlerWithConnections = async (req, res) => {
+export const createRegion: ApiHandlerWithConn = async (req, res) => {
   const {
     body: { name },
     db,
@@ -46,7 +46,7 @@ export const createRegion: NextApiHandlerWithConnections = async (req, res) => {
   success(res, result, 201);
 };
 
-export const removeRegion: NextApiHandlerWithConnections = async (req, res) => {
+export const removeRegion: ApiHandlerWithConn = async (req, res) => {
   const { db, query } = req;
   if (!db) throw new ApiError('Datenbank nicht verfügbar');
   const id = idFromQuery(query.id);

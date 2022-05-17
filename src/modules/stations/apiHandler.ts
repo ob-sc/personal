@@ -1,5 +1,5 @@
 import { validate } from 'class-validator';
-import { NextApiHandlerWithConnections } from 'src/common/types/server';
+import { ApiHandlerWithConn } from 'src/common/types/server';
 import { Station } from 'src/entities/Station';
 import { success } from 'src/common/utils/response';
 import { nullOnEmpty, nullOnEmptyNum } from 'src/common/utils/shared';
@@ -11,7 +11,7 @@ import {
 } from 'src/common/utils/server';
 import { NewStationForm } from 'src/pages/stations/new';
 
-export const allStations: NextApiHandlerWithConnections = async (req, res) => {
+export const allStations: ApiHandlerWithConn = async (req, res) => {
   const { db } = req;
   if (!db) throw new ApiError('Datenbank nicht verfügbar');
 
@@ -28,10 +28,7 @@ export const allStations: NextApiHandlerWithConnections = async (req, res) => {
   success(res, flatStations);
 };
 
-export const singleStation: NextApiHandlerWithConnections = async (
-  req,
-  res
-) => {
+export const singleStation: ApiHandlerWithConn = async (req, res) => {
   const { query, db } = req;
   if (!db) throw new ApiError('Datenbank nicht verfügbar');
 
@@ -50,9 +47,10 @@ export const singleStation: NextApiHandlerWithConnections = async (
   success(res, result);
 };
 
-export const createStation: NextApiHandlerWithConnections<
-  NewStationForm
-> = async (req, res) => {
+export const createStation: ApiHandlerWithConn<NewStationForm> = async (
+  req,
+  res
+) => {
   const { db, body } = req;
   if (!db) throw new ApiError('Datenbank nicht verfügbar');
 

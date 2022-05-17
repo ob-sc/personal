@@ -1,14 +1,18 @@
-import { NextApiHandlerWithConnections } from 'src/common/types/server';
+import { ApiHandlerWithConn } from 'src/common/types/server';
 import { withSessionApi } from 'src/common/middleware/withSession';
-import { unresolved } from 'src/common/utils/server';
+import { ApiError, unresolved } from 'src/common/utils/server';
 import { error, httpMethodError } from 'src/common/utils/response';
 import { singleStation } from 'src/modules/stations/apiHandler';
+import { noAccessText } from 'src/config/constants';
 
-const handler: NextApiHandlerWithConnections = async (req, res) => {
+const handler: ApiHandlerWithConn = async (req, res) => {
   try {
     const { method } = req;
+    const { read } = req.session.user?.access.users ?? {};
+
     switch (method?.toUpperCase()) {
       case 'GET':
+        if (!read) throw new ApiError(noAccessText, 403);
         await singleStation(req, res);
         break;
       default:
@@ -19,6 +23,6 @@ const handler: NextApiHandlerWithConnections = async (req, res) => {
   }
 };
 
-export default withSessionApi(handler, '/stations');
+export default withSessionApi(handler);
 
 export const config = unresolved;

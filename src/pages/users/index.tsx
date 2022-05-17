@@ -1,7 +1,6 @@
 import { InferGetServerSidePropsType as IPT } from 'next';
 import { useRouter } from 'next/router';
 import { RowClickHandler } from 'src/common/types/client';
-import { accessConstants } from 'src/config/constants';
 import { useGetUsers } from 'src/modules/users/api';
 import { withSessionSsr } from 'src/common/middleware/withSession';
 import Layout from 'src/common/components/Layout';
@@ -21,8 +20,7 @@ function AllUsersPage({ user }: IPT<typeof getServerSideProps>) {
 
   const cols = userColumns();
 
-  const { permitted } = accessConstants(user.access);
-  const hasAccess = permitted['/users'];
+  const hasAccess = user.access.users.read;
 
   return (
     <Layout session={user} blockAccess={!hasAccess}>

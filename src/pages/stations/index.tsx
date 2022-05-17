@@ -6,7 +6,6 @@ import DataGrid from 'src/common/components/DataGrid';
 import { RowClickHandler } from 'src/common/types/client';
 import stationColumns from 'src/modules/stations/columns';
 import { useGetStations } from 'src/modules/stations/api';
-import { accessConstants, routes } from 'src/config/constants';
 
 import RegionsContainer from 'src/modules/stations/components/RegionsContainer';
 
@@ -24,23 +23,23 @@ function AllStationsPage({ user }: IPT<typeof getServerSideProps>) {
 
   const cols = stationColumns();
 
-  const { permitted } = accessConstants(user.access);
-  const hasAccess = permitted['/stations'];
+  const { read: canRead, write: canWrite } = user.access.stations;
+  const hasRegionAccess = user.access.regions.write;
 
   return (
-    <Layout session={user} blockAccess={!hasAccess}>
+    <Layout session={user} blockAccess={!canRead}>
       <DataGrid
         columns={cols}
         rows={data ?? []}
         error={error !== undefined}
         loading={!data && !error}
         rowClickHandler={rowClickHandler}
-        add={routes['/stations/new'] <= user.access}
+        add={canWrite}
         actionHandler={() => {
           router.push('/stations/new');
         }}
       />
-      <RegionsContainer />
+      {hasRegionAccess ? <RegionsContainer /> : null}
     </Layout>
   );
 }

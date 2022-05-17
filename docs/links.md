@@ -48,6 +48,8 @@
 
 - https://github.com/vercel/next.js/blob/canary/examples/api-routes-rest/pages/index.js
 
+- dokumentation example: https://stripe.com/docs/api/customer_tax_ids/retrieve?lang=curl
+
 ## ldap
 
 - ldapjs client api http://ldapjs.org/client.html#create-a-client

@@ -1,7 +1,6 @@
 import { InferGetServerSidePropsType as IPT } from 'next';
 import { useRouter } from 'next/router';
 import { Box, Typography } from '@mui/material';
-import { accessConstants } from 'src/config/constants';
 import { withSessionSsr } from 'src/common/middleware/withSession';
 import { useGetStation } from 'src/modules/stations/api';
 import Layout from 'src/common/components/Layout';
@@ -25,8 +24,7 @@ function SingleStationPage({ user }: IPT<typeof getServerSideProps>) {
   const { data, isValidating } = useGetStation(Number(id));
   const [modalOpen, setModalOpen] = useState(false);
 
-  const { permitted } = accessConstants(user.access);
-  const hasAccess = permitted['/users'];
+  const hasAccess = user.access.stations.read;
 
   const usersString = commaJoin(
     data?.users.map(
@@ -75,9 +73,8 @@ function SingleStationPage({ user }: IPT<typeof getServerSideProps>) {
         <Form
           fields={modalFields}
           onSubmit={async (values) => {
-            // await postRegion(values);
-            // await regions.mutate();
-            console.log(values);
+            // await putStation(values);
+            // await stations.mutate();
             setModalOpen(false);
           }}
           cols={2}

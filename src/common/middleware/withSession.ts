@@ -1,11 +1,7 @@
 import { withIronSessionApiRoute, withIronSessionSsr } from 'iron-session/next';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
-import {
-  NextApiHandlerWithConnections,
-  ParsedUser,
-} from 'src/common/types/server';
+import { ApiHandlerWithConn, ParsedUser } from 'src/common/types/server';
 import { sessionConfig } from 'src/config';
-import { accessConstants, routes } from 'src/config/constants';
 import { redirectUrl } from 'src/common/utils/shared';
 import { error } from 'src/common/utils/response';
 import getDatabaseConnection from 'src/entities';
@@ -13,7 +9,7 @@ import ldapConnection from 'src/modules/ldap/ldap';
 
 declare module 'iron-session' {
   interface IronSessionData {
-    user: ParsedUser;
+    user?: ParsedUser;
   }
 }
 
@@ -49,18 +45,18 @@ export const withSessionSsr = () =>
   withIronSessionSsr(sessionPropHandler, sessionConfig);
 
 /**
- * Middleware die Authentifizierung und Berechtigung prüft.
+ * Middleware die Authentifizierung prüft.
  * Gibt `req` Session, DB ORM und ldapjs Client.
  * Bei Erfolg wird die Session erneuert.
  * Verbindungen werden in middleware aufgebaut und zerstört.
  */
 export const withSessionApi = (
-  handler: NextApiHandlerWithConnections,
-  page: keyof typeof routes,
-  withLdap?: boolean
+  handler: ApiHandlerWithConn,
+  withLdap?: boolean,
+  noSession?: boolean
 ) => {
-  const authHandler: NextApiHandlerWithConnections = async (req, res) => {
-    if (page !== '/sessions') {
+  const authHandler: ApiHandlerWithConn = async (req, res) => {
+    if (!noSession) {
       const { session } = req;
       // nicht authentifiziert
       if (session.user === undefined) {
@@ -70,18 +66,9 @@ export const withSessionApi = (
 
       // wenn authentifiziert, Session erneuern
       await session.save();
-
-      // Berechtigung prüfen
-      const { permitted } = accessConstants(session.user.access);
-
-      const hasAccess = permitted[page] === true;
-
-      if (!hasAccess) {
-        error(res, 'Keine Berechtigung', 403);
-        return;
-      }
     }
 
+    // TypeORM
     if (!req.db) {
       const db = await getDatabaseConnection();
 
@@ -93,13 +80,14 @@ export const withSessionApi = (
       req.db = db;
     }
 
+    // ldapjs
     if (withLdap) {
       const ldap = ldapConnection();
       req.ldap = ldap;
     }
 
-    // fortfahren
     await handler(req, res);
+
     req.db.destroy();
     req.db = undefined;
     req.ldap?.destroy();

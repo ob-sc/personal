@@ -11,15 +11,17 @@ import MultiSelect from 'src/common/components/MultiSelect';
 import Input from 'src/common/components/Input';
 import Button from 'src/common/components/Button';
 
+export type FormValues = { [key: string]: string };
+
 interface Props extends CProps {
   fields: FormField[];
-  onSubmit: (values: Record<string, string>) => Promise<void>;
+  onSubmit: (values: FormValues) => Promise<void>;
   submitName?: string;
   size?: ColWidth;
   cols?: number;
   disableHeader?: boolean;
   fullWidth?: boolean;
-  values?: unknown;
+  values?: FormValues;
 }
 
 function Form({
@@ -94,7 +96,7 @@ function Form({
     }
   }, [error?.response, setFormError, setValue, values]);
 
-  const submitHandler = (val: FormEntity) => {
+  const submitHandler = (val: FormValues) => {
     setSubmitting(true);
     onSubmit(val)
       .catch((err) => {

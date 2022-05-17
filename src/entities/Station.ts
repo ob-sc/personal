@@ -55,6 +55,6 @@ export class Station {
   @JoinColumn({ name: 'subregion_id' })
   subregion!: Relation<Region>;
 
-  @ManyToMany(() => User, (user) => user.allowedStations)
+  @ManyToMany(() => User, (user) => user.allowed_stations)
   users!: Relation<User[]>;
 }

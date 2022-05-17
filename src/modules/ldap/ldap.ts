@@ -1,6 +1,6 @@
 import ldap from 'ldapjs';
 import { ldapConfig } from 'src/config';
-import { DomainUser, LdapClient } from 'src/common/types/server';
+import { DomainUser, LdapClient } from 'src/modules/ldap/types';
 import { ApiError, parseLdapError } from 'src/common/utils/server';
 import logger from 'src/common/utils/log';
 

@@ -31,9 +31,9 @@ export class User {
   email!: string | null;
 
   @Column('varchar')
-  dn!: string;
+  location!: string;
 
-  @Column('int', { ...NULL })
+  @Column('binary', { length: 10 })
   access!: number;
 
   @Column('int', { ...NULL })
@@ -54,5 +54,5 @@ export class User {
     joinColumn: { name: 'user_id' },
     inverseJoinColumn: { name: 'station_id' },
   })
-  allowedStations!: Relation<Station[]>;
+  allowed_stations!: Relation<Station[]>;
 }

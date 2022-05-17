@@ -1,7 +1,7 @@
 import { InferGetServerSidePropsType as IPT } from 'next';
 import { useRouter } from 'next/router';
 import { Typography } from '@mui/material';
-import { accessConstants, errorText } from 'src/config/constants';
+import { errorText } from 'src/config/constants';
 import { withSessionSsr } from 'src/common/middleware/withSession';
 import { useGetStations } from 'src/modules/stations/api';
 import { useGetUser } from 'src/modules/users/api';
@@ -19,8 +19,7 @@ function SingleUserPage({ user }: IPT<typeof getServerSideProps>) {
 
   const name = user.fullName;
 
-  const { permitted } = accessConstants(user.access);
-  const hasAccess = permitted['/users'];
+  const hasAccess = user.access.users.read;
 
   return (
     <Layout loading={isValidating} session={user} blockAccess={!hasAccess}>
@@ -36,4 +35,4 @@ function SingleUserPage({ user }: IPT<typeof getServerSideProps>) {
 
 export default SingleUserPage;
 
-// todo nur access, regionen und stationen anpassen
+// todo nur access, region und stationen anpassen

@@ -39,14 +39,9 @@ FLUSH PRIVILEGES;
 ```sql
 DROP DATABASE development; CREATE DATABASE development; USE development;
 
-/* sync */
+/* anmelden mit sync */
 
-INSERT INTO users (`username`,`access`) VALUES ("bergen",9);
-UPDATE users SET access = 9 WHERE username = "bergen";
-
-INSERT INTO stations (`id`,`name`,`region_id`) VALUES (1,"test",3);
-INSERT INTO stations (`id`,`name`,`region_id`) VALUES (2,"toast",4);
-INSERT INTO allowed_stations (`user_id`,`station_id`) VALUES (1,2);
+UPDATE users SET access = X'1111111111' WHERE username = "bergen";
 ```
 
 ## Troubleshoot

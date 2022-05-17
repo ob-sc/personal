@@ -10,8 +10,6 @@ export type Entity = User | Station | Region;
 
 export type StringValueEntitiy = Record<keyof Entity, string>;
 
-export type FormEntity = Partial<StringValueEntitiy>;
-
 const entities = [User, Station, Region];
 
 async function getDatabaseConnection() {
