@@ -97,8 +97,8 @@ export function formSafeEntity(obj: Entity | undefined) {
 
   for (const [key, val] of Object.entries(obj)) {
     if (val === null || val === undefined) {
-      newObj[key as keyof Entity] = '';
-    } else newObj[key as keyof Entity] = val;
+      newObj[key] = '';
+    } else newObj[key] = val;
   }
 
   return newObj;

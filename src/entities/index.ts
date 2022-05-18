@@ -1,19 +1,20 @@
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import { dbConfig } from 'src/config';
+import logger from 'src/common/utils/log';
 import { User } from 'src/entities/User';
 import { Station } from 'src/entities/Station';
 import { Region } from 'src/entities/Region';
-import logger from 'src/common/utils/log';
+import { Float } from 'src/entities/Float';
 
 // WICHTIG: Beide anpassen
-export type Entity = User | Station | Region;
-export type Entities = User & Station & Region;
+export type Entity = User | Station | Region | Float;
+export type Entities = User & Station & Region & Float;
 // Entities um zu sagen ein key aus allen entities, wie bei StringValueEntity
 
 export type StringValueEntitiy = Record<keyof Entities, string>;
 
-const entities = [User, Station, Region];
+const entities = [User, Station, Region, Float];
 
 async function getDatabaseConnection() {
   const NODE_ENV = process.env.NODE_ENV ?? 'development';

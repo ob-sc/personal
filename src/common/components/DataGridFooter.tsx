@@ -12,6 +12,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import SearchOffIcon from '@mui/icons-material/SearchOff';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import HeightIcon from '@mui/icons-material/Height';
 import { useGridApiContext } from '@mui/x-data-grid';
 import { MouseEventHandler, ReactNode } from 'src/common/types/client';
 import { Mobile } from 'src/common/hooks/useMobileScreen';
@@ -26,6 +27,8 @@ interface Props {
   withInactive: boolean;
   setWithInactive: Dispatch<SetStateAction<boolean>>;
   tooltip?: string;
+  higher: boolean;
+  setHigher: Dispatch<SetStateAction<boolean>>;
 }
 
 const style = { display: 'flex', flexFlow: 'row nowrap', m: 1 };
@@ -40,6 +43,8 @@ function DataGridFooter({
   withInactive,
   setWithInactive,
   tooltip = 'Aktion ausführen',
+  higher,
+  setHigher,
 }: Props) {
   const [searching, setSearching] = useState(false);
   const apiRef = useGridApiContext();
@@ -85,6 +90,19 @@ function DataGridFooter({
         </Tooltip>
       ) : null}
 
+      {/* Aufklappen / Zuklappen (Höhe anpassen) */}
+      {!searching && (
+        <Tooltip title={higher ? 'Zuklappen' : 'Aufklappen'}>
+          <IconButton
+            onClick={() => {
+              setHigher(!higher);
+            }}
+          >
+            <HeightIcon />
+          </IconButton>
+        </Tooltip>
+      )}
+
       {/* Responsive: Suche */}
       {!sm ? null : (
         <IconButton
@@ -114,7 +132,7 @@ function DataGridFooter({
           shape="rounded"
           size="large"
           boundaryCount={0}
-          // mobile nicht genug Platz, dann nur previous und next
+          // mobile nicht genug Platz, nur previous und next
           renderItem={(item) =>
             responsive &&
             item.type !== 'previous' &&

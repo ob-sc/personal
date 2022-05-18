@@ -48,6 +48,8 @@ const ASCCheckbox = ({
   );
 };
 
+// todo WICHTIG: bug macht den container kaputt, zeilenumbruch und brwoser stirbt? lieber multiselect mit suchen
+
 function AllowedStationsContainer({ stations, user }: Props) {
   return (
     <Box sx={style}>

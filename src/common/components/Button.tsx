@@ -1,4 +1,8 @@
-import { CircularProgress, Button as MuiButton } from '@mui/material';
+import {
+  CircularProgress,
+  Button as MuiButton,
+  ButtonProps,
+} from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import { CProps, MouseEventHandler } from 'src/common/types/client';
 
@@ -8,9 +12,10 @@ interface Props extends CProps {
   text?: string;
   loading?: boolean;
   success?: boolean;
-  disabled?: boolean;
+  disabled?: ButtonProps['disabled'];
   submit?: boolean;
   onClick?: MouseEventHandler;
+  color?: ButtonProps['color'];
 }
 
 function Button({
@@ -21,11 +26,12 @@ function Button({
   submit,
   onClick,
   children,
+  color = 'primary',
 }: Props) {
   return (
     <MuiButton
       type={submit ? 'submit' : 'button'}
-      color="primary"
+      color={color}
       disabled={loading || success || disabled}
       style={{ width: 150 }}
       // , height: 40

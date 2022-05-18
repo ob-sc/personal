@@ -30,7 +30,7 @@ function SingleStationPage({ user }: IPT<typeof getServerSideProps>) {
   const { data, isValidating, mutate } = useGetStation(id);
   const [modalOpen, setModalOpen] = useState(false);
 
-  const hasAccess = user.access.stations.read;
+  const { read, write } = user.access.stations;
 
   const isActive = data?.active === 1;
 
@@ -71,36 +71,44 @@ function SingleStationPage({ user }: IPT<typeof getServerSideProps>) {
   const modalFields = stationFields(options);
 
   return (
-    <Layout loading={isValidating} session={user} blockAccess={!hasAccess}>
-      <Typography variant="h2" gutterBottom>
+    <Layout loading={isValidating} session={user} blockAccess={!read}>
+      <Typography
+        variant="h2"
+        color={isActive ? undefined : 'error'}
+        gutterBottom
+      >
         {data?.name}
       </Typography>
-      {!isActive ? (
-        <Typography variant="h5" color="error" gutterBottom>
-          Station ist deaktiviert
-        </Typography>
-      ) : null}
-      <DataList data={displayData} />
-      <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
-        <Button onClick={editClickHandler}>Bearbeiten</Button>
-        <Button onClick={deactivateClickHandler}>
-          {isActive ? 'Deaktivieren' : 'Aktivieren'}
-        </Button>
-      </Box>
 
-      <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
-        <Form
-          fields={modalFields}
-          onSubmit={async (values) => {
-            await putStation(id, values);
-            await mutate();
-            setModalOpen(false);
-          }}
-          cols={2}
-          values={formSafeEntity(data)}
-          disabled={['id']}
-        />
-      </Modal>
+      <DataList data={displayData} />
+
+      {!write ? null : (
+        <>
+          <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
+            <Button onClick={editClickHandler}>Bearbeiten</Button>
+            <Button
+              color={isActive ? 'error' : 'success'}
+              onClick={deactivateClickHandler}
+            >
+              {isActive ? 'Deaktivieren' : 'Aktivieren'}
+            </Button>
+          </Box>
+
+          <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
+            <Form
+              fields={modalFields}
+              onSubmit={async (values) => {
+                await putStation(id, values);
+                await mutate();
+                setModalOpen(false);
+              }}
+              cols={2}
+              values={formSafeEntity(data)}
+              disabled={['id']}
+            />
+          </Modal>
+        </>
+      )}
     </Layout>
   );
 }

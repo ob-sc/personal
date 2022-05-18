@@ -116,7 +116,7 @@ export function stationFields(options: SelectOption[]) {
       name: 'region_id',
       label: stationDescriptions.region_id,
       type: 'select',
-      options: withEmptyRegionOption,
+      selOptions: withEmptyRegionOption,
     },
   ];
 

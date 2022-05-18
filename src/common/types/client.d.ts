@@ -47,7 +47,7 @@ export interface FormField {
     | 'multiselect'
     | 'header';
   required?: boolean;
-  options?: SelectOption[];
+  selOptions?: SelectOption[];
 }
 
 // DataGrid

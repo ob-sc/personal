@@ -20,8 +20,8 @@ Kein systemd, also `sudo /etc/init.d/mysql start`
 ```sh
 brew install mysql
 brew services start mysql
-mysqladmin -u root password # wie mac user
-mysql -u root -p
+mysqladmin -u root
+mysql -u root # in vscode reicht mysql alleine für root
 ```
 
 ### Benutzer

@@ -36,8 +36,9 @@ INSERT INTO stations (`id`,`name`,`address`,`city`,`telephone`,`fax`,`email`,`re
 
 ```
 
-## Admin User init
+## Admin init
 
 ```sql
 UPDATE users SET access = X'ffff' WHERE username = "bergen";
+INSERT INTO floats (`name`,`value`) VALUES ("min_wage", 9.82)
 ```

@@ -1,7 +1,4 @@
-export const access = {
-  empty: Buffer.from([0x00, 0x00]),
-  admin: Buffer.from([0xff, 0xff]),
-};
+export const emptyAccess = Buffer.from([0x00, 0x00]);
 
 export const noAccessText = 'Kein Zugriff auf diese Ressource';
 export const errorText = 'Es ist ein Fehler aufgetreten';

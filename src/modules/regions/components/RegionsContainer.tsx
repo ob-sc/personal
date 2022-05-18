@@ -28,7 +28,7 @@ function RegionsContainer() {
   const regionData = [
     // { label: 'ID', value: String(selectedRegion?.id) },
     { key: 'Benutzer', value: commaJoin(mappedUsers) },
-    { key: 'Region 1', value: commaJoin(mappedRegion) },
+    { key: 'Region', value: commaJoin(mappedRegion) },
   ];
 
   return (

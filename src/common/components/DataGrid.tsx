@@ -26,14 +26,6 @@ interface Props {
   actionIcon?: ReactNode;
 }
 
-const style = {
-  height: 650,
-  width: '100%',
-  '& .MuiDataGrid-row:hover': {
-    cursor: 'pointer',
-  },
-};
-
 function DataGrid({
   columns,
   rows,
@@ -49,6 +41,7 @@ function DataGrid({
   const [search, setSearch] = useState('');
   const [filteredRows, setFilteredRows] = useState(rows);
   const [withInactive, setWithInactive] = useState(false);
+  const [higher, setHigher] = useState(false);
 
   // bug: bei error === false trotzdem error state, undefined nicht
   const err = error ? true : undefined;
@@ -78,18 +71,32 @@ function DataGrid({
     ? filteredRows
     : filteredRows.filter((r) => r.active === 1);
 
+  const style = {
+    height: higher ? 910 : 650,
+    width: '100%',
+    '& .MuiDataGrid-row:hover': {
+      cursor: 'pointer',
+    },
+    '& .datagrid-inactive': {
+      opacity: 0.5,
+    },
+  };
+
   return (
     <Box sx={style}>
       <MuiDataGrid
         rows={results}
         columns={mobile.sm ? cols : columns}
-        pageSize={10}
-        rowsPerPageOptions={[10]}
+        pageSize={higher ? 15 : 10}
+        // rowsPerPageOptions={[10]}
         localeText={deDE.components.MuiDataGrid.defaultProps.localeText}
         loading={loading}
         error={err}
         onCellClick={cellClickHandler}
         onRowClick={rowClickHandler}
+        getRowClassName={(params) =>
+          params.row.active === 1 ? '' : 'datagrid-inactive'
+        }
         hideFooterSelectedRowCount
         disableSelectionOnClick
         disableColumnSelector
@@ -107,6 +114,8 @@ function DataGrid({
             withInactive,
             setWithInactive,
             tooltip: add ? 'Neu' : undefined,
+            higher,
+            setHigher,
           },
         }}
       />

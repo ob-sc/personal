@@ -111,7 +111,7 @@ function Form({
   };
 
   const fieldMap = (field: FormField) => {
-    const { type, name, label, required, options } = field;
+    const { type, name, label, required, selOptions } = field;
 
     const param = {
       name,
@@ -133,9 +133,9 @@ function Form({
         <Typography variant="h5">{label}</Typography>
       </Box>
     ) : type === 'select' ? (
-      <FormSelect {...param} options={options ?? []} />
+      <FormSelect {...param} options={selOptions ?? []} />
     ) : type === 'multiselect' ? (
-      <FormMultiSelect {...param} options={options ?? []} />
+      <FormMultiSelect {...param} options={selOptions ?? []} />
     ) : (
       <FormInput {...param} type={type} />
     );

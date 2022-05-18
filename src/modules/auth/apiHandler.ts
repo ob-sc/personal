@@ -3,7 +3,7 @@ import { User } from 'src/entities/User';
 import parseUser from 'src/common/utils/parseUser';
 import { success } from 'src/common/utils/response';
 import { ApiError } from 'src/common/utils/server';
-import { access, adErrorText, dbErrorText } from 'src/config/constants';
+import { adErrorText, dbErrorText, emptyAccess } from 'src/config/constants';
 
 export const login: ApiHandlerWithConn = async (req, res) => {
   const {
@@ -38,7 +38,7 @@ export const login: ApiHandlerWithConn = async (req, res) => {
   if (dbUser === null) {
     dbUser = new User();
     dbUser.username = username;
-    dbUser.access = access.empty;
+    dbUser.access = emptyAccess;
   }
 
   // in jedem Fall Modell updaten

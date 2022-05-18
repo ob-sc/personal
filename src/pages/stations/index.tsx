@@ -6,7 +6,7 @@ import DataGrid from 'src/common/components/DataGrid';
 import { RowClickHandler } from 'src/common/types/client';
 import stationColumns from 'src/modules/stations/columns';
 import { useGetStations } from 'src/modules/stations/api';
-import RegionsContainer from 'src/modules/stations/components/RegionsContainer';
+import RegionsContainer from 'src/modules/regions/components/RegionsContainer';
 
 export const getServerSideProps = withSessionSsr();
 

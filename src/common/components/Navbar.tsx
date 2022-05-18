@@ -46,6 +46,11 @@ const Navbar = ({ session }: Props) => {
       route: '/stations',
       label: 'Stationen',
     },
+    {
+      access: session?.access.admin.read ?? false,
+      route: '/settings',
+      label: 'Einstellungen',
+    },
   ];
 
   return (
