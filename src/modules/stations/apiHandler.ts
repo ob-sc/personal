@@ -13,7 +13,7 @@ import {
 import { StationForm } from 'src/pages/stations/new';
 import { dbErrorText } from 'src/config/constants';
 
-// Hier sind alle CRUD Funktionen zu finden (als Referenz für andere Module)
+// Hier sind (fast) alle CRUD Funktionen zu finden (als Referenz für andere Module)
 
 const notFound = new ApiError('Station nicht gefunden', 404);
 
@@ -33,13 +33,12 @@ export const stationFromObject = (
   newStation.telephone = nullOnEmptyTrim(values.telephone);
   newStation.fax = nullOnEmptyTrim(values.fax);
   newStation.email = nullOnEmptyTrim(values.email);
-  newStation.region_id = Number(values.region_id);
-  newStation.subregion_id = nullOnEmptyNum(values.subregion_id);
+  newStation.region_id = nullOnEmptyNum(values.region_id);
 
   return newStation;
 };
 
-/** `GET` Alle Stationen mit relations `region` und `subregion` */
+/** `GET` Alle Stationen mit relations `region` */
 export const allStations: ApiHandlerWithConn = async (req, res) => {
   const { db } = req;
   if (!db) throw new ApiError(dbErrorText);
@@ -47,7 +46,7 @@ export const allStations: ApiHandlerWithConn = async (req, res) => {
   const repo = db.getRepository(Station);
 
   const stations = await repo.find({
-    relations: ['region', 'subregion'],
+    relations: ['region'],
   });
 
   const flatStations = stations.map((station) =>
@@ -67,7 +66,7 @@ export const createStation: ApiHandlerWithConn<StationForm> = async (
 
   const repo = db.getRepository(Station);
 
-  requiredField(body.id, body.name, body.region_id);
+  requiredField(body.id, body.name);
 
   const station = stationFromObject(body, new Station());
 
@@ -92,7 +91,7 @@ export const singleStation: ApiHandlerWithConn = async (req, res) => {
     where: {
       id,
     },
-    relations: ['region', 'subregion', 'users'],
+    relations: ['region', 'users'],
   });
 
   if (result === null) throw notFound;
@@ -112,7 +111,7 @@ export const singleStation: ApiHandlerWithConn = async (req, res) => {
  * Trotzdem ist es theoretisch möglich eine Station bei nicht gefundener
  * `id` zu erstellen, nur um RESTful zu sein.
  */
-export const updateStation: ApiHandlerWithConn<StationForm> = async (
+export const replaceStation: ApiHandlerWithConn<StationForm> = async (
   req,
   res
 ) => {
@@ -122,7 +121,7 @@ export const updateStation: ApiHandlerWithConn<StationForm> = async (
 
   const repo = db.getRepository(Station);
 
-  requiredField(body.name, body.region_id);
+  requiredField(body.name);
 
   const result = (await repo.findOne({ where: { id } })) ?? new Station();
 
@@ -135,10 +134,9 @@ export const updateStation: ApiHandlerWithConn<StationForm> = async (
   success(res, station);
 };
 
-// todo noch testen
-/** `PATCH` Deaktivieren einer Station */
-export const disableStation: ApiHandlerWithConn = async (req, res) => {
-  const { db, query } = req;
+/** `PATCH` (De-)Aktivieren einer Station */
+export const deactivateStation: ApiHandlerWithConn = async (req, res) => {
+  const { db, body, query } = req;
   if (!db) throw new ApiError(dbErrorText);
   const id = idFromQuery(query.id);
 
@@ -147,24 +145,11 @@ export const disableStation: ApiHandlerWithConn = async (req, res) => {
   const result = await repo.findOne({ where: { id } });
   if (result === null) throw notFound;
 
-  result.active = false;
+  result.active = body.active;
 
   await repo.save(result);
 
   success(res, result);
 };
 
-/** `DELETE` Endgültiges Löschen einer Station */
-export const deleteStation: ApiHandlerWithConn = async (req, res) => {
-  const { db, query } = req;
-  if (!db) throw new ApiError(dbErrorText);
-  const id = idFromQuery(query.id);
-
-  const repo = db.getRepository(Station);
-
-  const result = await repo.findOne({ where: { id } });
-  if (result === null) throw notFound;
-  await repo.remove(result);
-
-  success(res);
-};
+// komplett löschen siehe regions

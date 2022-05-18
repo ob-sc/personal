@@ -3,9 +3,9 @@ import { withSessionApi } from 'src/common/middleware/withSession';
 import { ApiError, unresolved } from 'src/common/utils/server';
 import { error, httpMethodError } from 'src/common/utils/response';
 import {
-  deleteStation,
+  deactivateStation,
+  replaceStation,
   singleStation,
-  updateStation,
 } from 'src/modules/stations/apiHandler';
 import { noAccessText } from 'src/config/constants';
 
@@ -21,14 +21,14 @@ const handler: ApiHandlerWithConn = async (req, res) => {
         break;
       case 'PUT':
         if (!write) throw new ApiError(noAccessText, 403);
-        await updateStation(req, res);
+        await replaceStation(req, res);
         break;
-      case 'DELETE':
+      case 'PATCH':
         if (!write) throw new ApiError(noAccessText, 403);
-        await deleteStation(req, res);
+        await deactivateStation(req, res);
         break;
       default:
-        httpMethodError(res, method, ['GET', 'PUT', 'DELETE']);
+        httpMethodError(res, method, ['GET', 'PUT', 'PATCH']);
     }
   } catch (err) {
     error(res, err);

@@ -5,10 +5,13 @@ import {
   Pagination,
   PaginationItem,
   TextField,
+  Tooltip,
 } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import SearchIcon from '@mui/icons-material/Search';
 import SearchOffIcon from '@mui/icons-material/SearchOff';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useGridApiContext } from '@mui/x-data-grid';
 import { MouseEventHandler, ReactNode } from 'src/common/types/client';
 import { Mobile } from 'src/common/hooks/useMobileScreen';
@@ -19,6 +22,10 @@ interface Props {
   setSearch: Dispatch<SetStateAction<string>>;
   actionHandler?: MouseEventHandler;
   actionIcon?: ReactNode;
+  hasActive: boolean;
+  withInactive: boolean;
+  setWithInactive: Dispatch<SetStateAction<boolean>>;
+  tooltip?: string;
 }
 
 const style = { display: 'flex', flexFlow: 'row nowrap', m: 1 };
@@ -29,6 +36,10 @@ function DataGridFooter({
   setSearch,
   actionHandler,
   actionIcon,
+  hasActive,
+  withInactive,
+  setWithInactive,
+  tooltip = 'Aktion ausführen',
 }: Props) {
   const [searching, setSearching] = useState(false);
   const apiRef = useGridApiContext();
@@ -38,10 +49,7 @@ function DataGridFooter({
 
   return (
     <Box sx={{ ...style, gap: sm ? 0 : 1 }}>
-      {!searching && actionHandler && actionIcon ? (
-        <IconButton onClick={actionHandler}>{actionIcon}</IconButton>
-      ) : null}
-
+      {/* Suche */}
       {sm && !searching ? null : (
         <TextField
           placeholder="Suche"
@@ -55,6 +63,29 @@ function DataGridFooter({
         />
       )}
 
+      {/* Action / Add Icon (wenn DataGrid add === true hat) */}
+      {!searching && actionHandler && actionIcon ? (
+        <Tooltip title={tooltip}>
+          <IconButton onClick={actionHandler}>{actionIcon}</IconButton>
+        </Tooltip>
+      ) : null}
+
+      {/* Aktive / Inaktive */}
+      {hasActive && !searching ? (
+        <Tooltip
+          title={!withInactive ? 'Inaktive anzeigen' : 'Inaktive ausblenden'}
+        >
+          <IconButton
+            onClick={() => {
+              setWithInactive(!withInactive);
+            }}
+          >
+            {!withInactive ? <VisibilityIcon /> : <VisibilityOffIcon />}
+          </IconButton>
+        </Tooltip>
+      ) : null}
+
+      {/* Responsive: Suche */}
       {!sm ? null : (
         <IconButton
           onClick={() => {
@@ -67,7 +98,9 @@ function DataGridFooter({
           ) : search ? (
             <SearchOffIcon />
           ) : (
-            <SearchIcon />
+            <Tooltip title="Suchen">
+              <SearchIcon />
+            </Tooltip>
           )}
         </IconButton>
       )}

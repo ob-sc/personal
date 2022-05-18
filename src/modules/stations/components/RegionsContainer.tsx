@@ -25,13 +25,10 @@ function RegionsContainer() {
 
   const mappedRegion = selectedRegion?.stations.map((v) => v.name) ?? [];
 
-  const mappedSub = selectedRegion?.substations.map((v) => v.name) ?? [];
-
   const regionData = [
     // { label: 'ID', value: String(selectedRegion?.id) },
     { key: 'Benutzer', value: commaJoin(mappedUsers) },
     { key: 'Region 1', value: commaJoin(mappedRegion) },
-    { key: 'Region 2', value: commaJoin(mappedSub) },
   ];
 
   return (
@@ -77,9 +74,7 @@ function RegionsContainer() {
         </Box>
 
         {deleteError ? (
-          <Typography color="error">
-            Fehler beim löschen, eventuell sind noch Stationen in der Region
-          </Typography>
+          <Typography color="error">Fehler beim löschen</Typography>
         ) : null}
         {!selectedRegion ? null : <DataList data={regionData ?? []} />}
       </Box>

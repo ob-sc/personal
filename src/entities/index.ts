@@ -11,7 +11,7 @@ export type Entity = User | Station | Region;
 export type Entities = User & Station & Region;
 // Entities um zu sagen ein key aus allen entities, wie bei StringValueEntity
 
-export type StringValueEntitiy = Partial<Record<keyof Entities, string>>;
+export type StringValueEntitiy = Record<keyof Entities, string>;
 
 const entities = [User, Station, Region];
 

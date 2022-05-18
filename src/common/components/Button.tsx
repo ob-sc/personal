@@ -27,7 +27,7 @@ function Button({
       type={submit ? 'submit' : 'button'}
       color="primary"
       disabled={loading || success || disabled}
-      style={{ width: 100 }}
+      style={{ width: 150 }}
       // , height: 40
       onClick={onClick}
     >

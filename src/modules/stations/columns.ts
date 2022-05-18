@@ -1,5 +1,9 @@
 import { DGColFn, FormField, SelectOption } from 'src/common/types/client';
-import { gridEmptyVal, withEmptyOption } from 'src/common/utils/client';
+import {
+  gridEmptyVal,
+  gridTinyIntVal,
+  withEmptyOption,
+} from 'src/common/utils/client';
 
 export const stationDescriptions = {
   id: 'Nummer',
@@ -10,10 +14,9 @@ export const stationDescriptions = {
   telephone: 'Telefon',
   fax: 'Fax',
   email: 'E-Mail',
-  region_id: 'Region 1',
-  subregion_id: 'Region 2',
-  region: 'Region 1',
-  subregion: 'Region 2',
+  region_id: 'Region',
+  active: 'Aktiv',
+  region: 'Region',
   users: 'Benutzer',
 };
 
@@ -23,7 +26,6 @@ const stationColumns: DGColFn = () => [
     headerName: stationDescriptions.id,
     width: 80,
     sm: true,
-    valueFormatter: gridEmptyVal,
   },
   {
     field: 'name',
@@ -34,11 +36,6 @@ const stationColumns: DGColFn = () => [
   {
     field: 'region',
     headerName: stationDescriptions.region,
-    width: 100,
-  },
-  {
-    field: 'subregion',
-    headerName: stationDescriptions.subregion,
     width: 100,
     valueFormatter: gridEmptyVal,
   },
@@ -78,6 +75,13 @@ const stationColumns: DGColFn = () => [
     width: 180,
     valueFormatter: gridEmptyVal,
   },
+  {
+    field: 'active',
+    headerName: stationDescriptions.active,
+    width: 100,
+    type: 'boolean',
+    valueFormatter: gridTinyIntVal,
+  },
 ];
 
 export function stationFields(options: SelectOption[]) {
@@ -97,7 +101,7 @@ export function stationFields(options: SelectOption[]) {
       type: 'text',
       required: true,
     },
-    { name: 'h1', label: 'Kontakt', type: 'header' },
+    { name: 'h1', label: 'Daten', type: 'header' },
     {
       name: 'address',
       label: stationDescriptions.address,
@@ -108,17 +112,9 @@ export function stationFields(options: SelectOption[]) {
     { name: 'telephone', label: stationDescriptions.telephone, type: 'text' },
     { name: 'fax', label: stationDescriptions.fax, type: 'text' },
     { name: 'email', label: stationDescriptions.email, type: 'text' },
-    { name: 'h2', label: 'Region', type: 'header' },
     {
       name: 'region_id',
       label: stationDescriptions.region_id,
-      type: 'select',
-      required: true,
-      options,
-    },
-    {
-      name: 'subregion_id',
-      label: stationDescriptions.subregion_id,
       type: 'select',
       options: withEmptyRegionOption,
     },

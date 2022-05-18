@@ -29,6 +29,10 @@ export function gridEmptyVal(params: GridValueFormatterParams) {
   return params.value ?? '-';
 }
 
+export function gridTinyIntVal(params: GridValueFormatterParams) {
+  return params.value === 1;
+}
+
 /** @example array.map(selectOptionMapper) */
 export function selectOptionMapper(obj: {
   id?: number;

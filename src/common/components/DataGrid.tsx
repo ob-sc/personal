@@ -12,6 +12,7 @@ import {
 import { searchFilter } from 'src/common/utils/client';
 import useMobileContext from 'src/common/context/MobileContext';
 import DataGridFooter from 'src/common/components/DataGridFooter';
+import { hasOwnProperty } from 'src/common/utils/shared';
 
 interface Props {
   columns: DataGridCol[];
@@ -47,6 +48,7 @@ function DataGrid({
   const mobile = useMobileContext();
   const [search, setSearch] = useState('');
   const [filteredRows, setFilteredRows] = useState(rows);
+  const [withInactive, setWithInactive] = useState(false);
 
   // bug: bei error === false trotzdem error state, undefined nicht
   const err = error ? true : undefined;
@@ -70,10 +72,16 @@ function DataGrid({
     setFilteredRows(searchFilter(search, rows));
   }, [rows, search]);
 
+  const hasActive = hasOwnProperty(rows[0], 'active');
+
+  const results = withInactive
+    ? filteredRows
+    : filteredRows.filter((r) => r.active === 1);
+
   return (
     <Box sx={style}>
       <MuiDataGrid
-        rows={filteredRows}
+        rows={results}
         columns={mobile.sm ? cols : columns}
         pageSize={10}
         rowsPerPageOptions={[10]}
@@ -95,6 +103,10 @@ function DataGrid({
             setSearch,
             actionHandler,
             actionIcon: add ? <AddIcon /> : actionIcon,
+            hasActive,
+            withInactive,
+            setWithInactive,
+            tooltip: add ? 'Neu' : undefined,
           },
         }}
       />

@@ -16,3 +16,8 @@ export const postStation = (values: FormValues) => axios.post(route, values);
 
 export const putStation = (id: number, values: FormValues) =>
   axios.put(`${route}/${id}`, values);
+
+export const patchStation = (id: number, values: FormValues) =>
+  axios.patch(`${route}/${id}`, values);
+
+// export const deleteStation = (id: number) => axios.delete(`${route}/${id}`);

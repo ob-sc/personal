@@ -118,8 +118,6 @@ const parseUser = (user: User): ParsedUser => {
     location,
   } = user;
 
-  console.log(access);
-
   const accessFromBinary = Buffer.isBuffer(access)
     ? access.readUIntBE(0, 2)
     : 0;

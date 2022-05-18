@@ -81,6 +81,7 @@ export function hasOwnProperty<X extends {}, Y extends PropertyKey>(
   obj: X,
   prop: Y
 ): obj is X & Record<Y, unknown> {
+  if (obj === null || obj === undefined) return false;
   return Object.prototype.hasOwnProperty.call(obj, prop);
 }
 

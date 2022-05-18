@@ -35,6 +35,9 @@ Die API ist same-origin ohne CORS, siehe [Dokumentation](https://nextjs.org/docs
 | POST    | /api/stations     |
 | GET     | /api/stations     |
 | GET     | /api/stations/:id |
+| PUT     | /api/stations/:id |
+| PATCH   | /api/stations/:id |
+| DELETE  | /api/stations/:id |
 
 ```json
 {
@@ -47,9 +50,7 @@ Die API ist same-origin ohne CORS, siehe [Dokumentation](https://nextjs.org/docs
   "fax": "+49 40 21971717",
   "email": "hamburg-city-sued@starcar.de",
   "region_id": 2,
-  "subregion_id": null,
   "region": { ... },
-  "subregion": null,
   "users": [ ... ]
 }
 ```
@@ -68,8 +69,7 @@ Die API ist same-origin ohne CORS, siehe [Dokumentation](https://nextjs.org/docs
   "id": 2,
   "name": "Nord 2",
   "users": [ ... ],
-  "stations": [ ... ],
-  "substations": [ ... ]
+  "stations": [ ... ]
 }
 ```
 
@@ -79,7 +79,7 @@ Die API ist same-origin ohne CORS, siehe [Dokumentation](https://nextjs.org/docs
 | ------- | ------------------------------- |
 | GET     | /api/users                      |
 | GET     | /api/users/:id                  |
-| GET     | /api/users/:id/allowed_stations |
+| POST    | /api/users/:id/allowed_stations |
 
 ```json
 {

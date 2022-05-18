@@ -39,24 +39,19 @@ export class Station {
   @Column('varchar', { ...NULL })
   email!: string | null;
 
-  @Column('int')
-  region_id!: number;
-
   @Column('int', { ...NULL })
-  subregion_id!: number | null;
+  region_id!: number | null;
 
   @Column('tinyint', { default: 1 })
-  active!: boolean;
+  active!: number;
 
   // ---
 
-  @ManyToOne(() => Region, (region) => region.users)
+  @ManyToOne(() => Region, (region) => region.stations, {
+    onDelete: 'SET NULL',
+  })
   @JoinColumn({ name: 'region_id' })
   region!: Relation<Region>;
-
-  @ManyToOne(() => Region, (region) => region.users)
-  @JoinColumn({ name: 'subregion_id' })
-  subregion!: Relation<Region>;
 
   @ManyToMany(() => User, (user) => user.allowed_stations)
   users!: Relation<User[]>;

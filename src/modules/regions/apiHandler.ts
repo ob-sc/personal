@@ -48,7 +48,7 @@ export const singleRegion: ApiHandlerWithConn = async (req, res) => {
 
   const region = await repo.findOne({
     where: { id },
-    relations: ['users', 'stations', 'substations'],
+    relations: ['users', 'stations'],
   });
 
   if (region === null) throw notFound;
@@ -56,6 +56,7 @@ export const singleRegion: ApiHandlerWithConn = async (req, res) => {
   success(res, region);
 };
 
+/** `DELETE` Endgültiges Löschen einer Region */
 export const deleteRegion: ApiHandlerWithConn = async (req, res) => {
   const { db, query } = req;
   if (!db) throw new ApiError(dbErrorText);

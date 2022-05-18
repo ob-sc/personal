@@ -32,6 +32,12 @@ UPDATE old.stationen SET `region` = 7 WHERE `region` = "west2";
 UPDATE old.stationen SET `region` = 8 WHERE `region` = "frankfurt";
 UPDATE old.stationen SET `region` = 9 WHERE `region` = "süd";
 UPDATE old.stationen SET `region` = 10 WHERE `region` = "süd-west";
-INSERT INTO stations (`id`,`name`,`address`,`city`,`telephone`,`fax`,`email`,`region_id`,`subregion_id`) SELECT `id`,`name`,`anschrift`,`stadt`,`telefon`,`fax`,`email`,`region`,`region2` FROM old.stationen;
+INSERT INTO stations (`id`,`name`,`address`,`city`,`telephone`,`fax`,`email`,`region_id`) SELECT `id`,`name`,`anschrift`,`stadt`,`telefon`,`fax`,`email`,`region` FROM old.stationen;
 
+```
+
+## Admin User init
+
+```sql
+UPDATE users SET access = X'ffff' WHERE username = "bergen";
 ```

@@ -72,11 +72,13 @@ export const dbConfig: Databases = {
   test: {
     ...baseDbConfig,
     database: 'test',
+    logging: ['error'],
   },
 
   production: {
     ...baseDbConfig,
     database: 'production',
+    logging: ['error'],
   },
 };
 

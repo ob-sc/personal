@@ -7,7 +7,7 @@ import { dbErrorText } from 'src/config/constants';
 
 const notFound = new ApiError('Benutzer nicht gefunden', 404);
 
-// todo allusers und singleuser beide mehr berechtigung aus sessions, nur eigene station etc
+// todo allusers und singleuser beide mehr berechtigung aus sessions, nur eigene station, nicht deaktiviert etc
 
 export const allUsers: ApiHandlerWithConn = async (req, res) => {
   const { db } = req;

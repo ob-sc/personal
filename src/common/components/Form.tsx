@@ -64,7 +64,7 @@ function Form({
     display: 'flex',
     gap: 2,
     flexFlow: 'column nowrap',
-    mb: 2,
+    // mb: 2,
   };
 
   // spaltenanzahl bei responsive variablen: sm = 1, md = 2, nicht responsive auch mehrere
@@ -150,9 +150,11 @@ function Form({
       </Box>
 
       {error?.response?.data?.message ? (
-        <Typography color="error">
-          {error.response.data.message ?? errorText}
-        </Typography>
+        <Box sx={{ mt: 2 }}>
+          <Typography color="error">
+            {error.response.data.message ?? errorText}
+          </Typography>
+        </Box>
       ) : null}
     </form>
   );

@@ -2,7 +2,11 @@ import { InferGetServerSidePropsType as IPT } from 'next';
 import { useRouter } from 'next/router';
 import { Box, Typography } from '@mui/material';
 import { withSessionSsr } from 'src/common/middleware/withSession';
-import { putStation, useGetStation } from 'src/modules/stations/api';
+import {
+  patchStation,
+  putStation,
+  useGetStation,
+} from 'src/modules/stations/api';
 import Layout from 'src/common/components/Layout';
 import DataList from 'src/common/components/DataList';
 import { stationDescriptions as statDesc } from 'src/modules/stations/columns';
@@ -28,6 +32,8 @@ function SingleStationPage({ user }: IPT<typeof getServerSideProps>) {
 
   const hasAccess = user.access.stations.read;
 
+  const isActive = data?.active === 1;
+
   const usersString = commaJoin(
     data?.users.map(
       (v) => `${v.first_name && v.first_name[0]}. ${v.last_name}`
@@ -43,11 +49,7 @@ function SingleStationPage({ user }: IPT<typeof getServerSideProps>) {
     { key: statDesc.telephone, value: data?.telephone },
     { key: statDesc.fax, value: data?.fax },
     { key: statDesc.email, value: data?.email },
-    { key: statDesc.region, value: data?.region.name },
-    {
-      key: statDesc.subregion,
-      value: data?.subregion ? data.subregion.name : null,
-    },
+    { key: statDesc.region, value: data?.region?.name },
     {
       key: 'Benutzer',
       value: usersString,
@@ -56,6 +58,12 @@ function SingleStationPage({ user }: IPT<typeof getServerSideProps>) {
 
   const editClickHandler = () => {
     setModalOpen(true);
+  };
+
+  const deactivateClickHandler = async () => {
+    const active = isActive ? '0' : '1';
+    await patchStation(id, { active });
+    mutate();
   };
 
   const regions = useGetRegions();
@@ -67,9 +75,18 @@ function SingleStationPage({ user }: IPT<typeof getServerSideProps>) {
       <Typography variant="h2" gutterBottom>
         {data?.name}
       </Typography>
+      {!isActive ? (
+        <Typography variant="h5" color="error" gutterBottom>
+          Station ist deaktiviert
+        </Typography>
+      ) : null}
       <DataList data={displayData} />
-      <Box sx={{ mb: 2 }} />
-      <Button onClick={editClickHandler}>Bearbeiten</Button>
+      <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
+        <Button onClick={editClickHandler}>Bearbeiten</Button>
+        <Button onClick={deactivateClickHandler}>
+          {isActive ? 'Deaktivieren' : 'Aktivieren'}
+        </Button>
+      </Box>
 
       <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
         <Form

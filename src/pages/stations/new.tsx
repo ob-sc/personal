@@ -19,7 +19,6 @@ export interface StationForm {
   fax: string;
   email: string;
   region_id: string;
-  subregion_id: string;
 }
 
 export const getServerSideProps = withSessionSsr();
