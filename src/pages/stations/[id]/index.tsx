@@ -81,6 +81,7 @@ function SingleStationPage({ user }: IPT<typeof getServerSideProps>) {
           }}
           cols={2}
           values={formSafeEntity(data)}
+          disabled={['id']}
         />
       </Modal>
     </Layout>

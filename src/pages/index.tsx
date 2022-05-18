@@ -7,7 +7,7 @@ export const getServerSideProps = withSessionSsr();
 // Home: NextPage
 function Home({ user }: IPT<typeof getServerSideProps>) {
   // const noHome = user.stations[0] === 0 && user.access < 1;
-  return <Layout session={user}>hi</Layout>;
+  return <Layout session={user}></Layout>;
 }
 
 export default Home;

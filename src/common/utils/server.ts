@@ -15,7 +15,7 @@ export class ApiError extends Error {
   }
 }
 
-// Next config auf api pages
+/** Next config auf api pages */
 export const unresolved = {
   api: {
     externalResolver: true,
@@ -75,6 +75,7 @@ export function idFromQuery(id: string | string[]): number {
   return num;
 }
 
+/** Zb um relations auf eine Property (default `name`) runterzubrechen */
 export function flattenObjectToProperty(
   obj: { [key: string]: unknown; name?: string },
   prop = 'name'

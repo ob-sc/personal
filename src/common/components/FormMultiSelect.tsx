@@ -1,12 +1,15 @@
+import { Control, Controller, FieldErrors } from 'react-hook-form';
 import {
+  Checkbox,
   FormControl,
   InputLabel,
+  ListItemText,
   MenuItem,
-  Select as MuiSelect,
+  OutlinedInput,
+  Select,
 } from '@mui/material';
-import { Control, Controller, FieldErrors } from 'react-hook-form';
-import CenteredSpinner from 'src/common/components/CenteredSpinner';
 import { SelectOption } from 'src/common/types/client';
+import CenteredSpinner from 'src/common/components/CenteredSpinner';
 
 interface Props {
   name: string;
@@ -19,7 +22,10 @@ interface Props {
   loading?: boolean;
 }
 
-function Select({
+// https://mui.com/components/selects/#MultipleSelectCheckmarks.tsx
+
+/** Multiselect mit Checkboxen. `options` Prop ist ein Array mit Objekten, die optval und optlabel enthalten. */
+function FormMultiSelect({
   name,
   label,
   options,
@@ -44,26 +50,35 @@ function Select({
           size="small"
         >
           <InputLabel id={`${name}-label`}>{label}</InputLabel>
-          <MuiSelect
+          <Select
+            multiple
             labelId={`${name}-label`}
-            id={name}
-            label={label}
+            id={`${name}-multiple`}
+            input={<OutlinedInput label={label} />}
+            // renderValue={(selected) => `${selected.length} ausgewählt`}
+            renderValue={(selected) => selected.join(', ')}
+            MenuProps={{ variant: 'menu' }}
             {...field}
+            value={[...field.value]}
           >
             {loading ? (
               <CenteredSpinner size={25} />
             ) : (
               options.map(({ optval, optlabel }) => (
                 <MenuItem key={optval} value={optval}>
-                  {optlabel}
+                  <Checkbox
+                    color="primary"
+                    checked={field.value.indexOf(optval) > -1}
+                  />
+                  <ListItemText primary={optlabel} />
                 </MenuItem>
               ))
             )}
-          </MuiSelect>
+          </Select>
         </FormControl>
       )}
     />
   );
 }
 
-export default Select;
+export default FormMultiSelect;

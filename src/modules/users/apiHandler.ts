@@ -5,6 +5,10 @@ import { success } from 'src/common/utils/response';
 import { ApiError, idFromQuery } from 'src/common/utils/server';
 import { dbErrorText } from 'src/config/constants';
 
+const notFound = new ApiError('Benutzer nicht gefunden', 404);
+
+// todo allusers und singleuser beide mehr berechtigung aus sessions, nur eigene station etc
+
 export const allUsers: ApiHandlerWithConn = async (req, res) => {
   const { db } = req;
   if (!db) throw new ApiError(dbErrorText);
@@ -25,10 +29,10 @@ export const singleUser: ApiHandlerWithConn = async (req, res) => {
     where: {
       id,
     },
-    relations: { region: true, allowed_stations: true },
+    relations: ['region', 'allowed_stations'],
   });
 
-  if (user === null) throw new ApiError('Benutzer nicht gefunden', 400);
+  if (user === null) throw notFound;
 
   const result = parseUser(user);
   success(res, result);
@@ -44,10 +48,10 @@ export const createAllowedStation: ApiHandlerWithConn = async (req, res) => {
     where: {
       id: Number(body.id),
     },
-    relations: { region: true, allowed_stations: true },
+    relations: ['region', 'allowed_stations'],
   });
 
-  if (user === null) throw new ApiError('Benutzer nicht gefunden', 400);
+  if (user === null) throw notFound;
 
   // todo save mit neuen allowed
 

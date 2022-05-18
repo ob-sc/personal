@@ -3,10 +3,7 @@ import { Entity, StringValueEntitiy } from 'src/entities';
 
 export const isDev = process.env.NODE_ENV !== 'production';
 
-export function prepend0(num: number) {
-  return num < 10 ? `0${num}` : num;
-}
-
+// todo durch date-fns austauschen
 export function toLocalDate(date: string | undefined | null) {
   if (typeof date !== 'string') return '';
 
@@ -18,8 +15,10 @@ export function toLocalDate(date: string | undefined | null) {
   const m = dateInstance.getMonth();
   const d = dateInstance.getDate();
 
+  const withZero = (num: number) => (num < 10 ? `0${num}` : num);
+
   // monat ist zero-indexed
-  return `${prepend0(d)}.${prepend0(m + 1)}.${y}`;
+  return `${withZero(d)}.${withZero(m + 1)}.${y}`;
 }
 
 export function redirectUrl(url: string) {
@@ -93,7 +92,7 @@ export function commaJoin(arr: string[]) {
 // wird von form benutzt um zb bei PUT call leere werte in die form inputs einzufügen
 export function formSafeEntity(obj: Entity | undefined) {
   if (!obj) return;
-  const newObj: StringValueEntitiy = { id: String(obj.id) };
+  const newObj: StringValueEntitiy = {};
 
   for (const [key, val] of Object.entries(obj)) {
     if (val === null || val === undefined) {

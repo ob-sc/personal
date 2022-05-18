@@ -13,3 +13,5 @@
 ## meh
 
 - [going to production](https://nextjs.org/docs/going-to-production)
+
+- logs mit kaya klären

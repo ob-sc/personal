@@ -15,7 +15,7 @@ interface Props {
   cn?: string;
 }
 
-function Input(props: Props) {
+function FormInput(props: Props) {
   const {
     name,
     label,
@@ -66,4 +66,4 @@ function Input(props: Props) {
   );
 }
 
-export default Input;
+export default FormInput;

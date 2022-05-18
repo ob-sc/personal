@@ -1,8 +1,10 @@
 import { ApiHandlerWithConn } from 'src/common/types/server';
 import { Region } from 'src/entities/Region';
 import { success } from 'src/common/utils/response';
-import { ApiError, idFromQuery } from 'src/common/utils/server';
+import { ApiError, idFromQuery, requiredField } from 'src/common/utils/server';
 import { dbErrorText } from 'src/config/constants';
+
+const notFound = new ApiError('Region nicht gefunden', 404);
 
 export const allRegions: ApiHandlerWithConn = async (req, res) => {
   const { db } = req;
@@ -24,6 +26,8 @@ export const createRegion: ApiHandlerWithConn<{ name: string }> = async (
   } = req;
   if (!db) throw new ApiError(dbErrorText);
 
+  requiredField(name);
+
   const repo = db.getRepository(Region);
 
   const region = new Region();
@@ -44,10 +48,10 @@ export const singleRegion: ApiHandlerWithConn = async (req, res) => {
 
   const region = await repo.findOne({
     where: { id },
-    relations: { users: true, stations: true, substations: true },
+    relations: ['users', 'stations', 'substations'],
   });
 
-  if (region === null) throw new ApiError('Region nicht gefunden', 400);
+  if (region === null) throw notFound;
 
   success(res, region);
 };
@@ -60,7 +64,7 @@ export const deleteRegion: ApiHandlerWithConn = async (req, res) => {
   const repo = db.getRepository(Region);
 
   const result = await repo.findOne({ where: { id } });
-  if (result === null) throw new ApiError('Region nicht gefunden', 400);
+  if (result === null) throw notFound;
   await repo.remove(result);
 
   success(res, 'Region gelöscht');

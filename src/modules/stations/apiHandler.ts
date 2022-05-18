@@ -15,7 +15,7 @@ import { dbErrorText } from 'src/config/constants';
 
 // Hier sind alle CRUD Funktionen zu finden (als Referenz für andere Module)
 
-const NOTFOUND = 'Station nicht gefunden';
+const notFound = new ApiError('Station nicht gefunden', 404);
 
 /** Neues Stations-Entity aus einem bestehenden oder einer leeren Vorlage */
 export const stationFromObject = (
@@ -46,10 +46,8 @@ export const allStations: ApiHandlerWithConn = async (req, res) => {
 
   const repo = db.getRepository(Station);
 
-  // todo where mit stationen (bzw region)
-
   const stations = await repo.find({
-    relations: { region: true, subregion: true },
+    relations: ['region', 'subregion'],
   });
 
   const flatStations = stations.map((station) =>
@@ -90,15 +88,14 @@ export const singleStation: ApiHandlerWithConn = async (req, res) => {
 
   const repo = db.getRepository(Station);
 
-  // todo where mit stationen (bzw region)
   const result = await repo.findOne({
     where: {
       id,
     },
-    relations: { region: true, subregion: true, users: true },
+    relations: ['region', 'subregion', 'users'],
   });
 
-  if (result === null) throw new ApiError(NOTFOUND, 400);
+  if (result === null) throw notFound;
 
   success(res, result);
 };
@@ -148,7 +145,7 @@ export const disableStation: ApiHandlerWithConn = async (req, res) => {
   const repo = db.getRepository(Station);
 
   const result = await repo.findOne({ where: { id } });
-  if (result === null) throw new ApiError(NOTFOUND, 400);
+  if (result === null) throw notFound;
 
   result.active = false;
 
@@ -166,7 +163,7 @@ export const deleteStation: ApiHandlerWithConn = async (req, res) => {
   const repo = db.getRepository(Station);
 
   const result = await repo.findOne({ where: { id } });
-  if (result === null) throw new ApiError(NOTFOUND, 400);
+  if (result === null) throw notFound;
   await repo.remove(result);
 
   success(res);

@@ -31,7 +31,7 @@ export const login: ApiHandlerWithConn = async (req, res) => {
   // suche username aus request in der db
   let dbUser = await repo.findOne({
     where: { username },
-    relations: { region: true, allowed_stations: true },
+    relations: ['region', 'allowed_stations'],
   });
 
   // wenn kein user: Modell erstellen

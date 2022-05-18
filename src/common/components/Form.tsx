@@ -6,9 +6,9 @@ import { errorText } from 'src/config/constants';
 import { CProps, ColWidth, FormField } from 'src/common/types/client';
 import { ErrorResponse } from 'src/common/types/server';
 import useMobileContext from 'src/common/context/MobileContext';
-import Select from 'src/common/components/Select';
-import MultiSelect from 'src/common/components/MultiSelect';
-import Input from 'src/common/components/Input';
+import FormSelect from 'src/common/components/FormSelect';
+import FormMultiSelect from 'src/common/components/FormMultiSelect';
+import FormInput from 'src/common/components/FormInput';
 import Button from 'src/common/components/Button';
 
 export type FormValues = { [key: string]: string };
@@ -22,6 +22,7 @@ interface Props extends CProps {
   disableHeader?: boolean;
   fullWidth?: boolean;
   values?: FormValues;
+  disabled?: string[];
 }
 
 function Form({
@@ -33,6 +34,7 @@ function Form({
   disableHeader,
   fullWidth,
   values,
+  disabled,
 }: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<AxiosError<ErrorResponse> | null>(null);
@@ -119,6 +121,7 @@ function Form({
       required,
       key: name,
       cn: 'gridItem',
+      disabled: disabled?.includes(name),
     };
 
     return type === 'header' && disableHeader ? null : type === 'header' ? (
@@ -130,11 +133,11 @@ function Form({
         <Typography variant="h5">{label}</Typography>
       </Box>
     ) : type === 'select' ? (
-      <Select {...param} options={options ?? []} />
+      <FormSelect {...param} options={options ?? []} />
     ) : type === 'multiselect' ? (
-      <MultiSelect {...param} options={options ?? []} />
+      <FormMultiSelect {...param} options={options ?? []} />
     ) : (
-      <Input {...param} type={type} />
+      <FormInput {...param} type={type} />
     );
   };
 
