@@ -44,3 +44,5 @@ function AllStationsPage({ user }: IPT<typeof getServerSideProps>) {
 }
 
 export default AllStationsPage;
+
+// todo kalender mit wochenenden, hover zeigt wer und wie lange? dann nur add button da iwo. bei users dann eintragen und die letzten direkt anzeigen? verwltung krieg das nicht

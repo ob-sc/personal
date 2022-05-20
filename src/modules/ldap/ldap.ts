@@ -92,42 +92,19 @@ function ldapConnection(): LdapClient {
     await bind(user.distinguishedName, password);
     return [user];
   };
-  /*
-const add = (client: Client, entry: Partial<DomainUser>, dn: string) =>
-  new Promise((resolve, reject) => {
-    client.bind(ldapUserDN, ldapConfig.password, (err) => {
-      if (err) reject(createError(err));
-    });
 
-    client.add(dn, entry, (err) => {
-      if (err) reject(createError(err));
-      resolve(true);
-    });
+  const add = (dn: string, entry: DomainUser) =>
+    new Promise<void>((resolve, reject) => {
+      ldapClient.add(dn, entry, (err) => {
+        if (err) reject(err);
+        console.log('added');
+        resolve();
+      });
 
       // noch aktiv setzen mit userAccountControl = 512
-
-      const cn = 'SC - Bar\\, Foo';
-      const dn = `CN=${cn},OU=IT,OU=Verwaltung,OU=User,OU=STARCAR,DC=starcar,DC=local`;
-      const entry: ADUser = {
-      cn: 'SC - Bar\\, Foo', // SC - (STARCAR), SCA - (Agentur), SCM - (Mobility), P24 -
-        sn: 'Bar',
-        l: 'Hamburg',
-        postalCode: '20537',
-        telephoneNumber: '+49 40 654411503',
-        givenName: 'Foo',
-        // distinguishedName: dn,
-        // memberOf: [],
-        displayName: 'STARCAR GmbH - Foo Bar',
-        streetAddress: 'Süderstr. 282',
-        sAMAccountName: 'foo.bar',
-        userPrincipalName: 'foo.bar@starcar.de',
-        // email: ['foo@starcar.de'],
-        objectClass: ['top', 'person', 'organizationalPerson', 'user'],
-      };
-      ldap.add(client, entry, dn); // todo async? was ist return?
     });
 
-
+  /*  
 
 
 {
@@ -153,6 +130,7 @@ const add = (client: Client, entry: Partial<DomainUser>, dn: string) =>
 
   return {
     client: ldapClient,
+    add,
     authenticate,
     connect,
     search,

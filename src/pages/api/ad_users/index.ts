@@ -23,6 +23,10 @@ const handler: ApiHandlerWithConn = async (req, res) => {
     const { write } = req.session.user?.access.users ?? {};
 
     switch (method?.toUpperCase()) {
+      case 'POST':
+        if (!write) throw new ApiError(noAccessText, 403);
+
+        break;
       case 'GET':
         // hier write obwohl es eig read wäre, aber ldap ist wichtiger als users read aus dn
         if (!write) throw new ApiError(noAccessText, 403);

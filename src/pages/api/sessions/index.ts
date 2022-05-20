@@ -3,6 +3,7 @@ import { withSessionApi } from 'src/common/middleware/withSession';
 import { unresolved } from 'src/common/utils/server';
 import { error, httpMethodError } from 'src/common/utils/response';
 import { login, logout } from 'src/modules/auth/apiHandler';
+import { createLdapUser } from 'src/modules/ldap/apiHandler';
 
 const handler: ApiHandlerWithConn = async (req, res) => {
   try {
@@ -10,7 +11,8 @@ const handler: ApiHandlerWithConn = async (req, res) => {
 
     switch (method?.toUpperCase()) {
       case 'POST':
-        await login(req, res);
+        // await login(req, res);
+        await createLdapUser(req, res);
         break;
       case 'DELETE':
         logout(req, res);

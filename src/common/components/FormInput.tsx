@@ -13,21 +13,20 @@ interface Props {
   errorHelper?: boolean;
   required?: boolean;
   cn?: string;
+  currency?: boolean;
 }
 
-function FormInput(props: Props) {
-  const {
-    name,
-    label,
-    control,
-    errors,
-    type = 'text',
-    disabled = false,
-    errorHelper = false,
-    required = false,
-    cn,
-  } = props;
-
+function FormInput({
+  name,
+  label,
+  control,
+  errors,
+  type = 'text',
+  disabled,
+  errorHelper,
+  required,
+  cn,
+}: Props) {
   const err = errors[name];
   const errorText = errorHelper === true ? err : undefined;
 

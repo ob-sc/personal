@@ -6,9 +6,11 @@
 
 - onboarding ma anlegen notizen feld - für zb p24 etc
 
-- mindestlohn und berechtigungen auf admin seite
+- mindestlohn: wenn aushilfe schicht ende und lohn < Mindestlohn: Fehler
 
 - urlaubsberechnung
+
+- dns redirect auf neue subdomain personal von onboarding & aushilfen
 
 ## meh
 

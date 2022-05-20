@@ -35,4 +35,4 @@ function SingleUserPage({ user }: IPT<typeof getServerSideProps>) {
 
 export default SingleUserPage;
 
-// todo nur access, region und stationen anpassen
+// todo wochenende siehe pages/users/index

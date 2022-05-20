@@ -23,6 +23,7 @@ interface Props extends CProps {
   fullWidth?: boolean;
   values?: FormValues;
   disabled?: string[];
+  inline?: boolean;
 }
 
 function Form({
@@ -35,6 +36,7 @@ function Form({
   fullWidth,
   values,
   disabled,
+  inline,
 }: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<AxiosError<ErrorResponse> | null>(null);
@@ -80,6 +82,10 @@ function Form({
     '& .gridHeader + .gridItem': { gridColumnStart: 1 },
     gridTemplateColumns: `repeat(${columns}, 1fr)`,
   };
+
+  const inlineStyle = { display: 'flex', gap: 2 };
+
+  const errorMessageStyle = { mt: 2, width: containerWidth };
 
   useEffect(() => {
     const e = error?.response?.data;
@@ -144,13 +150,18 @@ function Form({
   return (
     <form onSubmit={handleSubmit(submitHandler)}>
       <Box sx={containerStyle}>
-        <Box sx={gridStyle}>{fields.map(fieldMap)}</Box>
-
-        <Button text={submitName ?? 'OK'} loading={submitting} submit={true} />
+        <Box sx={inline ? inlineStyle : gridStyle}>
+          {fields.map(fieldMap)}
+          <Button
+            text={submitName ?? 'OK'}
+            loading={submitting}
+            submit={true}
+          />
+        </Box>
       </Box>
 
       {error?.response?.data?.message ? (
-        <Box sx={{ mt: 2 }}>
+        <Box sx={errorMessageStyle}>
           <Typography color="error">
             {error.response.data.message ?? errorText}
           </Typography>

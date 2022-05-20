@@ -6,7 +6,7 @@ export interface DomainUser {
   telephoneNumber: string; // "+49 40 654411503"
   givenName: string; // "Ole"
   /** Disponenten sind in `OU=[Stationsnummer] - [Station],OU=Counter, ...` */
-  distinguishedName: string; // "CN=SC - Bergen\\, Ole,OU=_IT,OU=_Flotte,OU=Verwaltung,OU=User,OU=STARCAR,DC=starcar,DC=local"
+  distinguishedName: string; // "CN=SC - Bergen\, Ole,OU=_IT,OU=_Flotte,OU=Verwaltung,OU=User,OU=STARCAR,DC=starcar,DC=local"
   // memberOf?
   displayName: string; // "STARCAR GmbH - Ole Bergen"
   streetAddress: string; // "Süderstr. 282"
@@ -14,10 +14,13 @@ export interface DomainUser {
   userPrincipalName: string; // "bergen@starcar.de"
   userAccountControl: string; // Account aktiv | 512 = ja, 514 = nein
   mail: string; // "ole.bergen@starcar.de"
+  objectClass?: string[]; // "top", "person", "organizationalPerson", "user"
+  // todo objectclass nicht optional?
 }
 
 export interface LdapClient {
   client: Client;
+  add: (dn: string, entry: DomainUser) => Promise<void>;
   connect: () => Promise<void>;
   authenticate: (username: string, password: string) => Promise<DomainUser[]>;
   search: () => Promise<DomainUser[]>;
