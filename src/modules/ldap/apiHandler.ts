@@ -4,13 +4,17 @@ import { ApiError } from 'src/common/utils/server';
 import { adErrorText } from 'src/config/constants';
 import { DomainUser } from 'src/modules/ldap/types';
 
-export const createLdapUser: ApiHandlerWithConn = async (req, res) => {
-  const { body, ldap } = req;
+export const createLdapUser: ApiHandlerWithConn<Partial<DomainUser>> = async (
+  req,
+  res
+) => {
+  const { ldap } = req;
+  // const { body, ldap } = req;
   if (!ldap) throw new ApiError(adErrorText);
 
   const cn = `test\\, test`;
   const dn = `CN=${cn},OU=_IT,OU=_Flotte,OU=Verwaltung,OU=User,OU=STARCAR,DC=starcar,DC=local`;
-  const entry: DomainUser = {
+  const entry = {
     cn, // SC - (STARCAR), SCA - (Agentur), SCM - (Mobility), P24 -
     sn: 'Bar',
     l: 'Hamburg',

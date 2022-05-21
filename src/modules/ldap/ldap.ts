@@ -36,9 +36,10 @@ function ldapConnection(): LdapClient {
       });
     });
 
-  const connect = async () => bind(ldapConfig.bindDN, ldapConfig.bindPW);
+  const connect: LdapClient['connect'] = async () =>
+    bind(ldapConfig.bindDN, ldapConfig.bindPW);
 
-  const search = (user?: string) =>
+  const search: LdapClient['search'] = (user) =>
     new Promise<DomainUser[]>((resolve, reject) => {
       // client.bind(ldapUserDN, ldapConfig.password, (err) => {
       //   if (err) reject(createError(err));
@@ -83,7 +84,10 @@ function ldapConnection(): LdapClient {
       });
     });
 
-  const authenticate = async (username: string, password: string) => {
+  const authenticate: LdapClient['authenticate'] = async (
+    username,
+    password
+  ) => {
     // bind für search
     await connect();
     const [user] = await search(username);
@@ -93,11 +97,10 @@ function ldapConnection(): LdapClient {
     return [user];
   };
 
-  const add = (dn: string, entry: DomainUser) =>
+  const add: LdapClient['add'] = (dn, entry) =>
     new Promise<void>((resolve, reject) => {
       ldapClient.add(dn, entry, (err) => {
         if (err) reject(err);
-        console.log('added');
         resolve();
       });
 
