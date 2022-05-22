@@ -34,8 +34,8 @@ const parseEnv = {
 };
 
 const env = {
-  db_user: parseEnv.toString('DB_USER'),
-  db_password: parseEnv.toString('DB_PASSSWORD'),
+  mariadb_user: parseEnv.toString('MARIADB_USER'),
+  mariadb_password: parseEnv.toString('MARIADB_PASSWORD'),
   ldap_user: parseEnv.toString('LDAP_USER'),
   ldap_password: parseEnv.toString('LDAP_PASSWORD'),
   ldap_url: parseEnv.toString('LDAP_URL'),
@@ -53,10 +53,10 @@ type Databases = {
 };
 
 const baseDbConfig: DataSourceOptions = {
-  type: 'mysql',
-  username: env.db_user,
-  password: env.db_password,
-  host: 'localhost',
+  type: 'mariadb',
+  username: env.mariadb_user,
+  password: env.mariadb_password,
+  host: 'db', // docker compose service name
   synchronize: false,
   logging: ['error'],
 };

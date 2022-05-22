@@ -44,6 +44,17 @@ DROP DATABASE development; CREATE DATABASE development; USE development;
 UPDATE users SET access = X'ffff' WHERE username = "bergen";
 ```
 
+### Docker
+
+`<DATENBANK>` und `<CONTAINER ID>` austauschen
+
+```sh
+mysqldump -u root <DATENBANK>.sql
+docker cp dump/<DATENBANK>.sql <CONTAINER ID>:<DATENBANK>.sql
+docker exec -it <CONTAINER ID> /bin/bash
+mysql -u root -p <DATENBANK> < <DATENBANK>.sql
+```
+
 ## Troubleshoot
 
 Schauen ob der Service läuft mit `systemctl status mysql.service`, sonst starten. Schauen ob user und Passwort klappen mit `sudo mysqladmin -p -u starcar version`, im prompt Passwort eingeben. Wenns nicht klappt dann gibt es noch `sudo mysql -u root` , sonst DB importieren.
