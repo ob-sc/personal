@@ -34,6 +34,7 @@ const parseEnv = {
 };
 
 const env = {
+  db_host: parseEnv.toString('DB_HOST', 'localhost'), // docker-compose service name (db) oder localhost
   mariadb_user: parseEnv.toString('MARIADB_USER'),
   mariadb_password: parseEnv.toString('MARIADB_PASSWORD'),
   ldap_user: parseEnv.toString('LDAP_USER'),
@@ -56,7 +57,7 @@ const baseDbConfig: DataSourceOptions = {
   type: 'mariadb',
   username: env.mariadb_user,
   password: env.mariadb_password,
-  host: 'db', // docker compose service name
+  host: env.db_host,
   synchronize: false,
   logging: ['error'],
 };

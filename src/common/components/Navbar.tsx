@@ -31,11 +31,11 @@ const Navbar = ({ session }: Props) => {
   };
 
   const menuItems = [
-    {
-      access: session?.access.temps.read ?? false,
-      route: '/temps',
-      label: 'Aushilfen',
-    },
+    // {
+    //   access: session?.access.temps.read ?? false,
+    //   route: '/temps',
+    //   label: 'Aushilfen',
+    // },
     {
       access: session?.access.users.read ?? false,
       route: '/users',

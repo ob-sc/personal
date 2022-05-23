@@ -37,8 +37,8 @@ export class User {
   @Column('varchar')
   location!: string;
 
-  @Column('binary', { length: 2 })
-  access!: Buffer;
+  @Column('binary', { length: 2, ...NULL })
+  access!: Buffer | null;
 
   @Column('int', { ...NULL })
   region_id!: number | null;

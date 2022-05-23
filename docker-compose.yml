@@ -9,6 +9,8 @@ services:
       - db
     environment:
       - NODE_ENV=production
+      - LANG=C.UTF-8
+      - LC_ALL=C.UTF-8
   db:
     image: mariadb:10.7
     restart: always

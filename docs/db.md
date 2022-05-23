@@ -1,60 +1,49 @@
 # Datenbank
 
-## Installation
+## Dev
 
-MySQL installieren und einrichten
-
-```sh
-sudo apt update
-sudo apt install mysql-server
-sudo mysql_secure_installation
-sudo mysql
-```
-
-### WSL
-
-Kein systemd, also `sudo /etc/init.d/mysql start`
-
-### Mac
+DB initialisieren
 
 ```sh
-brew install mysql
-brew services start mysql
-mysqladmin -u root
-mysql -u root # in vscode reicht mysql alleine für root
+. ./db_alias.sh
+start-dev-db
 ```
 
-### Benutzer
-
-MySQL User anlegen, `PASSWORT` austauschen durch das Passwort in `DB_SECRET`
+Alle Datenbanken sollten am besten noch nicht exisitieren.
+Mit alias `ddb` (aus `./db_alias.sh`):
 
 ```sql
-CREATE USER 'starcar'@'localhost' IDENTIFIED BY 'PASSWORT';
-GRANT ALL PRIVILEGES ON *.* TO 'starcar'@'localhost' WITH GRANT OPTION;
+CREATE DATABASE IF NOT EXISTS prod_old;
+CREATE DATABASE IF NOT EXISTS dev_old;
+CREATE DATABASE IF NOT EXISTS development
+  CHARACTER SET = 'utf8mb4'
+  COLLATE = 'utf8mb4_unicode_ci';
+GRANT ALL PRIVILEGES ON *.* TO 'starcar'@'%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 ```
 
-### DEV DB & User
-
-```sql
-DROP DATABASE development; CREATE DATABASE development; USE development;
-
-/* anmelden mit sync */
-
-UPDATE users SET access = X'ffff' WHERE username = "bergen";
-```
-
-### Docker
-
-`<DATENBANK>` und `<CONTAINER ID>` austauschen
+Mit alias `ddb-bash`:
 
 ```sh
-mysqldump -u root <DATENBANK>.sql
-docker cp dump/<DATENBANK>.sql <CONTAINER ID>:<DATENBANK>.sql
-docker exec -it <CONTAINER ID> /bin/bash
-mysql -u root -p <DATENBANK> < <DATENBANK>.sql
+mariadb -uroot -p$MARIADB_ROOT_PASSWORD prod_old < dump/prod_old.sql
+mariadb -uroot -p$MARIADB_ROOT_PASSWORD dev_old < dump/dev_old.sql
+
+# -> anmelden mit sync (bergen in db ohne access)
+
+# migration durchführen und user bergen zum admin machen
+mariadb -uroot -p$MARIADB_ROOT_PASSWORD development < dump/migration.sql
+
+# -> db testen, wenn okay exportieren
+
+mysqldump -uroot -p$MARIADB_ROOT_PASSWORD development > new_prod.sql
 ```
 
-## Troubleshoot
+## Prod
 
-Schauen ob der Service läuft mit `systemctl status mysql.service`, sonst starten. Schauen ob user und Passwort klappen mit `sudo mysqladmin -p -u starcar version`, im prompt Passwort eingeben. Wenns nicht klappt dann gibt es noch `sudo mysql -u root` , sonst DB importieren.
+Auf dem Host ausführen, `<CONTAINER ID>` austauschen
+
+```sh
+docker cp dump/new_prod.sql <CONTAINER ID>:dump/new_prod.sql
+docker exec -it <CONTAINER ID> /bin/bash
+mysql -u root -p production < dump/new_prod.sql
+```
