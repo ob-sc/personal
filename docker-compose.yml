@@ -1,10 +1,11 @@
 version: '3.9'
 services:
-  web:
+  app:
     build: .
+    container_name: app
     restart: always
-    ports:
-      - '80:3000'
+    # ports:
+    #   - '3000:3000'
     depends_on:
       - db
     environment:
@@ -13,7 +14,20 @@ services:
       - LC_ALL=C.UTF-8
   db:
     image: mariadb:10.7
+    container_name: db
     restart: always
     env_file: .env.local
     environment:
       - MARIADB_DATABASE=production
+  proxy:
+    image: nginx:1.21-alpine
+    container_name: proxy
+    restart: always
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./ssl:/etc/nginx/ssl
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - app

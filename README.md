@@ -1,4 +1,7 @@
-# Aushilfen & Onboarding für Perso zusammengefasst
+# STARCAR Personalmanagent
+
+Directory auf dem Server ist `var/www/personal`.  
+Bei deploy müssen `./ssl` und `/tmp/scdump` erstellt und mit den Zertifikaten / SQL Dumps gefüllt werden.
 
 ## DEV
 

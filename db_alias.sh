@@ -11,11 +11,11 @@
 cd "${0%/*}" || exit 1
 
 mkdir -p /tmp/scdump
-cp ./migration/migration.sql /tmp/scdump/
+cp ./sql/migration.sql /tmp/scdump/
 
 # env variablen
 set -o allexport
-source .env.local
+. .env.local
 set +o allexport
 
 alias start-dev-db="docker run \

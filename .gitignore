@@ -38,3 +38,6 @@ yarn-error.log*
 
 # db dump
 /dump
+
+# cert
+/ssl
