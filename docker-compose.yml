@@ -6,11 +6,6 @@ services:
     restart: always
     depends_on:
       - db
-    environment:
-      - NODE_ENV=production
-      - LANG=C.UTF-8
-      - LC_ALL=C.UTF-8
-      - TZ=Europe/Berlin
   db:
     image: mariadb:10.7
     container_name: db

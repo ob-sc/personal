@@ -15,6 +15,11 @@ RUN yarn build
 FROM node:16-alpine AS runner
 WORKDIR /app
 
+RUN apk update && apk add tzdata
+
+ENV TZ Europe/Berlin
+ENV LANG C.UTF-8
+ENV LC_ALL C.UTF-8
 ENV NODE_ENV production
 
 RUN addgroup --system --gid 1001 nodejs
