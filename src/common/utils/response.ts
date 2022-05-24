@@ -5,7 +5,7 @@ import {
   PermittedMethod,
   SuccessResponse,
 } from 'src/common/types/server';
-import logger from 'src/common/utils/log';
+import log from 'src/common/utils/log';
 import { ApiError } from 'src/common/utils/server';
 
 /** Antwort mit Code 200 (bzw 204) */
@@ -55,7 +55,7 @@ export const error = (
   }
 
   if (message === undefined) message = err?.message ?? errorText;
-  logger.error(message);
+  log.error(message);
 
   const body: ErrorResponse = { message, fields };
   res.status(status).json(body);

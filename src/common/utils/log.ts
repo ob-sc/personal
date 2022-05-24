@@ -1,12 +1,10 @@
-import pino from 'pino';
-import { isDev } from 'src/common/utils/shared';
+import log from 'loglevel';
+import prefix from 'loglevel-plugin-prefix';
+// bisschen awkward loglevel 1:1 wieder zu exportieren, aber hier war mal pin
+// will die imports nicht alle neu machen
 
-const options: pino.LoggerOptions = isDev
-  ? {
-      level: 'debug',
-    }
-  : { level: 'info' };
+prefix.reg(log);
+prefix.apply(log);
+log.enableAll();
 
-const logger = pino(options);
-
-export default logger;
+export default log;

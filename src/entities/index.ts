@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import { dbConfig } from 'src/config';
-import logger from 'src/common/utils/log';
+import log from 'src/common/utils/log';
 import { User } from 'src/entities/User';
 import { Station } from 'src/entities/Station';
 import { Region } from 'src/entities/Region';
@@ -32,7 +32,7 @@ async function getDatabaseConnection() {
       ? dataSource
       : await dataSource.initialize();
   } catch (err) {
-    logger.error(err);
+    log.error(err);
     return null;
   }
 }

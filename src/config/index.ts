@@ -1,7 +1,7 @@
 import { IronSessionOptions } from 'iron-session';
 import { ClientOptions as LdapOptions } from 'ldapjs';
 import { DataSourceOptions } from 'typeorm';
-import logger from 'src/common/utils/log';
+import log from 'src/common/utils/log';
 
 const validateEnv = (
   envName: string,
@@ -14,11 +14,11 @@ const validateEnv = (
   if (env === undefined) {
     // wenn kein fallback: env ist required -> kill process
     if (fallback === undefined) {
-      logger.error(new Error(message));
+      log.error(new Error(message));
       process.exit(1);
       // sonst nicht required -> warnung & return default
     } else {
-      logger.warn(message);
+      log.warn(message);
       return number ? Number(fallback) : String(fallback);
     }
   }
@@ -98,7 +98,6 @@ export const ldapConfig: {
   baseDN,
   options: {
     url: env.ldap_url,
-    log: logger,
   },
 };
 

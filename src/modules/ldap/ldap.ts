@@ -2,7 +2,7 @@ import ldap from 'ldapjs';
 import { ldapConfig } from 'src/config';
 import { DomainUser, LdapClient } from 'src/modules/ldap/types';
 import { ApiError, parseLdapError } from 'src/common/utils/server';
-import logger from 'src/common/utils/log';
+import log from 'src/common/utils/log';
 
 function ldapConnection(): LdapClient {
   const baseDN = 'DC=starcar,DC=local';
@@ -11,22 +11,22 @@ function ldapConnection(): LdapClient {
   const ldapClient = ldap.createClient(ldapConfig.options);
 
   ldapClient.on('error', (err) => {
-    logger.error(err);
+    log.error(err);
   });
 
   // ldapClient.on('connect', () => {
-  //   logger.debug('ldap connected');
+  //   log.debug('ldap connected');
   //   ldapClient.on('close', () => {
-  //     logger.debug('ldap closed');
+  //     log.debug('ldap closed');
   //   });
   // });
   // ldapClient.on('destroy', () => {
-  //   logger.debug('ldap destroyed');
+  //   log.debug('ldap destroyed');
   // });
 
   const bind = (username: string, password: string) =>
     new Promise<void>((resolve, reject) => {
-      // logger.debug('bind'); // todo
+      // log.debug('bind'); // todo
       ldapClient.bind(username, password, async (err) => {
         if (err) {
           reject(parseLdapError(err));

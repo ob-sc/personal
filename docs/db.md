@@ -35,15 +35,13 @@ mariadb -uroot -p$MARIADB_ROOT_PASSWORD development < dump/migration.sql
 
 # -> db testen (neu anmelden), wenn okay exportieren
 
-mysqldump -uroot -p$MARIADB_ROOT_PASSWORD development > new_prod.sql
+mysqldump -uroot -p$MARIADB_ROOT_PASSWORD development > dump/new_prod.sql
 ```
 
 ## Prod
 
-Auf dem Host ausführen, `<CONTAINER ID>` austauschen
-
 ```sh
-docker cp dump/new_prod.sql <CONTAINER ID>:dump/new_prod.sql
-docker exec -it <CONTAINER ID> /bin/bash
-mysql -u root -p production < dump/new_prod.sql
+docker cp dump/new_prod.sql db:/tmp/new_prod.sql
+docker exec -it db /bin/bash
+mysql -u root -p production < /tmp/new_prod.sql
 ```
