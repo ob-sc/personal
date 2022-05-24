@@ -8,7 +8,7 @@
     "lint": "next lint",
     "p": "next dev | pino-pretty -c",
     "debug": "NODE_OPTIONS='--trace-warnings' next dev",
-    "migrations": "typeorm migration:generate -n CreateDatabase"
+    "build:dc": "docker-compose build --build-arg HTTP_PROXY=http://starcarproxy.pop-i.cloud:8080  --build-arg HTTPS_PROXY=http://starcarproxy.pop-i.cloud:8080"
   },
   "dependencies": {
     "@emotion/cache": "^11.6.0",
