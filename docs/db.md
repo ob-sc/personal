@@ -33,7 +33,7 @@ mariadb -uroot -p$MARIADB_ROOT_PASSWORD dev_old < dump/dev_old.sql
 # migration durchführen und user bergen zum admin machen
 mariadb -uroot -p$MARIADB_ROOT_PASSWORD development < dump/migration.sql
 
-# -> db testen, wenn okay exportieren
+# -> db testen (neu anmelden), wenn okay exportieren
 
 mysqldump -uroot -p$MARIADB_ROOT_PASSWORD development > new_prod.sql
 ```

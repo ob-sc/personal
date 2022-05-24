@@ -7,6 +7,8 @@
 
 # .env.local darf keine leeren zeilen / kommentare haben
 
+# dumps in /tmp/scdumps
+
 # working dir -> root vom projekt
 cd "${0%/*}" || exit 1
 
@@ -15,7 +17,8 @@ cp ./sql/migration.sql /tmp/scdump/
 
 # env variablen
 set -o allexport
-. .env.local
+# shellcheck disable=SC3046
+source .env.local
 set +o allexport
 
 alias start-dev-db="docker run \
@@ -30,7 +33,7 @@ alias start-dev-db="docker run \
 --env MARIADB_ROOT_PASSWORD=$MARIADB_ROOT_PASSWORD \
 mariadb:10.7"
 
-alias ddb="docker exec -it scp-dev-db mariadb -uroot -proot"
+alias ddb="docker exec -it scp-dev-db mariadb -uroot -p$MARIADB_ROOT_PASSWORD"
 alias ddb-bash="docker exec -it scp-dev-db /bin/bash"
 
 echo "  start-dev-db     Docker Container starten"

@@ -10,10 +10,10 @@ interface Props {
 }
 
 const style = {
-  // height: 200,
-  // display: 'grid',
-  // gridTemplateColumns: 'repeat(4, 1fr)',
-  columnCount: 4,
+  height: 200,
+  display: 'grid',
+  gridTemplateColumns: 'repeat(4, 1fr)',
+  // columnCount: 4,
 };
 
 const ASCCheckbox = ({

@@ -15,4 +15,8 @@ Bei deploy müssen `./ssl` und `/tmp/scdump` erstellt und mit den Zertifikaten /
 
 ## PROD
 
+Bauen geht nur mit dem POP-I Proxy
+
+`sudo docker-compose build --build-arg HTTP_PROXY=http://starcarproxy.pop-i.cloud:8080 --build-arg HTTPS_PROXY=http://starcarproxy.pop-i.cloud:8080`
+
 `docker-compose up -d`
