@@ -16,7 +16,6 @@ import { NULL, UNIQUE } from 'src/common/utils/server';
  * Benutzer aus der Datenbank, quasi als Erweiterung vom AD (per LDAP).
  * Die Berechtigungen (in `access` und `stations`) kommen nicht aus dem AD.
  */
-// todo sollten firstname, lastname und email null sein dürfen?
 @Entity({ name: 'users' })
 export class User {
   @PrimaryGeneratedColumn()

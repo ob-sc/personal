@@ -50,5 +50,5 @@ export interface ParsedUser {
   access: Access;
   region: Region | null;
   stations: Station['id'][]; // Array nur aus IDs
-  location: string; // string aus Stationsnummer oder Abteilung
+  location: number | string; // string aus Stationsnummer oder Abteilung
 }

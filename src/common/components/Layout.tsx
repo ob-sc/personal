@@ -9,21 +9,31 @@ interface Props extends CProps {
   session?: ParsedUser;
   loading?: boolean;
   blockAccess?: boolean;
+  flex?: boolean;
 }
-
-const style = {
-  // overflowX: 'hidden',
-  pb: 2,
-};
 
 /**
  * Navbar und Container mit Laden-Spinner, Nachricht über fehlende Berechtigungen oder content.
  */
-function Layout({ session, loading, blockAccess, children }: Props) {
+function Layout({ session, loading, blockAccess, flex, children }: Props) {
+  const style = {
+    pb: 2,
+  };
+
+  const flexStyle = {
+    display: 'flex',
+    flexFlow: 'column nowrap',
+    gap: 2,
+  };
+
   return (
     <>
       <Navbar session={session} />
-      <Container component="main" maxWidth="lg" sx={style}>
+      <Container
+        component="main"
+        maxWidth="lg"
+        sx={[style, flex ? flexStyle : null]}
+      >
         {loading ? (
           // brauche height weil der spinner sonst overflow erzeugt
           <Box sx={{ height: 150 }}>

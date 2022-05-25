@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { ParsedUser } from 'src/common/types/server';
 import { postAllowedStation } from 'src/modules/users/api';
 import { Station } from 'src/entities/Station';
+import { border } from 'src/common/styles';
 
 interface Props {
   stations: Station[];
@@ -10,9 +11,10 @@ interface Props {
 }
 
 const style = {
-  height: 200,
   display: 'grid',
   gridTemplateColumns: 'repeat(4, 1fr)',
+  p: 2,
+  ...border,
   // columnCount: 4,
 };
 
@@ -47,8 +49,6 @@ const ASCCheckbox = ({
     </FormGroup>
   );
 };
-
-// todo WICHTIG: bug macht den container kaputt, zeilenumbruch und brwoser stirbt? lieber multiselect mit suchen
 
 function AllowedStationsContainer({ stations, user }: Props) {
   return (

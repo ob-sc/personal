@@ -7,6 +7,7 @@ import { useGetStations } from 'src/modules/stations/api';
 import { useGetUser } from 'src/modules/users/api';
 import Layout from 'src/common/components/Layout';
 import StationsContainer from 'src/modules/users/components/AllowedStationsContainer';
+import DataList from 'src/common/components/DataList';
 
 export const getServerSideProps = withSessionSsr();
 
@@ -17,15 +18,26 @@ function SingleUserPage({ user }: IPT<typeof getServerSideProps>) {
 
   const stations = useGetStations();
 
-  const name = user.fullName;
+  const { fullName, username, location, email } = data ?? {};
 
-  const hasAccess = user.access.users.read;
+  console.log(data);
+
+  const listData = [
+    { key: 'Benutzername', value: username },
+    { key: 'Benutzergruppe', value: location },
+    { key: 'E-Mail', value: email },
+  ];
+
+  const { read: hasRead, write: hasWrite } = user.access.users;
 
   return (
-    <Layout loading={isValidating} session={user} blockAccess={!hasAccess}>
-      <Typography variant="h2">{name}</Typography>
+    <Layout loading={isValidating} session={user} blockAccess={!hasRead} flex>
+      <Typography variant="h2">{fullName}</Typography>
       {data !== undefined ? (
-        <StationsContainer stations={stations.data ?? []} user={data} />
+        <>
+          <DataList data={listData} />
+          <StationsContainer stations={stations.data ?? []} user={data} />
+        </>
       ) : (
         <Typography>{errorText}</Typography>
       )}
@@ -36,3 +48,9 @@ function SingleUserPage({ user }: IPT<typeof getServerSideProps>) {
 export default SingleUserPage;
 
 // todo wochenende siehe pages/users/index
+
+// todo es fehlt noch eintritt, crent,
+
+// todo anpassen mit write: stationen, region, berechtigungen
+
+// todo knopf für austritt / wechsel

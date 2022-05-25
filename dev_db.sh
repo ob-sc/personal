@@ -1,6 +1,7 @@
 #!/bin/sh
 
 # Diese Datei für eine lokale Entwicklungs-DB sourcen und nie in prod benutzen! Für prod nur docker-compose.yml
+# Nicht ausführen, muss gesourced werden damit die Aliases geladen werden.
 
 # Docker-Container Name
 CONTAINER=perso-dev

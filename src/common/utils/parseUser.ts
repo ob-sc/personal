@@ -122,6 +122,10 @@ const parseUser = (user: User): ParsedUser => {
     ? access.readUIntBE(0, 2)
     : 0;
 
+  const loc = !Number.isNaN(Number(location))
+    ? Number(location)
+    : location.replaceAll('_', '');
+
   return {
     id,
     username,
@@ -131,7 +135,7 @@ const parseUser = (user: User): ParsedUser => {
     lastName: last_name,
     fullName: `${first_name} ${last_name}`,
     access: parseAccess(accessFromBinary),
-    location,
+    location: loc,
     stations: allowed_stations?.map((stat) => stat.id) ?? [],
   };
 };

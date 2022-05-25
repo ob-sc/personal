@@ -22,8 +22,6 @@ function AllUsersPage({ user }: IPT<typeof getServerSideProps>) {
 
   const hasAccess = user.access.users.read;
 
-  console.log(users);
-
   return (
     <Layout session={user} blockAccess={!hasAccess}>
       <DataGrid

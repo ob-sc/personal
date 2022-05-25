@@ -9,6 +9,11 @@ import theme from 'src/config/theme';
 import { MobileContextProvider } from 'src/common/context/MobileContext';
 import { createEmotionCache } from 'src/common/utils/client';
 
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+
 const clientSideEmotionCache = createEmotionCache();
 
 interface MyAppProps extends AppProps {

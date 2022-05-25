@@ -5,7 +5,6 @@ import { deleteSession } from 'src/modules/auth/api';
 import { ParsedUser } from 'src/common/types/server';
 import useMobileContext from 'src/common/context/MobileContext';
 import NavLink from 'src/common/components/NavLink';
-import { flexGrow } from 'src/common/styles';
 import MobileMenu from 'src/common/components/MobileMenu';
 import Logo from 'src/common/components/Logo';
 
@@ -77,7 +76,7 @@ const Navbar = ({ session }: Props) => {
                       </NavLink>
                     ))}
 
-              <Box sx={flexGrow} />
+              <Box sx={{ flexGrow: 1 }} />
 
               {!mobile ? null : (
                 <MobileMenu mobile={mobile} menuItems={menuItems} />
