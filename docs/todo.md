@@ -19,3 +19,5 @@
 - [going to production](https://nextjs.org/docs/going-to-production)
 
 - logs & backup mit hr kaya klären
+
+- ad sync mit db-entity -> timestamp -> "letzter sync war xx"

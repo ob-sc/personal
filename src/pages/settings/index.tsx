@@ -6,6 +6,7 @@ import Form, { FormValues } from 'src/common/components/Form';
 import { FormField } from 'src/common/types/client';
 import { getFloats, putFloats } from 'src/modules/settings/api';
 import { Float } from 'src/entities/Float';
+import { Box, Typography } from '@mui/material';
 
 export const getServerSideProps = withSessionSsr();
 
@@ -37,6 +38,12 @@ function SettingsPage({ user }: IPT<typeof getServerSideProps>) {
 
   return (
     <Layout session={user} blockAccess={!hasAccess}>
+      <Typography variant="h2">Mindestlohn</Typography>
+      <Typography>
+        Aushilfen können nicht abgemeldet werden, wenn ihr Stundenlohn kleiner
+        als dieser Wert ist
+      </Typography>
+      <Box sx={{ mb: 2 }} />
       <Form
         fields={minWageFields}
         onSubmit={handleMinWageSubmit}

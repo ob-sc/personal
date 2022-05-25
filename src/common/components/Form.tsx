@@ -65,7 +65,7 @@ function Form({
     width: containerWidth,
     display: 'flex',
     gap: 2,
-    flexFlow: 'column nowrap',
+    flexFlow: inline ? 'row nowrap' : 'column nowrap',
     // mb: 2,
   };
 
@@ -82,8 +82,6 @@ function Form({
     '& .gridHeader + .gridItem': { gridColumnStart: 1 },
     gridTemplateColumns: `repeat(${columns}, 1fr)`,
   };
-
-  const inlineStyle = { display: 'flex', gap: 2 };
 
   const errorMessageStyle = { mt: 2, width: containerWidth };
 
@@ -150,14 +148,8 @@ function Form({
   return (
     <form onSubmit={handleSubmit(submitHandler)}>
       <Box sx={containerStyle}>
-        <Box sx={inline ? inlineStyle : gridStyle}>
-          {fields.map(fieldMap)}
-          <Button
-            text={submitName ?? 'OK'}
-            loading={submitting}
-            submit={true}
-          />
-        </Box>
+        <Box sx={gridStyle}>{fields.map(fieldMap)}</Box>
+        <Button text={submitName ?? 'OK'} loading={submitting} submit={true} />
       </Box>
 
       {error?.response?.data?.message ? (
