@@ -15,22 +15,6 @@ interface Props {
 
 type StepperStep = { label: string; component: ReactNode; optional?: boolean };
 
-const steps: StepperStep[] = [
-  {
-    label: 'Allgemeine Daten',
-    component: (
-      <Form
-        fields={[{ name: 'poo', label: 'Poo' }]}
-        onSubmit={async (values) => {
-          console.log(values);
-        }}
-      />
-    ),
-  },
-  { label: 'Hardware', component: <div>Hardware</div>, optional: true },
-  { label: 'Berechtigungen', component: <div>Berechtigungen</div> },
-];
-
 // todo qlik & crent (kassenkonto) zu allgemeine daten oder berechtigungen?
 
 // todo jeweils put, damit man zurück kann und der request idempotent ist
@@ -57,6 +41,58 @@ function NewUserStepperModal({ open, onClose }: Props) {
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
+
+  const generalFields = [
+    { name: 'poo', label: 'Poo' },
+    { name: 'paa', label: 'Poo' },
+    { name: 'pii', label: 'Poo' },
+  ];
+
+  const steps: StepperStep[] = [
+    {
+      label: 'Allgemeine Daten',
+      component: (
+        <Form
+          noButton
+          formId="new-user-form"
+          fields={generalFields}
+          onSubmit={async (values) => {
+            console.log(values);
+            handleNext();
+          }}
+        />
+      ),
+    },
+    {
+      label: 'Hardware',
+      component: (
+        <Form
+          noButton
+          formId="new-user-form"
+          fields={[{ name: 'poo', label: 'Poo' }]}
+          onSubmit={async (values) => {
+            console.log(values);
+            handleNext();
+          }}
+        />
+      ),
+      optional: true,
+    },
+    {
+      label: 'Berechtigungen',
+      component: (
+        <Form
+          noButton
+          formId="new-user-form"
+          fields={[{ name: 'poo', label: 'Poo' }]}
+          onSubmit={async (values) => {
+            console.log(values);
+            handleNext();
+          }}
+        />
+      ),
+    },
+  ];
 
   const handleSkip = () => {
     if (!isStepOptional(steps[activeStep])) {
@@ -125,50 +161,34 @@ function NewUserStepperModal({ open, onClose }: Props) {
             </>
           ) : (
             <>
-              <Form
-                noButton
-                fillContainer
-                onSubmit={async () => {
-                  console.log('submit');
+              {/* hier der Inhalt der Schritte */}
+              <Box sx={{ flex: '1 1 auto' }}>{steps[activeStep].component}</Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  pt: 2,
                 }}
-                fields={[{ name: 'poo', label: 'Poo' }]}
-                render={(fields) => (
-                  <Box sx={{ flex: '1 1 auto' }}>
-                    {/* hier der Inhalt der Schritte */}
-                    <>{fields}</>
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        pt: 2,
-                      }}
-                    >
-                      <Button
-                        color="primary"
-                        disabled={activeStep === 0}
-                        onClick={handleBack}
-                        sx={{ mr: 1 }}
-                      >
-                        Zurück
-                      </Button>
-                      <Box sx={{ flex: '1 1 auto' }} />
-                      {isStepOptional(steps[activeStep]) && (
-                        <Button
-                          color="primary"
-                          onClick={handleSkip}
-                          sx={{ mr: 1 }}
-                        >
-                          Überspringen
-                        </Button>
-                      )}
-                      {/* todo disabled wenn nicht-optionaler schritt nicht erledigt */}
-                      <Button onClick={handleNext}>
-                        {activeStep === steps.length - 1 ? 'Fertig' : 'Weiter'}
-                      </Button>
-                    </Box>
-                  </Box>
+              >
+                <Button
+                  color="primary"
+                  disabled={activeStep === 0}
+                  onClick={handleBack}
+                  sx={{ mr: 1 }}
+                >
+                  Zurück
+                </Button>
+                <Box sx={{ flex: '1 1 auto' }} />
+                {isStepOptional(steps[activeStep]) && (
+                  <Button color="primary" onClick={handleSkip} sx={{ mr: 1 }}>
+                    Überspringen
+                  </Button>
                 )}
-              />
+                {/* todo disabled wenn nicht-optionaler schritt nicht erledigt */}
+                <Button type="submit" form="new-user-form">
+                  {activeStep === steps.length - 1 ? 'Fertig' : 'Weiter'}
+                </Button>
+              </Box>
             </>
           )
         }

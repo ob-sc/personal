@@ -25,8 +25,7 @@ interface Props extends CProps {
   disabled?: string[];
   inline?: boolean;
   noButton?: boolean;
-  fillContainer?: boolean;
-  render?: (inputs: (JSX.Element | null)[]) => JSX.Element;
+  formId?: string;
 }
 
 function Form({
@@ -41,8 +40,7 @@ function Form({
   disabled,
   inline,
   noButton,
-  fillContainer,
-  render,
+  formId,
 }: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<AxiosError<ErrorResponse> | null>(null);
@@ -151,17 +149,10 @@ function Form({
     );
   };
 
-  const mappedFields = fields.map(fieldMap);
-
   return (
-    <Box
-      component="form"
-      sx={fillContainer ? { width: '100%', height: '100%' } : undefined}
-      onSubmit={handleSubmit(submitHandler)}
-    >
+    <form id={formId} onSubmit={handleSubmit(submitHandler)}>
       <Box sx={containerStyle}>
-        {/* <Box sx={gridStyle}>{fields.map(fieldMap)}</Box> */}
-        {render ? render(mappedFields) : mappedFields}
+        <Box sx={gridStyle}>{fields.map(fieldMap)}</Box>
         {noButton !== true ? (
           <Button submit text={submitName ?? 'OK'} loading={submitting} />
         ) : null}
@@ -174,7 +165,7 @@ function Form({
           </Typography>
         </Box>
       ) : null}
-    </Box>
+    </form>
   );
 }
 

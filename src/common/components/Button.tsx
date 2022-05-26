@@ -16,6 +16,7 @@ interface Props extends CProps {
   submit?: boolean;
   onClick?: MouseEventHandler;
   color?: ButtonProps['color'];
+  formId?: string;
 }
 
 function Button({
@@ -27,6 +28,7 @@ function Button({
   onClick,
   children,
   color = 'primary',
+  formId = crypto.randomUUID(),
 }: Props) {
   return (
     <MuiButton
@@ -36,6 +38,7 @@ function Button({
       style={{ width: 150 }}
       // , height: 40
       onClick={onClick}
+      form={formId ? formId : undefined}
     >
       {loading ? (
         <CircularProgress size="1.5rem" thickness={2.5} />
