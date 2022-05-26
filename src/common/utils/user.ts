@@ -1,30 +1,9 @@
-import { ParsedUser } from 'src/common/types/server';
+import { Access, AccessPositions, ParsedUser } from 'src/common/types/server';
 import { checkBit } from 'src/common/utils/bitwise';
 import { User } from 'src/entities/User';
 
-interface AccessModule {
-  read: boolean;
-  write: boolean;
-}
-
-// todo regions könnte eigentlich stations write sein, dann wäre noch eine frei, refactoring schnell gemacht
-
-export interface Access {
-  admin: AccessModule;
-  users: AccessModule;
-  temps: AccessModule;
-  work_shifts: AccessModule;
-  weekends: AccessModule;
-  stations: AccessModule;
-  regions: AccessModule;
-  controlling: AccessModule; // lohnkanzlei und controlling
-}
-
 /** Positionen des Bits mit Berechtigung innerhalb der 2 Byte, siehe `parseAccess()` */
-export const accessPositions: Record<
-  keyof Access,
-  { read: number; write: number }
-> = {
+export const ap: AccessPositions = {
   regions: {
     read: 15,
     write: 14,
@@ -72,40 +51,41 @@ export const accessPositions: Record<
  */
 export const parseAccess = (access: number): Access => ({
   regions: {
-    read: checkBit(access, accessPositions.regions.read),
-    write: checkBit(access, accessPositions.regions.write),
+    read: checkBit(access, ap.regions.read),
+    write: checkBit(access, ap.regions.write),
   },
   stations: {
-    read: checkBit(access, accessPositions.stations.read),
-    write: checkBit(access, accessPositions.stations.write),
+    read: checkBit(access, ap.stations.read),
+    write: checkBit(access, ap.stations.write),
   },
   weekends: {
-    read: checkBit(access, accessPositions.weekends.read),
-    write: checkBit(access, accessPositions.weekends.write),
+    read: checkBit(access, ap.weekends.read),
+    write: checkBit(access, ap.weekends.write),
   },
   work_shifts: {
-    read: checkBit(access, accessPositions.work_shifts.read),
-    write: checkBit(access, accessPositions.work_shifts.write),
+    read: checkBit(access, ap.work_shifts.read),
+    write: checkBit(access, ap.work_shifts.write),
   },
   temps: {
-    read: checkBit(access, accessPositions.temps.read),
-    write: checkBit(access, accessPositions.temps.write),
+    read: checkBit(access, ap.temps.read),
+    write: checkBit(access, ap.temps.write),
   },
   users: {
-    read: checkBit(access, accessPositions.users.read),
-    write: checkBit(access, accessPositions.users.write),
+    read: checkBit(access, ap.users.read),
+    write: checkBit(access, ap.users.write),
   },
   controlling: {
-    read: checkBit(access, accessPositions.controlling.read),
-    write: checkBit(access, accessPositions.controlling.write),
+    read: checkBit(access, ap.controlling.read),
+    write: checkBit(access, ap.controlling.write),
   },
   admin: {
-    read: checkBit(access, accessPositions.admin.read),
-    write: checkBit(access, accessPositions.admin.write),
+    read: checkBit(access, ap.admin.read),
+    write: checkBit(access, ap.admin.write),
   },
 });
 
-const parseUser = (user: User): ParsedUser => {
+/** Erstelle User-Objekt aus User in der Datenbank, auch für Session */
+export function readUser(user: User) {
   const {
     id,
     username,
@@ -116,17 +96,18 @@ const parseUser = (user: User): ParsedUser => {
     allowed_stations,
     email,
     location,
+    entry_date,
   } = user;
 
   const accessFromBinary = Buffer.isBuffer(access)
     ? access.readUIntBE(0, 2)
     : 0;
 
-  const loc = !Number.isNaN(Number(location))
+  const numOrStringLocation = !Number.isNaN(Number(location))
     ? Number(location)
     : location.replaceAll('_', '');
 
-  return {
+  const parsed: ParsedUser = {
     id,
     username,
     region,
@@ -135,9 +116,10 @@ const parseUser = (user: User): ParsedUser => {
     lastName: last_name,
     fullName: `${first_name} ${last_name}`,
     access: parseAccess(accessFromBinary),
-    location: loc,
+    location: numOrStringLocation,
     stations: allowed_stations?.map((stat) => stat.id) ?? [],
+    entryDate: entry_date,
   };
-};
 
-export default parseUser;
+  return parsed;
+}

@@ -8,6 +8,7 @@ import { useGetUser } from 'src/modules/users/api';
 import Layout from 'src/common/components/Layout';
 import StationsContainer from 'src/modules/users/components/AllowedStationsContainer';
 import DataList from 'src/common/components/DataList';
+import { toDeLocalDate } from 'src/common/utils/shared';
 
 export const getServerSideProps = withSessionSsr();
 
@@ -18,13 +19,22 @@ function SingleUserPage({ user }: IPT<typeof getServerSideProps>) {
 
   const stations = useGetStations();
 
-  const { fullName, username, location, email } = data ?? {};
+  const { fullName, username, location, email, entryDate } = data ?? {};
 
   console.log(data);
 
   const generalData = [
+    entryDate
+      ? {
+          key: 'Eintritt',
+          value: toDeLocalDate(new Date(entryDate)),
+        }
+      : undefined,
     { key: 'Benutzername', value: username },
-    { key: 'Benutzergruppe', value: location },
+    {
+      key: typeof location === 'number' ? 'Station' : 'Abteilung',
+      value: location,
+    },
     { key: 'E-Mail', value: email },
   ];
 
@@ -40,6 +50,7 @@ function SingleUserPage({ user }: IPT<typeof getServerSideProps>) {
 
           <Typography variant="h2">C-Rent</Typography>
 
+          {/* todo region holen mit subrelation, hier dann anhaken https://stackoverflow.com/a/59718030 */}
           <StationsContainer stations={stations.data ?? []} user={data} />
         </>
       ) : (
@@ -52,8 +63,6 @@ function SingleUserPage({ user }: IPT<typeof getServerSideProps>) {
 export default SingleUserPage;
 
 // todo wochenende siehe pages/users/index
-
-// todo es fehlt noch eintritt, crent,
 
 // todo anpassen mit write: stationen, region, berechtigungen
 

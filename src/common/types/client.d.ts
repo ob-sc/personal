@@ -48,6 +48,11 @@ export interface FormField {
     | 'header';
   required?: boolean;
   selOptions?: SelectOption[];
+  numOptions?: {
+    step?: number;
+    min?: number;
+    max?: number;
+  };
 }
 
 // DataGrid

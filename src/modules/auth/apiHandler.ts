@@ -1,6 +1,6 @@
 import { ApiHandlerWithConn } from 'src/common/types/server';
 import { User } from 'src/entities/User';
-import parseUser from 'src/common/utils/parseUser';
+import { readUser } from 'src/common/utils/user';
 import { success } from 'src/common/utils/response';
 import { ApiError } from 'src/common/utils/server';
 import { adErrorText, dbErrorText } from 'src/config/constants';
@@ -57,7 +57,7 @@ export const login: ApiHandlerWithConn = async (req, res) => {
   dbUser = await repo.save(dbUser);
 
   // für Session parsen
-  const parsed = parseUser(dbUser);
+  const parsed = readUser(dbUser);
   session.user = parsed;
   await session.save();
 

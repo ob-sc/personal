@@ -1,24 +1,10 @@
-import { errorText } from 'src/config/constants';
 import { Entity, StringValueEntitiy } from 'src/entities';
 
 export const isDev = process.env.NODE_ENV !== 'production';
 
-// todo durch date-fns austauschen
-export function toLocalDate(date: string | undefined | null) {
-  if (typeof date !== 'string') return '';
-
-  const dateInstance = new Date(date);
-
-  if (Number.isNaN(dateInstance.getTime())) return errorText;
-
-  const y = dateInstance.getFullYear();
-  const m = dateInstance.getMonth();
-  const d = dateInstance.getDate();
-
-  const withZero = (num: number) => (num < 10 ? `0${num}` : num);
-
-  // monat ist zero-indexed
-  return `${withZero(d)}.${withZero(m + 1)}.${y}`;
+export function toDeLocalDate(date: Date) {
+  if (!(date instanceof Date)) return 'Fehler, kein Date-Objekt';
+  return Intl.DateTimeFormat('de-DE').format(date);
 }
 
 export function redirectUrl(url: string) {

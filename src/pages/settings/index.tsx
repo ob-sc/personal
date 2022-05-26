@@ -7,6 +7,9 @@ import { FormField } from 'src/common/types/client';
 import { getFloats, putFloats } from 'src/modules/settings/api';
 import { Float } from 'src/entities/Float';
 import { Box, Typography } from '@mui/material';
+import { border } from 'src/common/styles';
+import Button from 'src/common/components/Button';
+import { putLdapUsers } from 'src/modules/ldap/api';
 
 export const getServerSideProps = withSessionSsr();
 
@@ -26,6 +29,10 @@ function SettingsPage({ user }: IPT<typeof getServerSideProps>) {
       label: 'Mindestlohn',
       type: 'number',
       required: true,
+      numOptions: {
+        min: 0,
+        step: 0.01,
+      },
     },
   ];
 
@@ -36,20 +43,46 @@ function SettingsPage({ user }: IPT<typeof getServerSideProps>) {
   const minWageFloat = floats.find((float) => float.name === 'min_wage');
   const min_wage = String(minWageFloat ? minWageFloat.value : 0);
 
+  const cardStyle = {
+    ...border,
+    p: 2,
+    m: 2,
+    height: 250,
+    display: 'flex',
+    flexFlow: 'column nowrap',
+    justifyContent: 'space-between',
+  };
+
   return (
-    <Layout session={user} blockAccess={!hasAccess}>
-      <Typography variant="h2">Mindestlohn</Typography>
-      <Typography>
-        Aushilfen können nicht abgemeldet werden, wenn ihr Stundenlohn kleiner
-        als dieser Wert ist
-      </Typography>
-      <Box sx={{ mb: 2 }} />
-      <Form
-        fields={minWageFields}
-        onSubmit={handleMinWageSubmit}
-        values={{ min_wage }}
-        inline
-      />
+    <Layout session={user} blockAccess={!hasAccess} grid>
+      <Box sx={cardStyle}>
+        <div>
+          <Typography variant="h2">Mindestlohn</Typography>
+          <Typography>
+            Aushilfen können nicht abgemeldet werden, wenn ihr Stundenlohn
+            kleiner als dieser Wert ist.
+          </Typography>
+        </div>
+        <Box sx={{ mb: 2 }} />
+        <Form
+          fields={minWageFields}
+          onSubmit={handleMinWageSubmit}
+          values={{ min_wage }}
+          inline
+        />
+      </Box>
+
+      <Box sx={cardStyle}>
+        <div>
+          <Typography variant="h2">Active Directory</Typography>
+          <Typography>
+            Active Directory importieren. Dabei wird auch die Benutzergruppe
+            (Station oder Abteilung) angepasst, Berechtigungen nicht.
+          </Typography>
+        </div>
+        <Box sx={{ mb: 2 }} />
+        <Button onClick={putLdapUsers}>Import</Button>
+      </Box>
     </Layout>
   );
 }

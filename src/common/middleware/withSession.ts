@@ -22,8 +22,8 @@ const sessionPropHandler: (
 
   if (user?.username === undefined) {
     const url = redirectUrl(req.url ?? '/');
-    const encodeRedirect = `/login?redirect=${encodeURIComponent(url)}`;
-    const destination = url === '/' ? '/login' : encodeRedirect;
+    const encodedRedirect = `/login?redirect=${encodeURIComponent(url)}`;
+    const destination = url === '/' ? '/login' : encodedRedirect;
 
     return {
       redirect: {

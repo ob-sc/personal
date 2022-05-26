@@ -1,5 +1,6 @@
 import { TextField } from '@mui/material';
 import { Control, Controller, FieldErrors } from 'react-hook-form';
+import { FormField } from 'src/common/types/client';
 
 interface Props {
   name: string;
@@ -13,7 +14,7 @@ interface Props {
   errorHelper?: boolean;
   required?: boolean;
   cn?: string;
-  currency?: boolean;
+  numOptions?: FormField['numOptions'];
 }
 
 function FormInput({
@@ -26,6 +27,7 @@ function FormInput({
   errorHelper,
   required,
   cn,
+  numOptions,
 }: Props) {
   const err = errors[name];
   const errorText = errorHelper === true ? err : undefined;
@@ -58,6 +60,7 @@ function FormInput({
               ? 'username'
               : undefined
           }
+          inputProps={type === 'number' ? numOptions : undefined}
           {...field}
         />
       )}

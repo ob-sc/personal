@@ -40,7 +40,7 @@ export const createLdapUser: ApiHandlerWithConn<Partial<DomainUser>> = async (
   success(res, test);
 };
 
-export const allLdapUsers: ApiHandlerWithConn = async (req, res) => {
+export const syncLdapUsers: ApiHandlerWithConn = async (req, res) => {
   const { ldap } = req;
   if (!ldap) throw new ApiError(adErrorText);
 

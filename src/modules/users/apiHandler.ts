@@ -1,6 +1,6 @@
 import { ApiHandlerWithConn } from 'src/common/types/server';
 import { User } from 'src/entities/User';
-import parseUser from 'src/common/utils/parseUser';
+import { readUser } from 'src/common/utils/user';
 import { success } from 'src/common/utils/response';
 import { ApiError, idFromQuery } from 'src/common/utils/server';
 import { dbErrorText } from 'src/config/constants';
@@ -34,7 +34,7 @@ export const singleUser: ApiHandlerWithConn = async (req, res) => {
 
   if (user === null) throw notFound;
 
-  const result = parseUser(user);
+  const result = readUser(user);
   success(res, result);
 };
 
@@ -55,6 +55,6 @@ export const createAllowedStation: ApiHandlerWithConn = async (req, res) => {
 
   // todo save mit neuen allowed
 
-  const result = parseUser(user);
+  const result = readUser(user);
   success(res, result);
 };
