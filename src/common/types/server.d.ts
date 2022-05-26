@@ -4,6 +4,8 @@ import { DomainUser, LdapClient } from 'src/modules/ldap/types';
 import { Region } from 'src/entities/Region';
 import { Station } from 'src/entities/Station';
 import { User } from 'src/entities/User';
+import { Crent } from 'src/entities/Crent';
+import { Hardware } from 'src/entities/Hardware';
 
 export type PermittedMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
@@ -70,8 +72,11 @@ export interface ParsedUser {
   lastName: DomainUser['mail'] | null;
   fullName: string; // `${firstName} ${lastName}`
   access: Access; // Berechtigungen, siehe src/common/utils/user.ts
-  region: Region | null;
   stations: Station['id'][]; // Array nur aus IDs
   location: number | string; // string aus Stationsnummer oder Abteilung, siehe src/common/utils/user.ts
   entryDate: User['entry_date'];
+  qlik: null | 'Angefordert' | 'Aktiv';
+  region: Region | null;
+  crent: Crent | null;
+  hardware: Hardware | null;
 }

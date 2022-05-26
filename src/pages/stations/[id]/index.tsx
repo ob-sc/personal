@@ -11,7 +11,7 @@ import Layout from 'src/common/components/Layout';
 import DataList from 'src/common/components/DataList';
 import { stationDescriptions as statDesc } from 'src/modules/stations/columns';
 import { KeyValue } from 'src/common/types/client';
-import { commaJoin, formSafeEntity } from 'src/common/utils/shared';
+import { commaJoin, formSafeObject } from 'src/common/utils/shared';
 import Button from 'src/common/components/Button';
 import { useState } from 'react';
 import Modal from 'src/common/components/Modal';
@@ -72,11 +72,7 @@ function SingleStationPage({ user }: IPT<typeof getServerSideProps>) {
 
   return (
     <Layout loading={isValidating} session={user} blockAccess={!read}>
-      <Typography
-        variant="h2"
-        color={isActive ? undefined : 'error'}
-        gutterBottom
-      >
+      <Typography variant="h1" color={isActive ? undefined : 'error'}>
         {data?.name}
       </Typography>
 
@@ -103,7 +99,7 @@ function SingleStationPage({ user }: IPT<typeof getServerSideProps>) {
                 setModalOpen(false);
               }}
               cols={2}
-              values={formSafeEntity(data)}
+              values={formSafeObject(data)}
               disabled={['id']}
             />
           </Modal>

@@ -21,7 +21,11 @@ export const replaceFloat: ApiHandlerWithConn = async (req, res) => {
 
   const repo = db.getRepository(Float);
 
-  const float = (await repo.findOne({ where: { name } })) ?? new Float();
+  const oldFloat = await repo.findOne({ where: { name } });
+
+  const float = oldFloat ?? new Float();
+
+  if (oldFloat === null) float.name = name;
 
   float.value = value;
 

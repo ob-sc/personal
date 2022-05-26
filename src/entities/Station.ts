@@ -42,8 +42,8 @@ export class Station {
   @Column('int', { ...NULL })
   region_id!: number | null;
 
-  @Column('tinyint', { default: 1 })
-  active!: number;
+  @Column('tinyint', { width: 1, default: 1 })
+  active!: 0 | 1;
 
   // ---
 

@@ -7,6 +7,8 @@ import { dbErrorText } from 'src/config/constants';
 
 const notFound = new ApiError('Benutzer nicht gefunden', 404);
 
+const allRelations = ['region', 'crent', 'hardware', 'allowed_stations'];
+
 // todo allusers und singleuser beide mehr berechtigung aus sessions, nur eigene station, nicht deaktiviert etc
 
 export const allUsers: ApiHandlerWithConn = async (req, res) => {
@@ -29,7 +31,7 @@ export const singleUser: ApiHandlerWithConn = async (req, res) => {
     where: {
       id,
     },
-    relations: ['region', 'allowed_stations'],
+    relations: allRelations,
   });
 
   if (user === null) throw notFound;
@@ -48,7 +50,7 @@ export const createAllowedStation: ApiHandlerWithConn = async (req, res) => {
     where: {
       id: Number(body.id),
     },
-    relations: ['region', 'allowed_stations'],
+    relations: allRelations,
   });
 
   if (user === null) throw notFound;

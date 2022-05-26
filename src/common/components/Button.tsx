@@ -1,7 +1,7 @@
 import {
+  ButtonProps,
   CircularProgress,
   Button as MuiButton,
-  ButtonProps,
 } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import { CProps, MouseEventHandler } from 'src/common/types/client';

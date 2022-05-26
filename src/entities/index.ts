@@ -6,15 +6,12 @@ import { User } from 'src/entities/User';
 import { Station } from 'src/entities/Station';
 import { Region } from 'src/entities/Region';
 import { Float } from 'src/entities/Float';
+import { Crent } from 'src/entities/Crent';
+import { Hardware } from 'src/entities/Hardware';
 
-// WICHTIG: Beide anpassen
-export type Entity = User | Station | Region | Float;
-export type Entities = User & Station & Region & Float;
-// Entities um zu sagen ein key aus allen entities, wie bei StringValueEntity
+export type Entity = User | Station | Region | Float | Hardware | Crent;
 
-export type StringValueEntitiy = Record<keyof Entities, string>;
-
-const entities = [User, Station, Region, Float];
+const entities = [User, Station, Region, Float, Hardware, Crent];
 
 async function getDatabaseConnection() {
   const NODE_ENV = process.env.NODE_ENV ?? 'development';

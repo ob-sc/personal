@@ -1,4 +1,4 @@
-import { Entity, StringValueEntitiy } from 'src/entities';
+import { FormValues } from 'src/common/components/Form';
 
 export const isDev = process.env.NODE_ENV !== 'production';
 
@@ -77,14 +77,20 @@ export function commaJoin(arr: string[]) {
 
 // neues objekt aus werten von entity, jeder wert ist string
 // wird von form benutzt um zb bei PUT call leere werte in die form inputs einzufügen
-export function formSafeEntity(obj: Entity | undefined) {
-  if (!obj) return;
-  const newObj: StringValueEntitiy = {};
+// any ist okay, weil auf objekt getestet wird
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function formSafeObject(obj: any) {
+  const newObj: FormValues = {};
+
+  const isObject =
+    typeof obj === 'object' && !Array.isArray(obj) && obj !== null;
+
+  if (!isObject) return newObj;
 
   for (const [key, val] of Object.entries(obj)) {
     if (val === null || val === undefined) {
       newObj[key] = '';
-    } else newObj[key] = val;
+    } else newObj[key] = String(val);
   }
 
   return newObj;

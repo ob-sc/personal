@@ -22,6 +22,7 @@ function DataContainer({ label, children }: Props) {
     (Array.isArray(children) && children.length === 0) ||
     children === null ||
     children === undefined ||
+    children === false ||
     children === '';
 
   return (

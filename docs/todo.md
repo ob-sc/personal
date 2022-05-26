@@ -16,6 +16,10 @@
 
 - mindestlohn: wenn aushilfe schicht ende und lohn < Mindestlohn: Fehler
 
+- was ist mit kein citrix?
+
+- anmerkungen feld beim onboarding?
+
 ## meh
 
 - [going to production](https://nextjs.org/docs/going-to-production)

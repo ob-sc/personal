@@ -97,6 +97,9 @@ export function readUser(user: User) {
     email,
     location,
     entry_date,
+    crent,
+    hardware,
+    qlik,
   } = user;
 
   const accessFromBinary = Buffer.isBuffer(access)
@@ -107,10 +110,14 @@ export function readUser(user: User) {
     ? Number(location)
     : location.replaceAll('_', '');
 
+  const qlikString = qlik === 1 ? 'Angefordert' : qlik === 2 ? 'Aktiv' : null;
+
   const parsed: ParsedUser = {
     id,
     username,
     region,
+    crent,
+    hardware,
     email: email?.toLowerCase() ?? null,
     firstName: first_name,
     lastName: last_name,
@@ -119,6 +126,7 @@ export function readUser(user: User) {
     location: numOrStringLocation,
     stations: allowed_stations?.map((stat) => stat.id) ?? [],
     entryDate: entry_date,
+    qlik: qlikString,
   };
 
   return parsed;

@@ -1,22 +1,22 @@
-import { Box, Checkbox, FormControlLabel, FormGroup } from '@mui/material';
+import {
+  Box,
+  Checkbox,
+  Divider,
+  FormControlLabel,
+  FormGroup,
+} from '@mui/material';
 import { useState } from 'react';
 import { ParsedUser } from 'src/common/types/server';
 import { postAllowedStation } from 'src/modules/users/api';
 import { Station } from 'src/entities/Station';
 import { border } from 'src/common/styles';
+import useMobileContext from 'src/common/context/MobileContext';
+import DataContainer from 'src/common/components/DataContainer';
 
 interface Props {
   stations: Station[];
   user: ParsedUser;
 }
-
-const style = {
-  display: 'grid',
-  gridTemplateColumns: 'repeat(4, 1fr)',
-  p: 2,
-  ...border,
-  // columnCount: 4,
-};
 
 const ASCCheckbox = ({
   station,
@@ -51,11 +51,24 @@ const ASCCheckbox = ({
 };
 
 function AllowedStationsContainer({ stations, user }: Props) {
+  const { sm, md } = useMobileContext();
+
+  const style = {
+    display: 'grid',
+    gridTemplateColumns: `repeat(${sm ? 1 : md ? 2 : 4}, 1fr)`,
+    p: 2,
+  };
+
   return (
-    <Box sx={style}>
-      {stations.map((station) => (
-        <ASCCheckbox station={station} user={user} key={station.id} />
-      ))}
+    <Box sx={border}>
+      <DataContainer label="Region">Regionnn</DataContainer>
+      <Divider />
+
+      <Box sx={style}>
+        {stations.map((station) => (
+          <ASCCheckbox station={station} user={user} key={station.id} />
+        ))}
+      </Box>
     </Box>
   );
 }

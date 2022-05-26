@@ -19,7 +19,16 @@ function SingleUserPage({ user }: IPT<typeof getServerSideProps>) {
 
   const stations = useGetStations();
 
-  const { fullName, username, location, email, entryDate } = data ?? {};
+  const {
+    fullName,
+    username,
+    location,
+    email,
+    entryDate,
+    crent,
+    hardware,
+    qlik,
+  } = data ?? {};
 
   console.log(data);
 
@@ -36,10 +45,10 @@ function SingleUserPage({ user }: IPT<typeof getServerSideProps>) {
       value: location,
     },
     { key: 'E-Mail', value: email },
+    qlik ? { key: 'Qlik', value: qlik } : undefined,
   ];
 
-  const { read: hasRead } = user.access.users;
-  // const { read: hasRead, write: hasWrite } = user.access.users;
+  const { read: hasRead, write: hasWrite } = user.access.users;
 
   return (
     <Layout loading={isValidating} session={user} blockAccess={!hasRead} flex>
@@ -48,10 +57,56 @@ function SingleUserPage({ user }: IPT<typeof getServerSideProps>) {
         <>
           <DataList data={generalData} />
 
-          <Typography variant="h2">C-Rent</Typography>
+          {crent ? (
+            <>
+              <Typography variant="h2">C-Rent</Typography>
+              <DataList
+                data={[
+                  { key: 'Benutzer', value: crent.username },
+                  { key: 'Personalnummer', value: crent.personell_id },
+                  { key: 'Kassenkonto', value: crent.register_id },
+                ]}
+              />
+            </>
+          ) : null}
 
-          {/* todo region holen mit subrelation, hier dann anhaken https://stackoverflow.com/a/59718030 */}
-          <StationsContainer stations={stations.data ?? []} user={data} />
+          {hasWrite && hardware ? (
+            <>
+              <Typography variant="h2">Hardware</Typography>
+              <DataList
+                data={[
+                  { key: 'Handy', value: hardware.mobile_phone === 1 },
+                  { key: 'Laptop', value: hardware.laptop === 1 },
+                  { key: 'Computer', value: hardware.computer === 1 },
+                  { key: 'Monitor', value: hardware.monitor },
+                  { key: 'Drucker', value: hardware.printer === 1 },
+                  { key: 'Tankkarte', value: hardware.fuel_card === 1 },
+                  { key: 'iPad', value: hardware.ipad === 1 },
+                  { key: 'iPad Typ / Zubehör', value: hardware.ipad_extra },
+                  { key: 'Sonstige Hardware', value: hardware.other },
+                  {
+                    key: 'Hardware-Freigabe durch',
+                    value: hardware.authorization,
+                  },
+                ]}
+              />
+            </>
+          ) : null}
+
+          {hasWrite ? (
+            <>
+              <Typography variant="h2">Freigaben</Typography>
+              {JSON.stringify(data.access)}
+            </>
+          ) : null}
+
+          {hasWrite ? (
+            <>
+              <Typography variant="h2">Stationen</Typography>
+              {/* todo region holen mit subrelation, hier dann anhaken https://stackoverflow.com/a/59718030 */}
+              <StationsContainer stations={stations.data ?? []} user={data} />
+            </>
+          ) : null}
         </>
       ) : (
         <Typography>{errorText}</Typography>

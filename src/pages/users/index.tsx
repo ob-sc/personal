@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { InferGetServerSidePropsType as IPT } from 'next';
 import { useRouter } from 'next/router';
 import { RowClickHandler } from 'src/common/types/client';
@@ -6,10 +7,12 @@ import { withSessionSsr } from 'src/common/middleware/withSession';
 import Layout from 'src/common/components/Layout';
 import DataGrid from 'src/common/components/DataGrid';
 import userColumns from 'src/modules/users/columns';
+import NewUserStepperModal from 'src/modules/users/components/NewUserStepperModal';
 
 export const getServerSideProps = withSessionSsr();
 
 function AllUsersPage({ user }: IPT<typeof getServerSideProps>) {
+  const [modalOpen, modalSetOpen] = useState(false);
   const users = useGetUsers();
   const router = useRouter();
 
@@ -19,6 +22,10 @@ function AllUsersPage({ user }: IPT<typeof getServerSideProps>) {
   };
 
   const cols = userColumns();
+
+  const newUserHandler = () => {
+    modalSetOpen(true);
+  };
 
   const hasAccess = user.access.users.read;
 
@@ -30,6 +37,13 @@ function AllUsersPage({ user }: IPT<typeof getServerSideProps>) {
         error={users.error !== undefined}
         loading={!users.data && !users.error}
         rowClickHandler={rowClickHandler}
+        add
+        actionHandler={newUserHandler}
+      />
+
+      <NewUserStepperModal
+        open={modalOpen}
+        onClose={() => modalSetOpen(false)}
       />
     </Layout>
   );
