@@ -22,20 +22,24 @@ function SingleUserPage({ user }: IPT<typeof getServerSideProps>) {
 
   console.log(data);
 
-  const listData = [
+  const generalData = [
     { key: 'Benutzername', value: username },
     { key: 'Benutzergruppe', value: location },
     { key: 'E-Mail', value: email },
   ];
 
-  const { read: hasRead, write: hasWrite } = user.access.users;
+  const { read: hasRead } = user.access.users;
+  // const { read: hasRead, write: hasWrite } = user.access.users;
 
   return (
     <Layout loading={isValidating} session={user} blockAccess={!hasRead} flex>
-      <Typography variant="h2">{fullName}</Typography>
+      <Typography variant="h1">{fullName}</Typography>
       {data !== undefined ? (
         <>
-          <DataList data={listData} />
+          <DataList data={generalData} />
+
+          <Typography variant="h2">C-Rent</Typography>
+
           <StationsContainer stations={stations.data ?? []} user={data} />
         </>
       ) : (

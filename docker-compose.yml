@@ -11,7 +11,7 @@ services:
     container_name: db
     restart: always
     volumes:
-      - ./data/db:/var/lib/mysql
+      - /opt/personal_data:/var/lib/mysql
     env_file: .env.local
     environment:
       - MARIADB_DATABASE=production
