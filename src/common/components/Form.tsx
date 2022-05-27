@@ -10,7 +10,7 @@ import FormSelect from 'src/common/components/FormSelect';
 import FormMultiSelect from 'src/common/components/FormMultiSelect';
 import FormInput from 'src/common/components/FormInput';
 import Button from 'src/common/components/Button';
-import crypto from 'crypto';
+import uuid from 'uuid';
 
 export type FormValues = { [key: string]: string };
 
@@ -41,7 +41,7 @@ function Form({
   disabled,
   inline,
   noButton,
-  formId = crypto.randomUUID(),
+  formId = uuid.v4(),
 }: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<AxiosError<ErrorResponse> | null>(null);
