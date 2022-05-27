@@ -28,7 +28,7 @@ function Button({
   onClick,
   children,
   color = 'primary',
-  formId = crypto.randomUUID(),
+  formId,
 }: Props) {
   return (
     <MuiButton
