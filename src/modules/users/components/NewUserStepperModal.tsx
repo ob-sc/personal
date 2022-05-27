@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from 'src/common/components/Modal';
 import Form from 'src/common/components/Form';
+import { FormField } from 'src/common/types/client';
 
 interface Props {
   open: boolean;
@@ -18,6 +19,8 @@ type StepperStep = { label: string; component: ReactNode; optional?: boolean };
 // todo qlik & crent (kassenkonto) zu allgemeine daten oder berechtigungen?
 
 // todo jeweils put, damit man zurück kann und der request idempotent ist
+
+// todo fields auslagern wie station new
 
 function NewUserStepperModal({ open, onClose }: Props) {
   const [activeStep, setActiveStep] = useState(0);
@@ -42,10 +45,16 @@ function NewUserStepperModal({ open, onClose }: Props) {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const generalFields = [
-    { name: 'poo', label: 'Poo' },
-    { name: 'paa', label: 'Poo' },
-    { name: 'pii', label: 'Poo' },
+  const generalFields: FormField[] = [
+    { name: 'h0', label: 'Allgemeine Daten', type: 'header' },
+    { name: 'first_name', label: 'Vorname', required: true },
+    { name: 'last_name', label: 'Nachname', required: true },
+    { name: 'position', label: 'Position', required: true },
+    { name: 'location', label: 'Station / Abteilung', required: true },
+    { name: 'entry_date', label: 'Eintritt', type: 'text', required: true },
+    { name: 'h1', label: 'Optional', type: 'header' },
+    { name: 'crent_register', label: 'C-Rent Kassenkonto' },
+    { name: 'qlik', label: 'Qlik' },
   ];
 
   const steps: StepperStep[] = [
@@ -53,6 +62,8 @@ function NewUserStepperModal({ open, onClose }: Props) {
       label: 'Allgemeine Daten',
       component: (
         <Form
+          cols={3}
+          fullWidth
           noButton
           formId="new-user-form"
           fields={generalFields}
@@ -69,7 +80,7 @@ function NewUserStepperModal({ open, onClose }: Props) {
         <Form
           noButton
           formId="new-user-form"
-          fields={[{ name: 'poo', label: 'Poo' }]}
+          fields={[{ name: 'poo', label: 'Hardware' }]}
           onSubmit={async (values) => {
             console.log(values);
             handleNext();
@@ -84,7 +95,7 @@ function NewUserStepperModal({ open, onClose }: Props) {
         <Form
           noButton
           formId="new-user-form"
-          fields={[{ name: 'poo', label: 'Poo' }]}
+          fields={[{ name: 'paa', label: 'Berechtigungen' }]}
           onSubmit={async (values) => {
             console.log(values);
             handleNext();
@@ -118,6 +129,7 @@ function NewUserStepperModal({ open, onClose }: Props) {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
+          gap: 3,
         }}
       >
         <Stepper activeStep={activeStep}>

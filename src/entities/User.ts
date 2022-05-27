@@ -55,6 +55,9 @@ export class User {
   @Column('date', { ...NULL })
   entry_date!: string | null;
 
+  @Column('varchar', { ...NULL })
+  position!: string | null;
+
   @Column('int', { ...NULL })
   qlik!: number | null;
 
