@@ -20,6 +20,12 @@
 
 - anmerkungen feld beim onboarding?
 
+// ----
+
+- nur eigener account
+
+- RA wer darf was sehen
+
 ## meh
 
 - [going to production](https://nextjs.org/docs/going-to-production)
