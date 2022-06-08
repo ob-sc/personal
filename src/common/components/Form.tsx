@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AxiosError } from 'axios';
 import { Box, Typography } from '@mui/material';
@@ -10,7 +10,6 @@ import FormSelect from 'src/common/components/FormSelect';
 import FormMultiSelect from 'src/common/components/FormMultiSelect';
 import FormInput from 'src/common/components/FormInput';
 import Button from 'src/common/components/Button';
-// import uuid from 'uuid';
 
 export type FormValues = { [key: string]: string };
 
@@ -52,6 +51,7 @@ function Form({
     setError: setFormError,
     setValue,
   } = useForm();
+  const id = useId();
 
   const { sm, md, mobile } = useMobileContext();
 
@@ -151,7 +151,7 @@ function Form({
   };
 
   return (
-    <form id={formId} onSubmit={handleSubmit(submitHandler)}>
+    <form id={formId ?? id} onSubmit={handleSubmit(submitHandler)}>
       <Box sx={containerStyle}>
         <Box sx={gridStyle}>{fields.map(fieldMap)}</Box>
         {noButton !== true ? (

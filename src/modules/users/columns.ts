@@ -1,12 +1,13 @@
 import { DGColFn } from 'src/common/types/client';
-// import { gridEmptyVal } from 'src/common/utils/client';
+import { gridEmptyVal, gridTinyIntVal } from 'src/common/utils/client';
+
+// Daten ohne readUser, also Felder direkt aus der DB
 
 export const userDescriptions = {
-  id: 'ID',
   username: 'Benutzername',
-  access: 'Berechtigungen',
-  region: 'Region',
-  stations: 'Stationen',
+  first_name: 'Vorname',
+  last_name: 'Nachname',
+  active: 'Aktiv',
 };
 
 const userColumns: DGColFn = () => [
@@ -15,6 +16,25 @@ const userColumns: DGColFn = () => [
     headerName: userDescriptions.username,
     width: 300,
     sm: true,
+  },
+  {
+    field: 'first_name',
+    headerName: userDescriptions.first_name,
+    width: 300,
+    valueFormatter: gridEmptyVal,
+  },
+  {
+    field: 'last_name',
+    headerName: userDescriptions.last_name,
+    width: 300,
+    valueFormatter: gridEmptyVal,
+  },
+  {
+    field: 'active',
+    headerName: userDescriptions.active,
+    width: 200,
+    type: 'boolean',
+    valueFormatter: gridTinyIntVal,
   },
 ];
 

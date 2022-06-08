@@ -1,6 +1,8 @@
 import { Access, AccessPositions, ParsedUser } from 'src/common/types/server';
 import { checkBit } from 'src/common/utils/bitwise';
 import { User } from 'src/entities/User';
+import { DomainUser } from 'src/modules/ldap/types';
+import { Repository } from 'typeorm';
 
 /** Positionen des Bits mit Berechtigung innerhalb der 2 Byte, siehe `parseAccess()` */
 export const ap: AccessPositions = {
@@ -100,6 +102,7 @@ export function readUser(user: User) {
     crent,
     hardware,
     qlik,
+    active,
   } = user;
 
   const accessFromBinary = Buffer.isBuffer(access)
@@ -112,16 +115,20 @@ export function readUser(user: User) {
 
   const qlikString = qlik === 1 ? 'Angefordert' : qlik === 2 ? 'Aktiv' : null;
 
+  const nameString =
+    last_name && !first_name ? last_name : `${first_name} ${last_name}`;
+
   const parsed: ParsedUser = {
     id,
     username,
     region,
     crent,
     hardware,
+    active,
     email: email?.toLowerCase() ?? null,
     firstName: first_name,
     lastName: last_name,
-    fullName: `${first_name} ${last_name}`,
+    fullName: nameString,
     access: parseAccess(accessFromBinary),
     location: numOrStringLocation,
     stations: allowed_stations?.map((stat) => stat.id) ?? [],
@@ -130,4 +137,46 @@ export function readUser(user: User) {
   };
 
   return parsed;
+}
+
+// username extra für login
+export async function writeUser(
+  repo: Repository<User>,
+  ldapUser: DomainUser,
+  username = ldapUser.sAMAccountName
+) {
+  // suche username aus request in der db
+  let dbUser = await repo.findOne({
+    where: { username },
+    relations: ['region', 'allowed_stations'],
+  });
+
+  // wenn kein user: Modell erstellen
+  if (dbUser === null) {
+    dbUser = new User();
+    dbUser.username = username;
+    // dbUser.access = emptyAccess; // im entity default gesetzt
+  }
+
+  // in jedem Fall Modell updaten
+  dbUser.first_name = ldapUser.givenName;
+  dbUser.last_name = ldapUser.sn;
+  dbUser.email = ldapUser.mail;
+  dbUser.active = ldapUser.userAccountControl === '512' ? 1 : 0;
+
+  // aus DN die Station / Abteilung ermitteln
+  // das ist sehr statisch, wenn der tree im AD also geändert wird knallts
+  const dn = ldapUser.distinguishedName;
+  const dnParts = dn.split('=');
+  // eslint-disable-next-line prefer-destructuring
+  const locationPart = dnParts[2];
+  const station = locationPart.substring(0, 3);
+  const [department] = locationPart.split(',');
+
+  dbUser.location = !Number.isNaN(Number(station)) ? station : department;
+
+  // und am Ende speichern‚
+  dbUser = await repo.save(dbUser);
+
+  return dbUser;
 }

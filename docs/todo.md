@@ -20,11 +20,14 @@
 
 - anmerkungen feld beim onboarding?
 
-// ----
+### von sc
 
-- nur eigener account
+- nur eigener account anzeigen?
+  - RA wer darf was sehen
 
-- RA wer darf was sehen
+### infra todo
+
+- inaktiv / aktiv wird bei import warsch falsch gesetzt, schauen wer inaktiv dann anpassen‚
 
 ## meh
 

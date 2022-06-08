@@ -79,4 +79,5 @@ export interface ParsedUser {
   region: Region | null;
   crent: Crent | null;
   hardware: Hardware | null;
+  active: User['active'];
 }

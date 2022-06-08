@@ -76,7 +76,7 @@ function SettingsPage({ user }: IPT<typeof getServerSideProps>) {
         <div>
           <Typography variant="h2">Active Directory</Typography>
           <Typography>
-            Active Directory importieren. Dabei wird auch die Benutzergruppe
+            Active Directory importieren. Dabei werden auch die Benutzergruppen
             (Station oder Abteilung) angepasst, Berechtigungen nicht.
           </Typography>
         </div>

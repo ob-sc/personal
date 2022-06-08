@@ -1,6 +1,6 @@
 import { ApiHandlerWithConn } from 'src/common/types/server';
 import { User } from 'src/entities/User';
-import { readUser } from 'src/common/utils/user';
+import { readUser, writeUser } from 'src/common/utils/user';
 import { success } from 'src/common/utils/response';
 import { ApiError } from 'src/common/utils/server';
 import { adErrorText, dbErrorText } from 'src/config/constants';
@@ -24,37 +24,11 @@ export const login: ApiHandlerWithConn = async (req, res) => {
   }
 
   // authentifiziere user gegen AD
-  const [ldapUser] = await ldap.authenticate(username, password);
+  const ldapUser = await ldap.authenticate(username, password);
 
   const repo = db.getRepository(User);
 
-  // suche username aus request in der db
-  let dbUser = await repo.findOne({
-    where: { username },
-    relations: ['region', 'allowed_stations'],
-  });
-
-  // wenn kein user: Modell erstellen
-  if (dbUser === null) {
-    dbUser = new User();
-    dbUser.username = username;
-    // dbUser.access = emptyAccess; // im entity default gesetzt
-  }
-
-  // in jedem Fall Modell updaten
-  dbUser.first_name = ldapUser.givenName;
-  dbUser.last_name = ldapUser.sn;
-  dbUser.email = ldapUser.mail;
-
-  // aus DN die Station / Abteilung ermitteln
-  // das ist sehr statisch, wenn der tree im AD also geändert wird knallts
-  const dn = ldapUser.distinguishedName;
-  const dnParts = dn.split('=');
-  const location = dnParts[2].substring(0, 3);
-  dbUser.location = location;
-
-  // und am Ende speichern
-  dbUser = await repo.save(dbUser);
+  const dbUser = await writeUser(repo, ldapUser, username);
 
   // für Session parsen
   const parsed = readUser(dbUser);

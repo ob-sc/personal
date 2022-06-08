@@ -22,7 +22,7 @@ export interface LdapClient {
   client: Client;
   add: (dn: string, entry: Partial<DomainUser>) => Promise<void>;
   connect: () => Promise<void>;
-  authenticate: (username: string, password: string) => Promise<DomainUser[]>;
+  authenticate: (username: string, password: string) => Promise<DomainUser>;
   search: (user?: string) => Promise<DomainUser[]>;
   destroy: () => void;
 }

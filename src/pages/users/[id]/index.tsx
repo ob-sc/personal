@@ -28,6 +28,7 @@ function SingleUserPage({ user }: IPT<typeof getServerSideProps>) {
     crent,
     hardware,
     qlik,
+    active,
   } = data ?? {};
 
   console.log(data);
@@ -52,7 +53,10 @@ function SingleUserPage({ user }: IPT<typeof getServerSideProps>) {
 
   return (
     <Layout loading={isValidating} session={user} blockAccess={!hasRead} flex>
-      <Typography variant="h1">{fullName}</Typography>
+      <Typography variant="h1" color={active === 1 ? undefined : 'error'}>
+        {fullName}
+      </Typography>
+
       {data !== undefined ? (
         <>
           <DataList data={generalData} />

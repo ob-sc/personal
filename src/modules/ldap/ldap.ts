@@ -94,7 +94,7 @@ function ldapConnection(): LdapClient {
     if (!user) throw new ApiError('Benutzer nicht gefunden', 400, ['username']);
     // bind mit user und pw aus form
     await bind(user.distinguishedName, password);
-    return [user];
+    return user;
   };
 
   const add: LdapClient['add'] = (dn, entry) =>

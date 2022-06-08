@@ -75,7 +75,7 @@ function DataGridFooter({
         </Tooltip>
       ) : null}
 
-      {/* Aktive / Inaktive */}
+      {/* Aktive / Inaktive Anzeigen */}
       {hasActive && !searching ? (
         <Tooltip
           title={!withInactive ? 'Inaktive anzeigen' : 'Inaktive ausblenden'}
@@ -140,6 +140,8 @@ function DataGridFooter({
               <PaginationItem {...item} />
             )
           }
+          showFirstButton={!responsive}
+          showLastButton={!responsive}
           siblingCount={2}
           count={state.pagination.pageCount}
           page={state.pagination.page + 1}
