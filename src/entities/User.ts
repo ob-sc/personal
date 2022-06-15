@@ -1,3 +1,4 @@
+import type { Relation } from 'typeorm';
 import {
   Column,
   Entity,
@@ -6,7 +7,6 @@ import {
   ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
-  Relation,
 } from 'typeorm';
 import { Region } from 'src/entities/Region';
 import { Station } from 'src/entities/Station';
@@ -85,7 +85,9 @@ export class User {
   hardware!: Relation<Hardware>;
 
   // Freigegebene Stationen, eigene n:n Tabelle
-  @ManyToMany(() => Station, (station) => station.users)
+  @ManyToMany(() => Station, (station) => station.users, {
+    cascade: true,
+  })
   @JoinTable({
     name: 'allowed_stations',
     joinColumn: { name: 'user_id' },
@@ -98,7 +100,4 @@ export class User {
  qlik: 0-2, 0: kein qlik, 1: angefordert (beim onboarding oder sonst auch?), 2: aktiv
  man könnte zb auf der startseite oder iwo anders sagen qlik angefordert: diese user
 
-
-
- es fehlt noch  qlik
  */

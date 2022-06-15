@@ -29,6 +29,8 @@
 
 - inaktiv / aktiv wird bei import warsch falsch gesetzt, schauen wer inaktiv dann anpassen‚
 
+- beim anlegen länge benutzername testen
+
 ## meh
 
 - [going to production](https://nextjs.org/docs/going-to-production)

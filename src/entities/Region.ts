@@ -1,10 +1,5 @@
-import {
-  Column,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-  Relation,
-} from 'typeorm';
+import type { Relation } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Station } from 'src/entities/Station';
 import { User } from 'src/entities/User';
 import { UNIQUE } from 'src/common/utils/server';

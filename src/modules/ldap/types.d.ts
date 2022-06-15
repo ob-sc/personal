@@ -11,7 +11,7 @@ export interface DomainUser {
   streetAddress: string; // "Süderstr. 282"
   sAMAccountName: string; // "bergen", Login-Name
   userPrincipalName: string; // "bergen@starcar.de"
-  userAccountControl: string; // Account aktiv | 512 = ja, 514 = nein
+  userAccountControl: string; // Account Eigenschaften | 512 = normaler Account, 514 = inaktiv | https://docs.microsoft.com/en-us/troubleshoot/windows-server/identity/useraccountcontrol-manipulate-account-properties
   distinguishedName: string; // "CN=SC - Bergen\, Ole,OU=_IT,OU=_Flotte,OU=Verwaltung,OU=User,OU=STARCAR,DC=starcar,DC=local"
   mail: string; // "ole.bergen@starcar.de"
   objectClass: string[]; // "top", "person", "organizationalPerson", "user"

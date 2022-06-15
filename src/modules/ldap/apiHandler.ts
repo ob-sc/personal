@@ -3,7 +3,6 @@ import { success } from 'src/common/utils/response';
 import { ApiError } from 'src/common/utils/server';
 import { writeUser } from 'src/common/utils/user';
 import { adErrorText, dbErrorText } from 'src/config/constants';
-import { User } from 'src/entities/User';
 import { DomainUser } from 'src/modules/ldap/types';
 
 export const createLdapUser: ApiHandlerWithConn<Partial<DomainUser>> = async (
@@ -50,13 +49,11 @@ export const syncLdapUsers: ApiHandlerWithConn = async (req, res) => {
   await ldap.connect();
   const ldapUsers = await ldap.search();
 
-  const repo = db.getRepository(User);
-
   const ldapLength = ldapUsers.length;
 
   for (let i = 0; i < ldapLength; i++) {
     const ldapUser = ldapUsers[i];
-    await writeUser(repo, ldapUser);
+    await writeUser(db, ldapUser);
   }
 
   success(res);

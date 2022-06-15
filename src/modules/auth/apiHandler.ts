@@ -1,5 +1,4 @@
 import { ApiHandlerWithConn } from 'src/common/types/server';
-import { User } from 'src/entities/User';
 import { readUser, writeUser } from 'src/common/utils/user';
 import { success } from 'src/common/utils/response';
 import { ApiError } from 'src/common/utils/server';
@@ -26,9 +25,7 @@ export const login: ApiHandlerWithConn = async (req, res) => {
   // authentifiziere user gegen AD
   const ldapUser = await ldap.authenticate(username, password);
 
-  const repo = db.getRepository(User);
-
-  const dbUser = await writeUser(repo, ldapUser, username);
+  const dbUser = await writeUser(db, ldapUser, username);
 
   // für Session parsen
   const parsed = readUser(dbUser);

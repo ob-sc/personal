@@ -1,3 +1,4 @@
+import type { Relation } from 'typeorm';
 import {
   Column,
   Entity,
@@ -5,7 +6,6 @@ import {
   ManyToMany,
   ManyToOne,
   PrimaryColumn,
-  Relation,
 } from 'typeorm';
 import { Min } from 'class-validator';
 import { NULL, UNIQUE } from 'src/common/utils/server';

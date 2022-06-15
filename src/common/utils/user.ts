@@ -1,43 +1,20 @@
 import { Access, AccessPositions, ParsedUser } from 'src/common/types/server';
-import { checkBit } from 'src/common/utils/bitwise';
+import { checkBit as cb } from 'src/common/utils/bitwise';
+import { isNumber } from 'src/common/utils/shared';
 import { User } from 'src/entities/User';
 import { DomainUser } from 'src/modules/ldap/types';
-import { Repository } from 'typeorm';
+import { DataSource } from 'typeorm';
 
 /** Positionen des Bits mit Berechtigung innerhalb der 2 Byte, siehe `parseAccess()` */
 export const ap: AccessPositions = {
-  regions: {
-    read: 15,
-    write: 14,
-  },
-  stations: {
-    read: 13,
-    write: 12,
-  },
-  weekends: {
-    read: 11,
-    write: 10,
-  },
-  work_shifts: {
-    read: 9,
-    write: 8,
-  },
-  temps: {
-    read: 7,
-    write: 6,
-  },
-  users: {
-    read: 5,
-    write: 4,
-  },
-  controlling: {
-    read: 3,
-    write: 2,
-  },
-  admin: {
-    read: 1,
-    write: 0,
-  },
+  regions: { read: 15, write: 14 },
+  stations: { read: 13, write: 12 },
+  weekends: { read: 11, write: 10 },
+  work_shifts: { read: 9, write: 8 },
+  temps: { read: 7, write: 6 },
+  users: { read: 5, write: 4 },
+  controlling: { read: 3, write: 2 },
+  admin: { read: 1, write: 0 },
 };
 
 /**
@@ -47,42 +24,40 @@ export const ap: AccessPositions = {
  * Features (Tabellen) werden in dieser Reihenfolge geparsed:
  * `regions` > `stations` > `weekends` > `work_shifts` > `temps` > `users` > `controlling` > `admin`
  *
- * `admin` write ist LSB, also hat ein ungerader integer immer admin write.
- *
  * Beispiel: `0b0000000010100000` bzw `0x00A0` ist nur das Lesen von `temps` und `users`.
  */
-export const parseAccess = (access: number): Access => ({
+export const parseAccess = (a: number): Access => ({
   regions: {
-    read: checkBit(access, ap.regions.read),
-    write: checkBit(access, ap.regions.write),
+    read: cb(a, ap.regions.read),
+    write: cb(a, ap.regions.write),
   },
   stations: {
-    read: checkBit(access, ap.stations.read),
-    write: checkBit(access, ap.stations.write),
+    read: cb(a, ap.stations.read),
+    write: cb(a, ap.stations.write),
   },
   weekends: {
-    read: checkBit(access, ap.weekends.read),
-    write: checkBit(access, ap.weekends.write),
+    read: cb(a, ap.weekends.read),
+    write: cb(a, ap.weekends.write),
   },
   work_shifts: {
-    read: checkBit(access, ap.work_shifts.read),
-    write: checkBit(access, ap.work_shifts.write),
+    read: cb(a, ap.work_shifts.read),
+    write: cb(a, ap.work_shifts.write),
   },
   temps: {
-    read: checkBit(access, ap.temps.read),
-    write: checkBit(access, ap.temps.write),
+    read: cb(a, ap.temps.read),
+    write: cb(a, ap.temps.write),
   },
   users: {
-    read: checkBit(access, ap.users.read),
-    write: checkBit(access, ap.users.write),
+    read: cb(a, ap.users.read),
+    write: cb(a, ap.users.write),
   },
   controlling: {
-    read: checkBit(access, ap.controlling.read),
-    write: checkBit(access, ap.controlling.write),
+    read: cb(a, ap.controlling.read),
+    write: cb(a, ap.controlling.write),
   },
   admin: {
-    read: checkBit(access, ap.admin.read),
-    write: checkBit(access, ap.admin.write),
+    read: cb(a, ap.admin.read),
+    write: cb(a, ap.admin.write),
   },
 });
 
@@ -109,7 +84,7 @@ export function readUser(user: User) {
     ? access.readUIntBE(0, 2)
     : 0;
 
-  const numOrStringLocation = !Number.isNaN(Number(location))
+  const numOrStringLocation = isNumber(location)
     ? Number(location)
     : location.replaceAll('_', '');
 
@@ -131,7 +106,7 @@ export function readUser(user: User) {
     fullName: nameString,
     access: parseAccess(accessFromBinary),
     location: numOrStringLocation,
-    stations: allowed_stations?.map((stat) => stat.id) ?? [],
+    stations: allowed_stations.map((stat) => stat.id) ?? [],
     entryDate: entry_date,
     qlik: qlikString,
   };
@@ -141,12 +116,14 @@ export function readUser(user: User) {
 
 // username extra für login
 export async function writeUser(
-  repo: Repository<User>,
+  db: DataSource,
   ldapUser: DomainUser,
   username = ldapUser.sAMAccountName
 ) {
+  const userRepo = db.getRepository(User);
+
   // suche username aus request in der db
-  let dbUser = await repo.findOne({
+  let dbUser = await userRepo.findOne({
     where: { username },
     relations: ['region', 'allowed_stations'],
   });
@@ -162,21 +139,34 @@ export async function writeUser(
   dbUser.first_name = ldapUser.givenName;
   dbUser.last_name = ldapUser.sn;
   dbUser.email = ldapUser.mail;
-  dbUser.active = ldapUser.userAccountControl === '512' ? 1 : 0;
+  dbUser.active = ldapUser.userAccountControl === '514' ? 0 : 1;
 
   // aus DN die Station / Abteilung ermitteln
-  // das ist sehr statisch, wenn der tree im AD also geändert wird knallts
+  // location ist der Branch über CN
   const dn = ldapUser.distinguishedName;
   const dnParts = dn.split('=');
   // eslint-disable-next-line prefer-destructuring
   const locationPart = dnParts[2];
   const station = locationPart.substring(0, 3);
   const [department] = locationPart.split(',');
+  const dnLocation = isNumber(station) ? station : department;
 
-  dbUser.location = !Number.isNaN(Number(station)) ? station : department;
+  const oldLocation = dbUser.location;
+  if (oldLocation && isNumber(oldLocation)) {
+    // todo wenn andere location und station, dann alte wegnehmen und neue rein
+    // todo dafür allowed_stations klonen, alte raus und neue rein
+    // todo https://orkhan.gitbook.io/typeorm/docs/many-to-many-relations
+  }
 
-  // und am Ende speichern‚
-  dbUser = await repo.save(dbUser);
+  dbUser.location = dnLocation;
+
+  // am Ende User speichern
+  dbUser = await userRepo.save(dbUser);
 
   return dbUser;
 }
+
+/* todo
+es werden nur aktive gefunden? aktiv setzen ist also schwachsinn und funktioniert nicht mal richtig
+am besten alle inaktiv setzen, dann gefundenene aktiv setzen
+*/
