@@ -86,7 +86,7 @@ export function readUser(user: User) {
 
   const numOrStringLocation = isNumber(location)
     ? Number(location)
-    : location.replaceAll('_', '');
+    : location.replace(/_/g, '');
 
   const qlikString = qlik === 1 ? 'Angefordert' : qlik === 2 ? 'Aktiv' : null;
 

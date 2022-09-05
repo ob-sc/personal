@@ -7,13 +7,13 @@ export function createEmotionCache() {
 }
 
 /** Filtere Objekte in Array (aus API Call) */
-export function searchFilter<T = { [key: string]: unknown }>(
+export function searchFilter(
   searchInput: string,
-  array: readonly T[]
+  array: readonly Record<string, unknown>[]
 ) {
   return searchInput.length < 2
     ? array
-    : array.filter((entry: T) => {
+    : array.filter((entry: Record<string, unknown>) => {
         for (const [, val] of Object.entries(entry)) {
           if (typeof val === 'string') {
             const value = val.toLowerCase();
