@@ -49,7 +49,7 @@ export class User {
   // --- Aus der App: ---
 
   // siehe src/common/utils/user.ts
-  @Column('binary', { length: 2, ...NULL })
+  @Column('binary', { length: 1, ...NULL })
   access!: Buffer | null;
 
   @Column('date', { ...NULL })

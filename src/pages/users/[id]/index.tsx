@@ -121,8 +121,6 @@ function SingleUserPage({ user }: IPT<typeof getServerSideProps>) {
 
 export default SingleUserPage;
 
-// todo wochenende siehe pages/users/index
-
 // todo anpassen mit write: stationen, region, berechtigungen
 
 // todo knopf für austritt / wechsel

@@ -46,17 +46,11 @@ interface AccessModule {
   write: boolean;
 }
 
-// todo regions könnte eigentlich stations write sein, dann wäre noch eine frei, refactoring schnell gemacht
-
 export interface Access {
   admin: AccessModule; // admin read für ad sync, write für settings, berechtigungen etc
   users: AccessModule;
-  temps: AccessModule;
-  work_shifts: AccessModule;
-  weekends: AccessModule;
   stations: AccessModule;
   regions: AccessModule;
-  controlling: AccessModule; // lohnkanzlei und controlling
 }
 
 export type AccessPositions = Record<

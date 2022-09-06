@@ -7,24 +7,18 @@ import { DataSource } from 'typeorm';
 
 /** Positionen des Bits mit Berechtigung innerhalb der 2 Byte, siehe `parseAccess()` */
 export const ap: AccessPositions = {
-  regions: { read: 15, write: 14 },
-  stations: { read: 13, write: 12 },
-  weekends: { read: 11, write: 10 },
-  work_shifts: { read: 9, write: 8 },
-  temps: { read: 7, write: 6 },
-  users: { read: 5, write: 4 },
-  controlling: { read: 3, write: 2 },
+  regions: { read: 7, write: 6 },
+  stations: { read: 5, write: 4 },
+  users: { read: 3, write: 2 },
   admin: { read: 1, write: 0 },
 };
 
 /**
- * `access` ist 2 byte BE. Jede Tabelle (jedes Feature) hat 2 Bits für Berechtigungen,
+ * `access` ist 1 byte BE. Jede Tabelle (jedes Feature) hat 2 Bits für Berechtigungen,
  * _Lesen_ und _Schreiben_ (in dieser Reihenfolge).
  *
  * Features (Tabellen) werden in dieser Reihenfolge geparsed:
- * `regions` > `stations` > `weekends` > `work_shifts` > `temps` > `users` > `controlling` > `admin`
- *
- * Beispiel: `0b0000000010100000` bzw `0x00A0` ist nur das Lesen von `temps` und `users`.
+ * `regions` > `stations` > `users` > `admin`
  */
 export const parseAccess = (a: number): Access => ({
   regions: {
@@ -35,25 +29,9 @@ export const parseAccess = (a: number): Access => ({
     read: cb(a, ap.stations.read),
     write: cb(a, ap.stations.write),
   },
-  weekends: {
-    read: cb(a, ap.weekends.read),
-    write: cb(a, ap.weekends.write),
-  },
-  work_shifts: {
-    read: cb(a, ap.work_shifts.read),
-    write: cb(a, ap.work_shifts.write),
-  },
-  temps: {
-    read: cb(a, ap.temps.read),
-    write: cb(a, ap.temps.write),
-  },
   users: {
     read: cb(a, ap.users.read),
     write: cb(a, ap.users.write),
-  },
-  controlling: {
-    read: cb(a, ap.controlling.read),
-    write: cb(a, ap.controlling.write),
   },
   admin: {
     read: cb(a, ap.admin.read),
@@ -81,7 +59,7 @@ export function readUser(user: User) {
   } = user;
 
   const accessFromBinary = Buffer.isBuffer(access)
-    ? access.readUIntBE(0, 2)
+    ? access.readUIntBE(0, 1)
     : 0;
 
   const numOrStringLocation = isNumber(location)

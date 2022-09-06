@@ -27,13 +27,13 @@ set -o allexport
 . .env.local
 set +o allexport
 
-alias dd="docker exec -it $CONTAINER mariadb -uroot -p$MARIADB_ROOT_PASSWORD"
+alias dd="docker exec -it $CONTAINER mariadb --binary-as-hex -uroot -p$MARIADB_ROOT_PASSWORD"
 alias ddb="docker exec -it $CONTAINER /bin/bash"
 alias ddm=migration
 alias ddme="docker exec -it $CONTAINER /data/dev/migration.sh"
 
 # nicht-interaktive version von dd
-alias mariadb-exec="docker exec $CONTAINER mariadb -uroot -p$MARIADB_ROOT_PASSWORD "
+alias mariadb-exec="docker exec $CONTAINER mariadb --binary-as-hex -uroot -p$MARIADB_ROOT_PASSWORD "
 
 echo
 echo "Aliases:"

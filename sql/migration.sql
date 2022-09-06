@@ -4,8 +4,7 @@
 --   COLLATE = 'utf8mb4_unicode_ci';
 USE development;
 
-UPDATE users SET access = X'ffff' WHERE username = "bergen";
-INSERT INTO floats (`name`,`value`) VALUES ("min_wage", 9.82);
+UPDATE users SET access = X'ff' WHERE username = "bergen";
 
 INSERT INTO regions (`name`) VALUES ("Nord 1");
 INSERT INTO regions (`name`) VALUES ("Nord 2");
