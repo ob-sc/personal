@@ -9,13 +9,14 @@ import Layout from 'src/common/components/Layout';
 import StationsContainer from 'src/modules/users/components/AllowedStationsContainer';
 import DataList from 'src/common/components/DataList';
 import { toDeLocalDate } from 'src/common/utils/shared';
+import UserAuthorizationTable from 'src/modules/users/components/UserAuthorizationTable';
 
 export const getServerSideProps = withSessionSsr();
 
 function SingleUserPage({ user }: IPT<typeof getServerSideProps>) {
   const router = useRouter();
   const { id } = router.query;
-  const { data, isValidating } = useGetUser(Number(id));
+  const { data, isValidating, mutate } = useGetUser(Number(id));
 
   const stations = useGetStations();
 
@@ -29,9 +30,8 @@ function SingleUserPage({ user }: IPT<typeof getServerSideProps>) {
     hardware,
     qlik,
     active,
+    access,
   } = data ?? {};
-
-  console.log(data);
 
   const generalData = [
     entryDate
@@ -100,7 +100,11 @@ function SingleUserPage({ user }: IPT<typeof getServerSideProps>) {
           {hasWrite ? (
             <>
               <Typography variant="h2">Freigaben</Typography>
-              {JSON.stringify(data.access)}
+              <UserAuthorizationTable
+                id={Number(id)}
+                access={access}
+                mutate={mutate}
+              />
             </>
           ) : null}
 

@@ -5,6 +5,12 @@ import { User } from 'src/entities/User';
 import { DomainUser } from 'src/modules/ldap/types';
 import { DataSource } from 'typeorm';
 
+/** Access Buffer aus DB lesen */
+export const readBuffer = (buffer: Buffer | null) =>
+  Buffer.isBuffer(buffer) ? buffer.readUIntBE(0, 1) : 0;
+
+export const writeBuffer = (num: number) => Buffer.from([num]);
+
 /** Positionen des Bits mit Berechtigung innerhalb der 2 Byte, siehe `parseAccess()` */
 export const ap: AccessPositions = {
   regions: { read: 7, write: 6 },
@@ -14,7 +20,7 @@ export const ap: AccessPositions = {
 };
 
 /**
- * `access` ist 1 byte BE. Jede Tabelle (jedes Feature) hat 2 Bits für Berechtigungen,
+ * `access` ist 2 byte BE. Jede Tabelle (jedes Feature) hat 2 Bits für Berechtigungen,
  * _Lesen_ und _Schreiben_ (in dieser Reihenfolge).
  *
  * Features (Tabellen) werden in dieser Reihenfolge geparsed:
@@ -58,9 +64,7 @@ export function readUser(user: User) {
     active,
   } = user;
 
-  const accessFromBinary = Buffer.isBuffer(access)
-    ? access.readUIntBE(0, 1)
-    : 0;
+  const accessFromBinary = readBuffer(access);
 
   const numOrStringLocation = isNumber(location)
     ? Number(location)

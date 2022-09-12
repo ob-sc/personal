@@ -17,3 +17,9 @@ export const postAllowedStation = (userId: number, stationId: number) =>
 
 export const deleteAllowedStation = (userId: number, stationId: number) =>
   axios.delete(`${route}/${userId}/allowed-stations/${stationId}`);
+
+export const postAccessBit = (userId: number, bitPosition: number) =>
+  axios.post(`${route}/${userId}/access/${bitPosition}`);
+
+export const deleteAccessBit = (userId: number, bitPosition: number) =>
+  axios.delete(`${route}/${userId}/access/${bitPosition}`);
