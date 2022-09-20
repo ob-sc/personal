@@ -26,7 +26,7 @@ function ldapConnection(): LdapClient {
 
   const bind = (username: string, password: string) =>
     new Promise<void>((resolve, reject) => {
-      // log.debug('bind'); // todo
+      // log.debug('bind');
       ldapClient.bind(username, password, async (err) => {
         if (err) {
           reject(parseLdapError(err));

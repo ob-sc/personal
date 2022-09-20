@@ -15,7 +15,6 @@ export interface DomainUser {
   distinguishedName: string; // "CN=SC - Bergen\, Ole,OU=_IT,OU=_Flotte,OU=Verwaltung,OU=User,OU=STARCAR,DC=starcar,DC=local"
   mail: string; // "ole.bergen@starcar.de"
   objectClass: string[]; // "top", "person", "organizationalPerson", "user"
-  // todo optionale nicht optional?
 }
 
 export interface LdapClient {

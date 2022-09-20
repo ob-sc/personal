@@ -4,8 +4,6 @@ import Layout from 'src/common/components/Layout';
 
 export const getServerSideProps = withSessionSsr();
 
-// todo startseite ist für disponenten die eintragen-seite, verwaltung ohne berechtigungen einfach nur der eigene benutzer ohne menü, für verwaltung mit berechtigungen mal schauen
-
 // Home: NextPage
 function Home({ user }: IPT<typeof getServerSideProps>) {
   // const noHome = user.stations[0] === 0 && user.access < 1;
@@ -13,3 +11,18 @@ function Home({ user }: IPT<typeof getServerSideProps>) {
 }
 
 export default Home;
+
+/*
+{crent ? (
+  <>
+    <Typography variant="h2">C-Rent</Typography>
+    <DataList
+      data={[
+        { key: 'Benutzer', value: crent.username },
+        { key: 'Personalnummer', value: crent.personell_id },
+        { key: 'Kassenkonto', value: crent.register_id },
+      ]}
+    />
+  </>
+) : null}
+*/

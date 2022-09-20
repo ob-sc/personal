@@ -103,7 +103,7 @@ function Form({
     // wenn werte mitgegeben werden, dann (für zb einen PUT request) die values in die form schreiben
     if (values) {
       for (const [key, value] of Object.entries(values)) {
-        setValue(key, value);
+        setValue(key, value || '');
       }
     }
   }, [error?.response, setFormError, setValue, values]);

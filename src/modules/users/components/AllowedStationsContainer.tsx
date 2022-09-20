@@ -138,7 +138,3 @@ function AllowedStationsContainer({ stations, regions, user }: Props) {
 }
 
 export default AllowedStationsContainer;
-
-// todo toggle freigegebene stationen ,damit ausklappen, sonst nur die freigegebenen anzeigen?
-// todo iwo oben auswahl für zb alle, keine, alle aus region bla etc? dann brauch ich allgemeinen speicher knopf der eine form abschickt, dann wird api komisch
-// todo sonst lieber button alle stationen der extra flag in der db setzt? regionen per filter? nimmt dann andere checkboxes raus?

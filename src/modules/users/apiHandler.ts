@@ -9,6 +9,7 @@ import { setBit, unsetBit } from 'src/common/utils/bitwise';
 import { notFound as regionNotFound } from 'src/modules/regions/apiHandler';
 import { notFound as stationNotFound } from 'src/modules/stations/apiHandler';
 import { Station } from 'src/entities/Station';
+import { Crent } from 'src/entities/Crent';
 
 const notFound = new ApiError('Benutzer nicht gefunden', 404);
 
@@ -193,6 +194,33 @@ export const removeRegion: ApiHandlerWithConn = async (req, res) => {
   if (user === null) throw notFound;
 
   await userRepo.save({ id: user.id, region_id: null });
+
+  const result = readUser(user);
+  success(res, result);
+};
+
+export const storeCrent: ApiHandlerWithConn = async (req, res) => {
+  const { body, db } = req;
+  if (!db) throw new ApiError(dbErrorText);
+
+  const { id, username, personell_id, register_id } = body;
+
+  const userRepo = db.getRepository(User);
+  const crentRepo = db.getRepository(Crent);
+
+  const user = await userRepo.findOne({
+    where: { id: Number(id) },
+    relations: ['crent'],
+  });
+  if (user === null) throw notFound;
+
+  const crent = await crentRepo.save({
+    username,
+    personell_id,
+    register_id: register_id || null,
+  });
+
+  await userRepo.save({ id: user.id, crent });
 
   const result = readUser(user);
   success(res, result);

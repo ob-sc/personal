@@ -16,12 +16,6 @@ interface Props {
 
 type StepperStep = { label: string; component: ReactNode; optional?: boolean };
 
-// todo qlik & crent (kassenkonto) zu allgemeine daten oder berechtigungen?
-
-// todo jeweils put, damit man zurück kann und der request idempotent ist
-
-// todo fields auslagern wie station new
-
 function NewUserStepperModal({ open, onClose }: Props) {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set<number>());

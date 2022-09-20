@@ -11,6 +11,7 @@ import DataList from 'src/common/components/DataList';
 import { toDeLocalDate } from 'src/common/utils/shared';
 import UserAuthorizationTable from 'src/modules/users/components/UserAuthorizationTable';
 import { useGetRegions } from 'src/modules/regions/api';
+import CrentForm from 'src/modules/users/components/CrentForm';
 
 export const getServerSideProps = withSessionSsr();
 
@@ -63,20 +64,9 @@ function SingleUserPage({ user }: IPT<typeof getServerSideProps>) {
         <>
           <DataList data={generalData} />
 
-          {crent ? (
-            <>
-              <Typography variant="h2">C-Rent</Typography>
-              <DataList
-                data={[
-                  { key: 'Benutzer', value: crent.username },
-                  { key: 'Personalnummer', value: crent.personell_id },
-                  { key: 'Kassenkonto', value: crent.register_id },
-                ]}
-              />
-            </>
-          ) : null}
+          <CrentForm userId={Number(id)} crent={crent} />
 
-          {hasWrite && hardware ? (
+          {hasRead && hardware ? (
             <>
               <Typography variant="h2">Hardware</Typography>
               <DataList
@@ -113,7 +103,6 @@ function SingleUserPage({ user }: IPT<typeof getServerSideProps>) {
           {hasWrite ? (
             <>
               <Typography variant="h2">Stationen</Typography>
-              {/* todo region holen mit subrelation, hier dann anhaken https://stackoverflow.com/a/59718030 */}
               <StationsContainer
                 stations={stations.data ?? []}
                 regions={regions.data ?? []}
@@ -130,7 +119,3 @@ function SingleUserPage({ user }: IPT<typeof getServerSideProps>) {
 }
 
 export default SingleUserPage;
-
-// todo anpassen mit write: stationen, region, berechtigungen
-
-// todo knopf für austritt / wechsel

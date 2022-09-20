@@ -14,8 +14,6 @@
 
 - DB migration (nur Stationen?)
 
-- todos durchgehen
-
 ## Was kommt nicht
 
 - Positions / Stationswechsel

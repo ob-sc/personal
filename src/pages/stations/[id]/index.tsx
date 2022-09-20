@@ -110,5 +110,3 @@ function SingleStationPage({ user }: IPT<typeof getServerSideProps>) {
 }
 
 export default SingleStationPage;
-
-// todo button deaktivieren (neues feld active) und button löschen (komplett weg)

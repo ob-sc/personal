@@ -14,11 +14,11 @@ Hinweis C-Rent: Bitte nach der ersten Anmeldung PW ändern
 
 ## testen
 
-berechtigungen
+berechtigungen (kann seiten besuchen und sieht nur ma aus freigegebenen stationen)
 
 was passiert wenn jmd zb eine region hat und diese geloescht wird
 
-was passiert, wenn daten im ad geaendert werden
+was passiert, wenn daten im ad geaendert werden (vor login der person mit sync und nach login ohne sync)
 
 ---
 
