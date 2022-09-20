@@ -23,3 +23,9 @@ export const postAccessBit = (userId: number, bitPosition: number) =>
 
 export const deleteAccessBit = (userId: number, bitPosition: number) =>
   axios.delete(`${route}/${userId}/access/${bitPosition}`);
+
+export const postUserRegion = (userId: number, regionId: number) =>
+  axios.post(`${route}/${userId}/regions/${regionId}`);
+
+export const deleteUserRegion = (userId: number) =>
+  axios.delete(`${route}/${userId}/regions`);

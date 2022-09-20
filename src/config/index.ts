@@ -16,9 +16,9 @@ const validateEnv = (
     if (fallback === undefined) {
       log.error(new Error(message));
       process.exit(1);
-      // sonst nicht required -> warnung & return default
+      // sonst nicht required -> return default
     } else {
-      log.warn(message);
+      // log.warn(message);
       return number ? Number(fallback) : String(fallback);
     }
   }
@@ -35,6 +35,7 @@ const parseEnv = {
 
 const env = {
   db_host: parseEnv.toString('DB_HOST', 'localhost'), // docker-compose service name (db) oder localhost
+  db_verbose: parseEnv.toString('DB_VERBOSE', 'false'), // typeorm logging, all bei 'true'
   mariadb_user: parseEnv.toString('MARIADB_USER'),
   mariadb_password: parseEnv.toString('MARIADB_PASSWORD'),
   ldap_user: parseEnv.toString('LDAP_USER'),
@@ -67,7 +68,10 @@ export const dbConfig: Databases = {
     ...baseDbConfig,
     database: 'development',
     synchronize: true,
-    logging: ['schema', 'error', 'warn', 'info', 'log', 'migration'],
+    logging:
+      env.db_verbose === 'true'
+        ? 'all'
+        : ['schema', 'error', 'warn', 'info', 'log', 'migration'],
   },
 
   test: {

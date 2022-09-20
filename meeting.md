@@ -11,3 +11,15 @@ Bei C-Rent mit PN
 Hinweis C-Rent: Bitte nach der ersten Anmeldung PW ändern
 
 ---
+
+## testen
+
+berechtigungen
+
+was passiert wenn jmd zb eine region hat und diese geloescht wird
+
+was passiert, wenn daten im ad geaendert werden
+
+---
+
+ÄÖÜäöü

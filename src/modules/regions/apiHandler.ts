@@ -4,7 +4,9 @@ import { success } from 'src/common/utils/response';
 import { ApiError, idFromQuery, requiredField } from 'src/common/utils/server';
 import { dbErrorText } from 'src/config/constants';
 
-const notFound = new ApiError('Region nicht gefunden', 404);
+export const notFound = new ApiError('Region nicht gefunden', 404);
+
+const allRelations = ['users', 'stations'];
 
 export const allRegions: ApiHandlerWithConn = async (req, res) => {
   const { db } = req;
@@ -12,7 +14,7 @@ export const allRegions: ApiHandlerWithConn = async (req, res) => {
 
   const repo = db.getRepository(Region);
 
-  const result = await repo.find();
+  const result = await repo.find({ relations: allRelations });
   success(res, result);
 };
 
@@ -48,7 +50,7 @@ export const singleRegion: ApiHandlerWithConn = async (req, res) => {
 
   const region = await repo.findOne({
     where: { id },
-    relations: ['users', 'stations'],
+    relations: allRelations,
   });
 
   if (region === null) throw notFound;

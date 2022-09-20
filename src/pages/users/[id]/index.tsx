@@ -10,6 +10,7 @@ import StationsContainer from 'src/modules/users/components/AllowedStationsConta
 import DataList from 'src/common/components/DataList';
 import { toDeLocalDate } from 'src/common/utils/shared';
 import UserAuthorizationTable from 'src/modules/users/components/UserAuthorizationTable';
+import { useGetRegions } from 'src/modules/regions/api';
 
 export const getServerSideProps = withSessionSsr();
 
@@ -19,6 +20,7 @@ function SingleUserPage({ user }: IPT<typeof getServerSideProps>) {
   const { data, isValidating, mutate } = useGetUser(Number(id));
 
   const stations = useGetStations();
+  const regions = useGetRegions();
 
   const {
     fullName,
@@ -112,7 +114,11 @@ function SingleUserPage({ user }: IPT<typeof getServerSideProps>) {
             <>
               <Typography variant="h2">Stationen</Typography>
               {/* todo region holen mit subrelation, hier dann anhaken https://stackoverflow.com/a/59718030 */}
-              <StationsContainer stations={stations.data ?? []} user={data} />
+              <StationsContainer
+                stations={stations.data ?? []}
+                regions={regions.data ?? []}
+                user={data}
+              />
             </>
           ) : null}
         </>

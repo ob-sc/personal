@@ -15,7 +15,7 @@ import { dbErrorText } from 'src/config/constants';
 
 // Hier sind (fast) alle CRUD Funktionen zu finden (als Referenz für andere Module)
 
-const notFound = new ApiError('Station nicht gefunden', 404);
+export const notFound = new ApiError('Station nicht gefunden', 404);
 
 /** Neues Stations-Entity aus einem bestehenden oder einer leeren Vorlage */
 export const stationFromObject = (

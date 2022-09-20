@@ -88,7 +88,9 @@ export function readUser(user: User) {
     fullName: nameString,
     access: parseAccess(accessFromBinary),
     location: numOrStringLocation,
-    stations: allowed_stations.map((stat) => stat.id) ?? [],
+    stations: Array.isArray(allowed_stations)
+      ? allowed_stations.map((stat) => stat.id)
+      : [],
     entryDate: entry_date,
     qlik: qlikString,
   };

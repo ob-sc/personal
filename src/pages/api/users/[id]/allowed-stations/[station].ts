@@ -2,7 +2,10 @@ import { ApiHandlerWithConn } from 'src/common/types/server';
 import { withSessionApi } from 'src/common/middleware/withSession';
 import { ApiError, unresolved } from 'src/common/utils/server';
 import { error, httpMethodError } from 'src/common/utils/response';
-import { createAllowedStation } from 'src/modules/users/apiHandler';
+import {
+  createAllowedStation,
+  removeAllowedStation,
+} from 'src/modules/users/apiHandler';
 import { noAccessText } from 'src/config/constants';
 
 const handler: ApiHandlerWithConn = async (req, res) => {
@@ -14,6 +17,10 @@ const handler: ApiHandlerWithConn = async (req, res) => {
       case 'POST':
         if (!write) throw new ApiError(noAccessText, 403);
         await createAllowedStation(req, res);
+        break;
+      case 'DELETE':
+        if (!write) throw new ApiError(noAccessText, 403);
+        await removeAllowedStation(req, res);
         break;
       default:
         httpMethodError(res, method, ['POST']);
