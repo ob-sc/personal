@@ -2,6 +2,7 @@ import axios from 'axios';
 import { ParsedUser } from 'src/common/types/server';
 import useRequest from 'src/common/hooks/useRequest';
 import { Crent } from 'src/entities/Crent';
+import { User } from 'src/entities/User';
 
 const route = '/api/users';
 
@@ -33,3 +34,6 @@ export const deleteUserRegion = (userId: number) =>
 
 export const putCrent = (userId: number, values: Partial<Crent>) =>
   axios.put(`${route}/${userId}/crent`, { id: userId, ...values });
+
+export const putQlik = (userId: number, value: User['qlik']) =>
+  axios.put(`${route}/${userId}/qlik`, { id: userId, qlik: value });

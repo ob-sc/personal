@@ -69,7 +69,7 @@ export interface ParsedUser {
   stations: Station['id'][]; // Array nur aus IDs
   location: number | string; // string aus Stationsnummer oder Abteilung, siehe src/common/utils/user.ts
   entryDate: User['entry_date'];
-  qlik: null | 'Angefordert' | 'Aktiv';
+  qlik: User['qlik'];
   region: Region | null;
   crent: Crent | null;
   hardware: Hardware | null;

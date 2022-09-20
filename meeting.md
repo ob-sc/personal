@@ -12,6 +12,14 @@ Hinweis C-Rent: Bitte nach der ersten Anmeldung PW ändern
 
 ---
 
+## todo
+
+- anlegen
+
+- mails
+
+- startseite
+
 ## testen
 
 berechtigungen (kann seiten besuchen und sieht nur ma aus freigegebenen stationen)

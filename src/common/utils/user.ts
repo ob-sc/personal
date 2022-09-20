@@ -70,8 +70,6 @@ export function readUser(user: User) {
     ? Number(location)
     : location.replace(/_/g, '');
 
-  const qlikString = qlik === 1 ? 'Angefordert' : qlik === 2 ? 'Aktiv' : null;
-
   const nameString =
     last_name && !first_name ? last_name : `${first_name} ${last_name}`;
 
@@ -92,7 +90,7 @@ export function readUser(user: User) {
       ? allowed_stations.map((stat) => stat.id)
       : [],
     entryDate: entry_date,
-    qlik: qlikString,
+    qlik,
   };
 
   return parsed;

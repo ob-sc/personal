@@ -12,6 +12,7 @@ import { toDeLocalDate } from 'src/common/utils/shared';
 import UserAuthorizationTable from 'src/modules/users/components/UserAuthorizationTable';
 import { useGetRegions } from 'src/modules/regions/api';
 import CrentForm from 'src/modules/users/components/CrentForm';
+import QlikSelection from 'src/modules/users/components/QlikSelection';
 
 export const getServerSideProps = withSessionSsr();
 
@@ -65,6 +66,8 @@ function SingleUserPage({ user }: IPT<typeof getServerSideProps>) {
           <DataList data={generalData} />
 
           <CrentForm userId={Number(id)} crent={crent} />
+
+          <QlikSelection userId={Number(id)} qlik={qlik ?? null} />
 
           {hasRead && hardware ? (
             <>

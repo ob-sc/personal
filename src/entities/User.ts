@@ -58,8 +58,8 @@ export class User {
   @Column('varchar', { ...NULL })
   position!: string | null;
 
-  @Column('int', { ...NULL })
-  qlik!: number | null;
+  @Column('int', { default: 0 })
+  qlik!: number;
 
   @Column('int', { ...NULL })
   region_id!: number | null;

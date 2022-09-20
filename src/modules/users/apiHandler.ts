@@ -225,3 +225,22 @@ export const storeCrent: ApiHandlerWithConn = async (req, res) => {
   const result = readUser(user);
   success(res, result);
 };
+
+export const storeQlik: ApiHandlerWithConn = async (req, res) => {
+  const { body, db } = req;
+  if (!db) throw new ApiError(dbErrorText);
+
+  const { id, qlik } = body;
+
+  const userRepo = db.getRepository(User);
+
+  const user = await userRepo.findOne({
+    where: { id: Number(id) },
+  });
+  if (user === null) throw notFound;
+
+  await userRepo.save({ id: user.id, qlik });
+
+  const result = readUser(user);
+  success(res, result);
+};
