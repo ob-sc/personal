@@ -5,7 +5,7 @@
 
 # Docker-Container Name
 CONTAINER=perso-dev
-
+# shellcheck disable=2046,3028,3054
 SCRIPT_DIR=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 
 # Directory zum mounten
@@ -16,8 +16,8 @@ DEVDATA="$SCRIPT_DIR/data/dev"
 # working dir -> root vom projekt
 cd "$SCRIPT_DIR" || (echo "Fehler, SCRIPTPATH nicht gefunden" && exit 1)
 
-mkdir -p $DEVDATA
-cp $SCRIPT_DIR/sql/* $DEVDATA
+mkdir -p "$DEVDATA"
+cp "$SCRIPT_DIR"/sql/* "$DEVDATA"
 
 # check ob env datei existiert
 [ ! -f ./.env.local ] && echo "Fehler, .env.local nicht gefunden" && return 1
@@ -65,11 +65,11 @@ if [ ! "$(docker ps -q -f name=$CONTAINER)" ]; then
     --detach \
     --publish 3306:3306 \
     --name $CONTAINER \
-    --volume $DEVDATA:/data/dev \
+    --volume "$DEVDATA":/data/dev \
     --env LANG=C.UTF-8 \
     --env LC_ALL=C.UTF-8 \
-    --env MARIADB_USER=$MARIADB_USER \
-    --env MARIADB_PASSWORD=$MARIADB_PASSWORD \
-    --env MARIADB_ROOT_PASSWORD=$MARIADB_ROOT_PASSWORD \
+    --env MARIADB_USER="$MARIADB_USER" \
+    --env MARIADB_PASSWORD="$MARIADB_PASSWORD" \
+    --env MARIADB_ROOT_PASSWORD="$MARIADB_ROOT_PASSWORD" \
     mariadb:10.7
 fi

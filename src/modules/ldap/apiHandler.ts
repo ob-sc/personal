@@ -5,6 +5,16 @@ import { writeUser } from 'src/common/utils/user';
 import { adErrorText, dbErrorText } from 'src/config/constants';
 import { DomainUser } from 'src/modules/ldap/types';
 
+export const allLdapUsers: ApiHandlerWithConn = async (req, res) => {
+  const { ldap } = req;
+  if (!ldap) throw new ApiError(adErrorText);
+
+  await ldap.connect();
+  const ldapUsers = await ldap.search();
+
+  success(res, ldapUsers);
+};
+
 export const createLdapUser: ApiHandlerWithConn<Partial<DomainUser>> = async (
   req,
   res

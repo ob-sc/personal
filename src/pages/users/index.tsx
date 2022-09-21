@@ -8,12 +8,14 @@ import Layout from 'src/common/components/Layout';
 import DataGrid from 'src/common/components/DataGrid';
 import userColumns from 'src/modules/users/columns';
 import NewUserStepperModal from 'src/modules/users/components/NewUserStepperModal';
+import { useGetLdapUsers } from 'src/modules/ldap/api';
 
 export const getServerSideProps = withSessionSsr();
 
 function AllUsersPage({ user }: IPT<typeof getServerSideProps>) {
   const [modalOpen, modalSetOpen] = useState(false);
   const users = useGetUsers();
+  const ldapUsers = useGetLdapUsers();
   const router = useRouter();
 
   const rowClickHandler: RowClickHandler = async (e) => {
@@ -42,6 +44,7 @@ function AllUsersPage({ user }: IPT<typeof getServerSideProps>) {
       />
 
       <NewUserStepperModal
+        users={ldapUsers.data ?? []}
         open={modalOpen}
         onClose={() => modalSetOpen(false)}
       />

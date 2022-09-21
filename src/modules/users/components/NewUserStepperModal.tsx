@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -7,21 +7,23 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from 'src/common/components/Modal';
 import Form from 'src/common/components/Form';
-import { FormField } from 'src/common/types/client';
+import { FormField, SelectOption } from 'src/common/types/client';
+import { DomainUser } from 'src/modules/ldap/types';
 
 interface Props {
   open: boolean;
   onClose: () => void;
+  users: DomainUser[];
 }
 
 type StepperStep = { label: string; component: ReactNode; optional?: boolean };
 
-function NewUserStepperModal({ open, onClose }: Props) {
+function NewUserStepperModal({ open, onClose, users }: Props) {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set<number>());
+  const [locationOptions, setLocationOptions] = useState<SelectOption[]>([]);
 
   const isStepOptional = (step: StepperStep) => step.optional === true;
-
   const isStepSkipped = (step: number) => skipped.has(step);
 
   const handleNext = () => {
@@ -39,16 +41,38 @@ function NewUserStepperModal({ open, onClose }: Props) {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
+  useEffect(() => {
+    const uniqueLocations = users
+      .map((user) => {
+        const [, cn] = user.distinguishedName.split(',OU'); // name kann komma enthalten, deshalb bis ,OU splitten fuer CN=
+        const [, loc] = cn.split('='); // CN= rausnehmen, nur Inhalt
+        return loc;
+      })
+      .filter((value, index, self) => self.indexOf(value) === index) // nur unique
+      .sort() // alphabetisch sortieren
+      .map((location) => ({
+        optval: location,
+        optlabel: String(location),
+      })); // optionsobjekt (SelectOption) draus machen
+    setLocationOptions(uniqueLocations);
+  }, [users]);
+
   const generalFields: FormField[] = [
     { name: 'h0', label: 'Allgemeine Daten', type: 'header' },
     { name: 'first_name', label: 'Vorname', required: true },
     { name: 'last_name', label: 'Nachname', required: true },
     { name: 'position', label: 'Position', required: true },
-    { name: 'location', label: 'Station / Abteilung', required: true },
-    { name: 'entry_date', label: 'Eintritt', type: 'text', required: true },
-    { name: 'h1', label: 'Optional', type: 'header' },
-    { name: 'crent_register', label: 'C-Rent Kassenkonto' },
-    { name: 'qlik', label: 'Qlik' },
+    {
+      name: 'location',
+      label: 'Station / Abteilung',
+      type: 'select',
+      selOptions: locationOptions,
+      required: true,
+    },
+    { name: 'entry_date', label: 'Eintritt', type: 'date', required: true },
+    // { name: 'h1', label: 'Optional', type: 'header' },
+    { name: 'crent_register', label: 'C-Rent Kassenkonto', type: 'check' },
+    { name: 'qlik', label: 'Qlik', type: 'check' },
   ];
 
   const steps: StepperStep[] = [
@@ -84,18 +108,8 @@ function NewUserStepperModal({ open, onClose }: Props) {
       optional: true,
     },
     {
-      label: 'Berechtigungen',
-      component: (
-        <Form
-          noButton
-          formId="new-user-form"
-          fields={[{ name: 'paa', label: 'Berechtigungen' }]}
-          onSubmit={async (values) => {
-            console.log(values);
-            handleNext();
-          }}
-        />
-      ),
+      label: 'Zusammenfassung',
+      component: <>cool</>,
     },
   ];
 

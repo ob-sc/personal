@@ -45,6 +45,7 @@ export interface FormField {
     | 'date'
     | 'select'
     | 'multiselect'
+    | 'check'
     | 'header';
   required?: boolean;
   selOptions?: SelectOption[];

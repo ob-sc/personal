@@ -16,13 +16,15 @@ Hinweis C-Rent: Bitte nach der ersten Anmeldung PW ändern
 
 - anlegen
 
-- mails
+- mails: in mail muss auf jeden die location, damit die ggf angepasst werden kann
 
 - startseite
 
 ## testen
 
 berechtigungen (kann seiten besuchen und sieht nur ma aus freigegebenen stationen)
+
+was passiert beim anlegen in schadenabteilung
 
 was passiert wenn jmd zb eine region hat und diese geloescht wird
 

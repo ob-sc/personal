@@ -50,7 +50,6 @@ function SingleUserPage({ user }: IPT<typeof getServerSideProps>) {
       value: location,
     },
     { key: 'E-Mail', value: email },
-    qlik ? { key: 'Qlik', value: qlik } : undefined,
   ];
 
   const { read: hasRead, write: hasWrite } = user.access.users;
@@ -67,7 +66,7 @@ function SingleUserPage({ user }: IPT<typeof getServerSideProps>) {
 
           <CrentForm userId={Number(id)} crent={crent} />
 
-          <QlikSelection userId={Number(id)} qlik={qlik ?? null} />
+          <QlikSelection userId={Number(id)} qlik={qlik ?? 0} />
 
           {hasRead && hardware ? (
             <>

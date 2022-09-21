@@ -61,6 +61,7 @@ function FormInput({
               : undefined
           }
           inputProps={type === 'number' ? numOptions : undefined}
+          InputLabelProps={type === 'date' ? { shrink: true } : undefined}
           {...field}
         />
       )}

@@ -10,6 +10,7 @@ import FormSelect from 'src/common/components/FormSelect';
 import FormMultiSelect from 'src/common/components/FormMultiSelect';
 import FormInput from 'src/common/components/FormInput';
 import Button from 'src/common/components/Button';
+import FormCheckbox from 'src/common/components/FormCheckbox';
 
 export type FormValues = { [key: string]: string };
 
@@ -141,6 +142,8 @@ function Form({
       >
         <Typography variant="h5">{label}</Typography>
       </Box>
+    ) : type === 'check' ? (
+      <FormCheckbox {...param} />
     ) : type === 'select' ? (
       <FormSelect {...param} options={selOptions ?? []} />
     ) : type === 'multiselect' ? (
