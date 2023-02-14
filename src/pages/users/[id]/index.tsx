@@ -68,23 +68,23 @@ function SingleUserPage({ user }: IPT<typeof getServerSideProps>) {
 
           <QlikSelection userId={Number(id)} qlik={qlik ?? 0} />
 
-          {hasRead && hardware ? (
+          {hasRead ? (
             <>
               <Typography variant="h2">Hardware</Typography>
               <DataList
                 data={[
-                  { key: 'Handy', value: hardware.mobile_phone === 1 },
-                  { key: 'Laptop', value: hardware.laptop === 1 },
-                  { key: 'Computer', value: hardware.computer === 1 },
-                  { key: 'Monitor', value: hardware.monitor },
-                  { key: 'Drucker', value: hardware.printer === 1 },
-                  { key: 'Tankkarte', value: hardware.fuel_card === 1 },
-                  { key: 'iPad', value: hardware.ipad === 1 },
-                  { key: 'iPad Typ / Zubehör', value: hardware.ipad_extra },
-                  { key: 'Sonstige Hardware', value: hardware.other },
+                  { key: 'Handy', value: hardware?.mobile_phone === 1 },
+                  { key: 'Laptop', value: hardware?.laptop === 1 },
+                  { key: 'Computer', value: hardware?.computer === 1 },
+                  { key: 'Monitor', value: hardware?.monitor },
+                  { key: 'Drucker', value: hardware?.printer === 1 },
+                  { key: 'Tankkarte', value: hardware?.fuel_card === 1 },
+                  { key: 'iPad', value: hardware?.ipad === 1 },
+                  { key: 'iPad Typ / Zubehör', value: hardware?.ipad_extra },
+                  { key: 'Sonstige Hardware', value: hardware?.other },
                   {
                     key: 'Hardware-Freigabe durch',
-                    value: hardware.authorization,
+                    value: hardware?.authorization,
                   },
                 ]}
               />

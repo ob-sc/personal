@@ -1,5 +1,9 @@
 # todo
 
+cron job sync automatisch
+
+beim anlegen erst db, patch hardware, patch rest?
+
 ## wichtig
 
 - klären agenturen? auch login? andere? (lohnkanzlei etc)

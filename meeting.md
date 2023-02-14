@@ -20,6 +20,8 @@ Hinweis C-Rent: Bitte nach der ersten Anmeldung PW ändern
 
 - startseite
 
+- bug station deaktiviert noch unter benutzer > stationen (nicht von regionen angehakt)
+
 ## testen
 
 berechtigungen (kann seiten besuchen und sieht nur ma aus freigegebenen stationen)

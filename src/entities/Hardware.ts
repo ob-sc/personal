@@ -11,25 +11,25 @@ export class Hardware {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column('tinyint', { width: 1, default: 1 })
+  @Column('tinyint', { width: 1, default: 0 })
   mobile_phone!: 0 | 1;
 
-  @Column('tinyint', { width: 1, default: 1 })
+  @Column('tinyint', { width: 1, default: 0 })
   laptop!: 0 | 1;
 
-  @Column('tinyint', { width: 1, default: 1 })
+  @Column('tinyint', { width: 1, default: 0 })
   computer!: 0 | 1;
 
   @Column('varchar', { ...NULL })
   monitor!: string;
 
-  @Column('tinyint', { width: 1, default: 1 })
+  @Column('tinyint', { width: 1, default: 0 })
   printer!: 0 | 1;
 
-  @Column('tinyint', { width: 1, default: 1 })
+  @Column('tinyint', { width: 1, default: 0 })
   fuel_card!: 0 | 1;
 
-  @Column('tinyint', { width: 1, default: 1 })
+  @Column('tinyint', { width: 1, default: 0 })
   ipad!: 0 | 1;
 
   @Column('varchar', { ...NULL })
